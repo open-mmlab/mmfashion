@@ -9,7 +9,7 @@
 (to be completed by Jiancheng)
 
 ## This Week's To-do List 
-- [] In-shop Retrieval Code Re-org
+- [ ] In-shop Retrieval Code Re-org (to be completed by Vera)
 
 ## Contributors:
 * Xin Liu ([veralauee](https://github.com/veralauee))
