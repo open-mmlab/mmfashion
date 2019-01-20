@@ -1,4 +1,5 @@
-import numpy 
+import numpy
+
 
 def count_attribute(label_file):
     labels = numpy.loadtxt(label_file)
@@ -8,7 +9,7 @@ def count_attribute(label_file):
     # sum the column
     column_sum = numpy.zeros(88)
     for row in labels:
-        for i,label in enumerate(row):
+        for i, label in enumerate(row):
             column_sum[i] += row[i]
             #        print(len(row))
     return column_sum, num_lines

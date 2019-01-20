@@ -8,7 +8,7 @@
 ### Files Structure
 (to be completed by Jiancheng)
 
-## This Week's To-do List 
+## This Week's To-do List
 - [ ] In-shop Retrieval Code Re-org (to be completed by Vera)
 
 ## Contributors:
