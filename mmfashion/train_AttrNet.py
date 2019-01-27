@@ -24,7 +24,7 @@ from data.data_processing import DataProcessing
 
 from models.config import cfg
 from models.AttrNet import build_network
-from models.loss.WeightedBCELoss import *
+from core.loss import WeightedBCELoss
 
 
 def main():
@@ -77,7 +77,7 @@ def main():
     elif cfg.loss == 'MLS':
         criterion = nn.MultiLabelMarginLoss()
     else:
-        criterion = WeightedBCELoss(reduce=False, size_average=False)
+        criterion = WeightedBCELoss(reduction=False, size_average=False)
 
     if cfg.opt == 'Adam':
         optimizer = torch.optim.Adam(
