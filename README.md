@@ -32,4 +32,5 @@ mmfashion is an open source object detection toolbox based on PyTorch.
 
 * Xin Liu ([veralauee](https://github.com/veralauee))
 * Jiancheng Li ([lijiancheng0614](https://github.com/lijiancheng0614))
+* Jiaqi Wang ([myownskyW7](https://github.com/myownskyW7))
 * Ziwei Liu ([liuziwei7](https://github.com/liuziwei7))
