@@ -5,8 +5,14 @@ mmfashion/version.py
 *~
 
 # Data and Model Folder
-dataset/
-saved_models/
+mmfashion/datasets/In-shop/
+
+*.pyc
+*.png
+*.jpg
+*.jpeg
+*.pth.tar
+*.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
