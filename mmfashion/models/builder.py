@@ -29,6 +29,7 @@ def build(cfg, registry, default_args=None):
     else:
        return _build_module(cfg, registry, default_args)
 
+
 def build_backbone(cfg):
     return build(cfg, BACKBONES)
 
@@ -43,8 +44,5 @@ def build_concat(cfg):
 
 def build_predictor(cfg):
     return build(cfg, PREDICTORS)
-
-def build_loss(cfg):
-    return build(cfg, LOSSES)
 
 

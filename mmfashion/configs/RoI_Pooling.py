@@ -45,12 +45,24 @@ data = dict(
            )
 
 # optimizer
-optimizer = dict(type='SGD', lr=1e-3, momentum=0.9)
+optimizer = dict(
+             type='SGD', 
+             lr=1e-3, 
+             momentum=0.9)
 # learning policy
 lr_config = dict(
             policy='step',
             warmup_iters=10,
             warmup_ratio=0.1)
+
+# loss 
+loss_dict=dict(
+           type='CrossEntropyLoss',
+           weight=None,
+           size_average=None,
+           reduce=None,
+           reduction='mean',
+           use_sigmoid=True)
    
 start_epoch=0
 end_epoch=30
@@ -58,6 +70,8 @@ gpus=range(4)
 work_dir = 'checkpoint/Predict'
 print_interval=20 # interval to print information
 save_interval=5
-resume_from = None # 'checkpoint/Predict/vgg_RoI_epoch25.pth.tar'
+resume_from = None # 
+load_from = 'checkpoint/Predict/vgg_RoI_epoch25.pth.tar'
+workflow = [('train', 10)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

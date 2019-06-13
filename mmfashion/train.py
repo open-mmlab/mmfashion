@@ -49,9 +49,9 @@ def main():
     # build model
     model = build_predictor(cfg.model)
     print('model built')  
-    if cfg.resume_from is not None:
-       checkpoint = load_checkpoint(model, cfg.resume_from)
-       print('load checkpoint: {}'.format(cfg.resume_from))
+    #if cfg.resume_from is not None:
+    #   checkpoint = load_checkpoint(model, cfg.resume_from)
+    #   print('load checkpoint: {}'.format(cfg.resume_from))
 
     # data loader
     dataset = get_dataset(cfg.data.train)
