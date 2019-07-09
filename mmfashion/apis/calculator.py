@@ -90,7 +90,6 @@ class Calculator(object):
            print('Batch[%d]' % batch_idx)
         else:
            print('Total')
-           print('Batch[%d]' % batch_idx)
 
         self.compute_precision() 
         print('[Precision] top3 = %.2f, top5 = %.2f, top10 = %.2f' 

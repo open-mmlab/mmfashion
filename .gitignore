@@ -12,6 +12,7 @@ mmfashion/checkpoint
 *.png
 *.jpg
 *.jpeg
+*.pth
 *.pth.tar
 *.txt
 

@@ -1,18 +1,20 @@
 from __future__ import division
 
 import argparse
+
+import torch
+import torch.nn as nn
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
-from apis import (init_dist, get_root_logger,train_predictor)
-from datasets import get_dataset
+from apis import (init_dist, get_root_logger, test_predictor)
+from datasets.utils import get_dataset
 from models import build_predictor
-
-import torch
+from utils import resume_from
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a Fashion Attribute Predictor')
-    parser.add_argument('--config', help='train config file path', default='configs/RoI_Pooling.py')
+    parser.add_argument('--config', help='train config file path', default='configs/RoI_Predictor.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument('--resume_from', help='the checkpoint file to resume from')
     parser.add_argument('--validate', action='store_true',
@@ -33,33 +35,36 @@ def main():
        cfg.work_dir = args.work_dir
     if args.resume_from is not None:
        cfg.resume_from = args.resume_from
-    cfg.gpus = args.gpus
-  
+    cfg.gpus.test = args.gpus
+
     # init distributed env first
     if args.launcher == 'none':
        distributed = False
     else:
        distributed = True
        init_dist(args.launcher, **cfg.dist_params)
-    
+
     # init logger
     logger = get_root_logger(cfg.log_level)
     logger.info('Distributed training: {}'.format(distributed))
 
-    # build model
-    model = build_predictor(cfg.model)
-    print('model built')  
-    #if cfg.resume_from is not None:
-    #   checkpoint = load_checkpoint(model, cfg.resume_from)
-    #   print('load checkpoint: {}'.format(cfg.resume_from))
-
     # data loader
-    dataset = get_dataset(cfg.data.train)
+    data_loader = get_dataset(cfg.data.test)
     print('dataset loaded')
-    
-    # train
-    train_predictor(model, dataset, cfg, distributed=distributed, validate=args.validate, logger=logger)
 
+    # build model and load checkpoint
+    model = build_predictor(cfg.model)
+    print('model built')
+    model = resume_from(cfg, model)
+        
+    # test
+    test_predictor(
+                   model, 
+                   data_loader, 
+                   cfg, 
+                   distributed=distributed, 
+                   validate=args.validate,
+                   logger=logger)
 
 if __name__ == '__main__':
    main()

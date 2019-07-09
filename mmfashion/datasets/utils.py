@@ -7,8 +7,7 @@ import torch
 import torch.nn as nn
 from torch.autograd import Variable
 
-from .BasicDataset import BasicDataset
-from .ThreedDataset import ThreedDataset
+from .In_shop import InShopDataset
 
 def to_tensor(data):
     """Convert objects of various python types to :obj:`torch.Tensor`.
@@ -30,34 +29,32 @@ def to_tensor(data):
             type(data)))
 
 
-def get_data(cfg, traindata):
-    imgs, target = Variable(traindata[0]).cuda(), Variable(traindata[1]).cuda()
-    if cfg.pooling == 'RoI':
-       landmarks = Variable(traindata[2]).cuda()
-       iuv = None
-    elif cfg.pooling =='IUV':
-       landmarks = Variable(traindata[2]).cuda()
-       iuv = traindata[3]
-       if iuv is not None:
-          iuv = Variable(iuv).cuda()
-       else:
-          iuv = None
-    return imgs, target, landmarks, iuv
+def get_basic_data(data):
+    imgs = Variable(data['img']).cuda()
+    target = Variable(data['label']).cuda()
+    landmark = Variable(data['landmark']).cuda()
 
+    return imgs, target, landmark
 
-
-def get_dataset(data_cfg):
-    if data_cfg['type'] == 'roi_dataset':
-       dataset = BasicDataset(data_cfg.img_path, data_cfg.img_file,
-                              data_cfg.label_file, data_cfg.bbox_file,
-                              data_cfg.landmark_file, data_cfg.img_scale)
-
-    elif data_cfg['type'] == 'iuv_dataset':
-       dataset = ThreedDataset(data_cfg.img_path, data_cfg.img_file,
-                               data_cfg.label_file, data_cfg.bbox_file,
-                               data_cfg.landmark_file, data_cfg.iuv_file,
-                               data_cfg.img_scale)      
+def get_data(cfg, data):
+    if cfg.find_three:
+       anchor_data, pos_data, neg_data = data
+       anchor, anchor_lbl, anchor_lm = get_basic_data(anchor_data)
+       pos, pos_lbl, pos_lm = get_basic_data(pos_data)
+       neg, neg_lbl, neg_lm = get_basic_data(neg_data)
+       return anchor, anchor_lm, pos, pos_lm, neg, neg_lm
+       
     else:
-       raise TypeError('type {} does not exist.'.fomart(data_cfg['type']))
+       return get_basic_data(data)
+    
+def get_dataset(data_cfg):
+    if data_cfg['type'] == 'In-shop':
+       dataset = InShopDataset(data_cfg.img_path, data_cfg.img_file,
+                              data_cfg.label_file, data_cfg.bbox_file,
+                              data_cfg.landmark_file, data_cfg.img_scale,
+                              data_cfg.find_three)
+
+    else:
+       raise TypeError('type {} does not exist.'.fomat(data_cfg['type']))
 
     return dataset 

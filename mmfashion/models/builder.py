@@ -1,7 +1,7 @@
 import mmcv
 from torch import nn
 
-from .registry import (BACKBONES, GLOBALPOOLING, ROIPOOLING, CONCATS, PREDICTORS, LOSSES)
+from .registry import (BACKBONES, GLOBALPOOLING, ROIPOOLING, CONCATS, PREDICTOR, RETRIEVER, LOSSES)
 
 def _build_module(cfg, registry, default_args):
     assert isinstance(cfg, dict) and 'type' in cfg 
@@ -42,7 +42,12 @@ def build_roi_pool(cfg):
 def build_concat(cfg):
     return build(cfg, CONCATS)
 
-def build_predictor(cfg):
-    return build(cfg, PREDICTORS)
+def build_loss(cfg):
+    return build(cfg, LOSSES)
 
+def build_predictor(cfg):
+    return build(cfg, PREDICTOR)
+
+def build_retriever(cfg):
+    return build(cfg, RETRIEVER)
 

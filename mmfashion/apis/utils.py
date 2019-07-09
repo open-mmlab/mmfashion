@@ -12,12 +12,13 @@ def build_optimizer(model, optim_cfg):
 
 
 def build_criterion(loss_dict):
-    weight = loss_dict.weight
-    size_average = loss_dict.size_average
-    reduce = loss_dict.reduce
-    reduction = loss_dict.reduction
 
     if loss_dict.type == 'CrossEntropyLoss':
+       weight = loss_dict.weight
+       size_average = loss_dict.size_average
+       reduce = loss_dict.reduce
+       reduction = loss_dict.reduction
+
        if loss_dict.use_sigmoid:
           return nn.BCEWithLogitsLoss(weight=weight,
                                       size_average=size_average,
@@ -28,6 +29,11 @@ def build_criterion(loss_dict):
                                       size_average=size_average,
                                       reduce=reduce,
                                       reduction=reduction)
+
+    elif loss_dict.type == 'TripletLoss':
+       return nn.TripletMarginLoss(margin=loss_dict.margin,
+                                   p=loss_dict.p)
+
     else:
        raise TypeError('{} cannot be processed'.format(loss_dict.type))
 

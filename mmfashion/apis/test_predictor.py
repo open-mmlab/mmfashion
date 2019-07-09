@@ -16,10 +16,8 @@ from mmcv.runner import Runner, DistSamplerSeedHook, obj_from_dict
 from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 
 from .env import get_root_logger
-#from .accuracy import build_collecter, collect_result, compute_precision
 from .calculator import Calculator
 from datasets import get_data, build_dataloader
-
 
 
 def test_predictor(model, dataset, cfg, distributed=False, validate=False, logger=None):
@@ -38,23 +36,25 @@ def _non_dist_test(model, dataset, cfg, validate=False):
                    dataset,
                    cfg.data.imgs_per_gpu,
                    cfg.data.workers_per_gpu,
-                   cfg.gpus,
-                   dist=False)
+                   cfg.gpus.test,
+                   dist=False,
+                   shuffle=False)
 
     print('dataloader built')
  
-    model = MMDataParallel(model, device_ids=range(cfg.gpus)).cuda()
+    model = MMDataParallel(model, device_ids=range(cfg.gpus.test)).cuda()
     model.eval()
    
     #collector = build_collecter(cfg.class_num)
     calculator = Calculator(cfg.class_num)
 
     for batch_idx, testdata in enumerate(data_loader):
-        imgs, target, landmarks , iuv = get_data(cfg, testdata)
-        predict = F.sigmoid(model(imgs, landmarks, iuv))   
+        imgs = testdata['img']
+        landmarks = testdata['landmark']
+        labels = testdata['label']
         
-        #collect_result(predict, target, collector)      
-        calculator.collect_result(predict, target)
+        predict = model(imgs, labels, landmarks, return_loss=False)        
+        calculator.collect_result(predict, labels)
 
         if batch_idx % cfg.print_interval == 0:
            calculator.show_result(batch_idx)

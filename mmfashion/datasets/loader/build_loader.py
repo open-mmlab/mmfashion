@@ -7,7 +7,7 @@ def build_dataloader(dataset, imgs_per_gpu, workers_per_gpu, num_gpus=1, dist=Fa
     shuffle = kwargs.get('shuffle', True)
     batch_size = num_gpus * imgs_per_gpu
     num_workers = num_gpus * workers_per_gpu
-   
+ 
     data_loader = DataLoader(
         dataset,
         batch_size=batch_size,
