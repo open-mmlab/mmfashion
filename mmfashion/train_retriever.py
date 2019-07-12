@@ -12,6 +12,8 @@ from datasets import get_dataset
 from models import build_retriever
 
 
+torch.manual_seed(0)
+
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a Fashion Attribute Predictor')
     parser.add_argument('--config', help='train config file path', default='configs/roi_retriever_vgg.py')

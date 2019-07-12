@@ -134,10 +134,13 @@ class InShopDataset(Dataset):
 
         # get positive example
         pos_idxes = self.id2idx[anchor_id]
-        random_pos_idx = pos_idxes[random.randint(0, len(pos_idxes)-1)]
-        while random_pos_idx == idx:
+        if len(pos_idxes)==1: # just one item
+           pos_data = anchor_data
+        else:
+           random_pos_idx = pos_idxes[random.randint(0, len(pos_idxes)-1)]
+           while random_pos_idx == idx:
               random_pos_idx = pos_idxes[random.randint(0, len(pos_idxes)-1)]
-        pos_data = self.get_basic_item(random_pos_idx)
+           pos_data = self.get_basic_item(random_pos_idx)
 
         # get negative example
         id_len = len(self.ids)

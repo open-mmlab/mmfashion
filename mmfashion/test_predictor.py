@@ -16,7 +16,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Train a Fashion Attribute Predictor')
     parser.add_argument('--config', help='train config file path', default='configs/roi_predictor_resnet.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
-    parser.add_argument('--checkpoint', help='checkpoint file', default='checkpoint/Predict/resnet/epoch25.pth')
+    parser.add_argument('--checkpoint', help='checkpoint file', default='checkpoint/Predict/resnet/epoch30.pth')
     parser.add_argument('--validate', action='store_true',
                          help='whether to evaluate the checkpoint during training', default=True)
     parser.add_argument('--gpus', type=int, default=4, help='number of gpus to use'

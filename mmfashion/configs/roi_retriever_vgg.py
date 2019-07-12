@@ -111,8 +111,8 @@ gpus=dict(train=[0,1,2,7],
           test=[0])
 work_dir = 'checkpoint/Retrieve/vgg'
 print_interval=20 # interval to print information
-resume_from = 'checkpoint/Predict/vgg/vgg_epoch_40.pth'  
-checkpoint = None #'checkpoint/Predict/vgg_RoI_epoch25.pth.tar'
+resume_from = None #'checkpoint/Predict/vgg/vgg_epoch_40.pth'  
+load_from = 'checkpoint/Predict/vgg/vgg_epoch_40.pth'
 workflow = [('train', 100)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
