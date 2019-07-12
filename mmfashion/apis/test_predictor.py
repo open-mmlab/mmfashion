@@ -54,9 +54,6 @@ def _non_dist_test(model, dataset, cfg, validate=False):
         labels = testdata['label']
         
         predict = model(imgs, labels, landmarks, return_loss=False)        
-        print('predict')
-        print(predict.size())
-        print(predict)
         calculator.collect_result(predict, labels)
 
         if batch_idx % cfg.print_interval == 0:

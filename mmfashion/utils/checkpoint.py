@@ -43,16 +43,10 @@ def load_checkpoint(filename, model, strict=False, logger=None):
     return model
 
 
-def resume_from(cfg, model):
-    if cfg.load_from:
-       # load whole model and continue training
-       model = load_checkpoint(cfg.load_from, model)
-       print('load pretrained weights from {}'.format(cfg.load_from))
+def init_weights_from(init_from, model):
  
-    elif cfg.resume_from:
-       # resume from ImageNet pretrained weights for backbone
-       load_state_dict(model.backbone, torch.load(cfg.resume_from))
-       print('resume pretrained weights from {}'.format(cfg.resume_from))
+    # resume from ImageNet pretrained weights for backbone
+    load_state_dict(model.backbone, torch.load(init_from))
       
     return model
  

@@ -45,8 +45,8 @@ img_norm = dict(
            std=[0.229, 0.224, 0.225])
 
 data = dict(
-           imgs_per_gpu=8, 
-           workers_per_gpu=2,
+           imgs_per_gpu=1, 
+           workers_per_gpu=1,
            train = dict(
                    type=dataset_type,
                    img_path = os.path.join(data_root, 'Img'),
@@ -112,7 +112,7 @@ gpus=dict(train=[0,1,2,7],
 work_dir = 'checkpoint/Retrieve/vgg'
 print_interval=20 # interval to print information
 resume_from = None #'checkpoint/Predict/vgg/vgg_epoch_40.pth'  
-load_from = 'checkpoint/Predict/vgg/vgg_epoch_40.pth'
+load_from = 'checkpoint/Retrieve/vgg/latest.pth'
 workflow = [('train', 100)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

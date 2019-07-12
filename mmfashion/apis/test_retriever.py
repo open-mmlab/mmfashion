@@ -19,7 +19,6 @@ from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 
 from .env import get_root_logger
 from datasets import get_data, build_dataloader
-from utils import save_checkpoint, resume_from
 
 
 def test_retriever(model, query_set, gallery_set, cfg, distributed=False, validate=False, logger=None):
@@ -42,7 +41,7 @@ def _process_embeds(dataset, model, cfg):
                    dataset,
                    cfg.data.imgs_per_gpu,
                    cfg.data.workers_per_gpu,
-                   cfg.gpus.test,
+                   len(cfg.gpus.test),
                    dist=False,
                    shuffle=False)
     
@@ -95,7 +94,7 @@ def show_result(query_embeds, gallery_embeds, query_dict, gallery_dict):
 
 def _non_dist_test(model, query_set, gallery_set, cfg, validate=False):
 
-    model = MMDataParallel(model, device_ids=range(cfg.gpus.test)).cuda()
+    model = MMDataParallel(model, device_ids=cfg.gpus.test).cuda()
     model.eval()
 
     query_embeds = _process_embeds(query_set, model, cfg)

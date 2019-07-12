@@ -13,17 +13,17 @@ model = dict(
                          inplanes=(7,7),
                          pool_plane=(2,2),
                          inter_plane=2048*7*7,
-                         outplanes=2048),
+                         outplanes=4096),
         roi_pool=dict(type='RoIPooling',
                       pool_plane=(2,2),
                       inter_plane=2048,
-                      outplanes=2048,
+                      outplanes=4096,
                       crop_size=7,
                       img_size=img_size,
                       num_lms=8),
         concat=dict(type='Concat',
-                    inplanes=2*2048,
-                    inter_plane=2048,
+                    inplanes=2*4096,
+                    inter_plane=4096,
                     num_classes=class_num,
                     retrieve=retrieve),
         loss=dict(
@@ -103,13 +103,14 @@ log_config = dict(
 
 start_epoch=0
 total_epochs=40
-gpus=dict(train=4,
-          test=4)
+gpus=dict(train=[0,1,2,7],
+          test=[0])
 work_dir = 'checkpoint/Predict'
 print_interval=20 # interval to print information
 save_interval=5
-resume_from = 'checkpoint/resnet50.pth'  
-load_from = 'checkpoint/Predict/resnet/epoch40.pth'
+init_weights_from = 'checkpoint/resnet50.pth'  
+resume_from=None
+load_from = None #'checkpoint/Predict/resnet/epoch40.pth'
 workflow = [('train', 40)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

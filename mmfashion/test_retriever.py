@@ -7,20 +7,17 @@ import torch.nn as nn
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
-from mmfashion.apis import (init_dist, get_root_logger, test_retriever)
-from mmfashion.datasets.utils import get_dataset
-from mmfashion.models import build_retriever
-from mmfashion.utils import resume_from
+from apis import (init_dist, get_root_logger, test_retriever)
+from datasets.utils import get_dataset
+from models import build_retriever
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a Fashion Attribute Predictor')
-    parser.add_argument('--config', help='train config file path', default='configs/RoI_Retriever.py')
+    parser.add_argument('--config', help='train config file path', default='configs/roi_retriever_vgg.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
-    parser.add_argument('--resume_from', help='the checkpoint file to resume from')
+    parser.add_argument('--checkpoint', type=str, default='checkpoint/Retrieve/vgg/epoch_5.pth', help='the checkpoint file to resume from')
     parser.add_argument('--validate', action='store_true',
                          help='whether to evaluate the checkpoint during training', default=True)
-    parser.add_argument('--gpus', type=int, default=1, help='number of gpus to use'
-                                                 '(only applicable to non-distributed training)')
     parser.add_argument('--launcher',
                          choices=['none', 'pytorch','mpi','slurm'],
                          default='none',
@@ -33,9 +30,6 @@ def main():
     cfg = Config.fromfile(args.config)
     if args.work_dir is not None:
        cfg.work_dir = args.work_dir
-    if args.resume_from is not None:
-       cfg.resume_from = args.resume_from
-    cfg.gpus.test = args.gpus
 
     # init distributed env first
     if args.launcher == 'none':
@@ -55,7 +49,8 @@ def main():
     # build model and load checkpoint
     model = build_retriever(cfg.model)
     print('model built')
-    model = resume_from(cfg, model)
+    
+    checkpoint = load_checkpoint(model, args.checkpoint, map_location='cpu')
         
     # test
     test_retriever(model, query_set, gallery_set, cfg, distributed=distributed, validate=args.validate, logger=logger)

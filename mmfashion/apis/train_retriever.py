@@ -18,7 +18,6 @@ from .env import get_root_logger
 from .utils import build_optimizer
 from models import build_loss
 from datasets import get_data, build_dataloader
-from utils import save_checkpoint, resume_from, save_img
 
 
 def parse_losses(losses):

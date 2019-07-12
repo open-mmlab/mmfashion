@@ -13,17 +13,17 @@ model = dict(
                          inplanes=(7,7),
                          pool_plane=(2,2),
                          inter_plane=512*7*7,
-                         outplanes=2048),
+                         outplanes=4096),
         roi_pool=dict(type='RoIPooling',
                       pool_plane=(2,2),
                       inter_plane=512,
-                      outplanes=2048,
+                      outplanes=4096,
                       crop_size=7,
                       img_size=img_size,
                       num_lms=8),
         concat=dict(type='Concat',
-                    inplanes=2*2048,
-                    inter_plane=2048,
+                    inplanes=2*4096,
+                    inter_plane=4096,
                     num_classes=class_num,
                     retrieve=retrieve),
         loss=dict(
@@ -108,8 +108,9 @@ gpus=dict(train=4,
 work_dir = 'checkpoint/Predict/vgg'
 print_interval=20 # interval to print information
 save_interval=5
-resume_from = 'checkpoint/vgg16.pth' # 
-checkpoint = 'checkpoint/Predict/vgg/vgg_epoch_40.pth'
+init_weights_from = 'checkpoint/vgg16.pth' 
+resume_from=None
+checkpoint = None# 'checkpoint/Predict/vgg/vgg_epoch_40.pth'
 workflow = [('train', 40)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

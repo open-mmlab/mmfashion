@@ -12,7 +12,6 @@ from datasets import get_dataset
 from models import build_retriever
 
 
-torch.manual_seed(0)
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a Fashion Attribute Predictor')
@@ -21,6 +20,7 @@ def parse_args():
     parser.add_argument('--resume_from', help='the checkpoint file to resume from')
     parser.add_argument('--validate', action='store_true',
                          help='whether to evaluate the checkpoint during training', default=True)
+    parser.add_argument('--seed', type=int, default=None, help='random seed')
     parser.add_argument('--launcher',
                          choices=['none', 'pytorch','mpi','slurm'],
                          default='none',
@@ -46,6 +46,11 @@ def main():
     # init logger
     logger = get_root_logger(cfg.log_level)
     logger.info('Distributed training: {}'.format(distributed))
+
+    # set random seeds
+    if args.seed is not None:
+        logger.info('Set random seed to {}'.format(args.seed))
+        set_random_seed(args.seed)
 
     # build predictor to extract embeddings
     model = build_retriever(cfg.model)

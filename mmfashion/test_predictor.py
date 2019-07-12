@@ -10,7 +10,6 @@ from mmcv.runner import load_checkpoint
 from apis import (init_dist, get_root_logger, test_predictor)
 from datasets.utils import get_dataset
 from models import build_predictor
-from utils import resume_from
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a Fashion Attribute Predictor')
@@ -19,8 +18,6 @@ def parse_args():
     parser.add_argument('--checkpoint', help='checkpoint file', default='checkpoint/Predict/resnet/epoch30.pth')
     parser.add_argument('--validate', action='store_true',
                          help='whether to evaluate the checkpoint during training', default=True)
-    parser.add_argument('--gpus', type=int, default=4, help='number of gpus to use'
-                                                 '(only applicable to non-distributed training)')
     parser.add_argument('--launcher',
                          choices=['none', 'pytorch','mpi','slurm'],
                          default='none',
@@ -33,7 +30,6 @@ def main():
     cfg = Config.fromfile(args.config)
     if args.work_dir is not None:
        cfg.work_dir = args.work_dir
-    cfg.gpus.test = args.gpus
 
     # init distributed env first
     if args.launcher == 'none':
