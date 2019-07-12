@@ -17,6 +17,7 @@ mmfashion/checkpoint
 *.txt
 *.zip
 *.swo
+*.swp
 *.yaml
 
 # Byte-compiled / optimized / DLL files

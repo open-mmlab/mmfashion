@@ -45,7 +45,7 @@ img_norm = dict(
            std=[0.229, 0.224, 0.225])
 
 data = dict(
-           imgs_per_gpu=1,
+           imgs_per_gpu=4,
            workers_per_gpu=2,
            train = dict(
                    type=dataset_type,
@@ -109,7 +109,7 @@ work_dir = 'checkpoint/Predict'
 print_interval=20 # interval to print information
 save_interval=5
 resume_from = 'checkpoint/resnet50.pth'  
-load_from = None#'checkpoint/Predict/vgg_RoI_epoch25.pth.tar'
+load_from = 'checkpoint/Predict/resnet/epoch40.pth'
 workflow = [('train', 40)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

@@ -14,9 +14,9 @@ from utils import resume_from
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a Fashion Attribute Predictor')
-    parser.add_argument('--config', help='train config file path', default='configs/RoI_Predictor_vgg.py')
+    parser.add_argument('--config', help='train config file path', default='configs/roi_predictor_resnet.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
-    parser.add_argument('--resume_from', help='the checkpoint file to resume from')
+    parser.add_argument('--checkpoint', help='checkpoint file', default='checkpoint/Predict/resnet/epoch25.pth')
     parser.add_argument('--validate', action='store_true',
                          help='whether to evaluate the checkpoint during training', default=True)
     parser.add_argument('--gpus', type=int, default=4, help='number of gpus to use'
@@ -33,8 +33,6 @@ def main():
     cfg = Config.fromfile(args.config)
     if args.work_dir is not None:
        cfg.work_dir = args.work_dir
-    if args.resume_from is not None:
-       cfg.resume_from = args.resume_from
     cfg.gpus.test = args.gpus
 
     # init distributed env first
@@ -55,8 +53,8 @@ def main():
     # build model and load checkpoint
     model = build_predictor(cfg.model)
     print('model built')
-    #model = resume_from(cfg, model)
-    checkpoint = load_checkpoint(model, cfg.checkpoint, map_location='cpu')
+    
+    checkpoint = load_checkpoint(model, args.checkpoint, map_location='cpu')
    
     # test
     test_predictor(

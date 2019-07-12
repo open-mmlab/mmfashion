@@ -75,8 +75,11 @@ class RoIPredictor(BasePredictor):
            local_x = self.roi_pool(x, landmarks)
         else:
            local_x = None
-        
+       
+        print('global_x', global_x.size())
+        print('local_x', local_x.size()) 
         pred = self.concat(global_x, local_x)
+        print('pred', pred.size())
         return pred
 
 
