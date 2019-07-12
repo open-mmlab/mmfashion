@@ -14,7 +14,7 @@ from models import build_predictor
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a Fashion Attribute Predictor')
-    parser.add_argument('--config', help='train config file path', default='configs/RoI_Predictor_vgg.py')
+    parser.add_argument('--config', help='train config file path', default='configs/roi_predictor_vgg.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument('--resume_from', help='the checkpoint file to resume from')
     parser.add_argument('--validate', action='store_true',

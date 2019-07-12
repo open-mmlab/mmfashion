@@ -85,11 +85,9 @@ def _non_dist_train(model, dataset, cfg, validate=False):
     ]
     print('dataloader built')
     
-    # load pretrained feature extractor
-    model = load_checkpoint( model, cfg.resume_from)
     model = MMDataParallel(model, device_ids=cfg.gpus.train).cuda()
     print('model paralleled')
-   
+    
     optimizer = build_optimizer(model, cfg.optimizer)
     runner = Runner(model, batch_processor, optimizer, cfg.work_dir,
                     cfg.log_level)
@@ -97,4 +95,8 @@ def _non_dist_train(model, dataset, cfg, validate=False):
     runner.register_training_hooks(cfg.lr_config, cfg.optimizer_config,
                                    cfg.checkpoint_config, cfg.log_config)
     
+    if cfg.resume_from:
+       runner.resume(cfg.resume_from)
+    elif cfg.load_from:
+       runner.load_checkpoint(cfg.load_from)
     runner.run(data_loaders, cfg.workflow, cfg.total_epochs)

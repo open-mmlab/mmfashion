@@ -32,7 +32,7 @@ model = dict(
              use_sigmoid=True,
              size_average=True
              ),
-        pretrained='checkpoint/vgg16.pth',
+        pretrained='checkpoint/vgg16.pth'
         )
 
 pooling = 'RoI'
@@ -109,7 +109,7 @@ start_epoch=0
 total_epochs=100
 gpus=dict(train=[0,1,2,7],
           test=[0])
-work_dir = 'checkpoint/Retriever'
+work_dir = 'checkpoint/Retrieve/vgg'
 print_interval=20 # interval to print information
 resume_from = 'checkpoint/Predict/vgg/vgg_epoch_40.pth'  
 checkpoint = None #'checkpoint/Predict/vgg_RoI_epoch25.pth.tar'

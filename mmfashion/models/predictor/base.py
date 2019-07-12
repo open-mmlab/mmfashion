@@ -17,9 +17,6 @@ class BasePredictor(nn.Module):
    def with_roi_pool(self):
        return hasattr(self, 'roi_pool') and self.roi_pool is not None
 
-   @abstractmethod
-   def forward_train(self, img, landmarks=None):
-       pass
 
    @abstractmethod
    def simple_test(self, imgs, landmarks):

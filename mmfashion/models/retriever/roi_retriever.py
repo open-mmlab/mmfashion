@@ -59,7 +59,7 @@ class RoIRetriever(BaseRetriever):
         anchor_embed = self.extract_feat(anchor, anchor_lm)
         pos_embed = self.extract_feat(pos, pos_lm)
         neg_embed = self.extract_feat(neg, neg_lm) 
-    
+        
         losses = dict()
         losses['loss'] = self.loss(anchor_embed, pos_embed, neg_embed)
         return losses
@@ -78,7 +78,7 @@ class RoIRetriever(BaseRetriever):
 
 
     def init_weights(self, pretrained=None):
-        super(RoIPredictor, self).init_weights(pretrained)
+        super(RoIRetriever, self).init_weights(pretrained)
         self.backbone.init_weights(pretrained=pretrained)
         self.global_pool.init_weights(pretrained=pretrained)
 

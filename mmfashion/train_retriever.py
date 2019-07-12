@@ -48,7 +48,7 @@ def main():
     # build predictor to extract embeddings
     model = build_retriever(cfg.model)
     print('model built')
- 
+    
     # data loader
     dataset = get_dataset(cfg.data.train)
     print('dataset loaded')

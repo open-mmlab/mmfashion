@@ -81,7 +81,6 @@ class RoIPredictor(BasePredictor):
 
 
     def init_weights(self, pretrained=None):
-        print('base predictors load weights')
         super(RoIPredictor, self).init_weights(pretrained)
         self.backbone.init_weights(pretrained=pretrained)
         self.global_pool.init_weights(pretrained=pretrained)

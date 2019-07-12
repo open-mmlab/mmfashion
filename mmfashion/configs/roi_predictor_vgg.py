@@ -5,12 +5,25 @@ import os
 arch = 'vgg'
 retrieve=False
 class_num = 463
+img_size=(224,224)
 model = dict(
         type='RoIPredictor',
-        backbone=dict(type='VggLayer'),
-        global_pool=dict(type='GlobalPooling'),
-        roi_pool=dict(type='RoIPooling'),
+        backbone=dict(type='Vgg'),
+        global_pool=dict(type='GlobalPooling',
+                         inplanes=(7,7),
+                         pool_plane=(2,2),
+                         inter_plane=512*7*7,
+                         outplanes=2048),
+        roi_pool=dict(type='RoIPooling',
+                      pool_plane=(2,2),
+                      inter_plane=512,
+                      outplanes=2048,
+                      crop_size=7,
+                      img_size=img_size,
+                      num_lms=8),
         concat=dict(type='Concat',
+                    inplanes=2*2048,
+                    inter_plane=2048,
                     num_classes=class_num,
                     retrieve=retrieve),
         loss=dict(
@@ -19,8 +32,9 @@ model = dict(
            size_average=None,
            reduce=None,
            reduction='mean'),
-        pretrained='checkpoint/vgg16.pth',
+        pretrained='checkpoint/vgg16.pth'
         )
+
 pooling = 'RoI'
 
 # dataset settings
@@ -39,7 +53,7 @@ data = dict(
                    label_file=os.path.join(data_root, 'Anno/train_labels.txt'),
                    bbox_file=os.path.join(data_root, 'Anno/train_bbox.txt'),
                    landmark_file=os.path.join(data_root, 'Anno/train_landmarks.txt'),
-                   img_scale=(224,224),
+                   img_scale=img_size,
                    find_three=retrieve # if retrieve, then find three items: anchor, pos, neg
                    ),
            test = dict(
@@ -49,7 +63,7 @@ data = dict(
                    label_file=os.path.join(data_root, 'Anno/test_labels.txt'),
                    bbox_file=os.path.join(data_root, 'Anno/test_bbox.txt'),
                    landmark_file=os.path.join(data_root, 'Anno/test_landmarks.txt'),
-                   img_scale=(224,224),
+                   img_scale=img_size,
                    find_three=retrieve
                    ),
            val = dict(
@@ -59,7 +73,7 @@ data = dict(
                    label_file=os.path.join(data_root, 'Anno/val_labels.txt'),
                    bbox_file=os.path.join(data_root, 'Anno/val_bbox.txt'),
                    landmark_file=os.path.join(data_root, 'Anno/val_landmarks.txt'),
-                   img_scale=(224,224),
+                   img_scale=img_size,
                    find_three=retrieve
                    )
            )
@@ -88,14 +102,14 @@ log_config = dict(
 
 
 start_epoch=0
-total_epochs=30
+total_epochs=40
 gpus=dict(train=4,
           test=4)
-work_dir = 'checkpoint/Predict'
+work_dir = 'checkpoint/Predict/vgg'
 print_interval=20 # interval to print information
 save_interval=5
-resume_from = '/home/zwliu/FashionComp/mmFashion/checkpoint/vgg16.pth' # 
-load_from = 'checkpoint/Predict/vgg_RoI_epoch25.pth.tar'
+resume_from = 'checkpoint/vgg16.pth' # 
+checkpoint = 'checkpoint/Predict/vgg/vgg_epoch_40.pth'
 workflow = [('train', 40)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

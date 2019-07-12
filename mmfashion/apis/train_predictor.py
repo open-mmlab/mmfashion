@@ -76,16 +76,13 @@ def _non_dist_train(model, dataset, cfg, validate=False):
                     dataset,
                     cfg.data.imgs_per_gpu,
                     cfg.data.workers_per_gpu,
-                    cfg.gpus.train,
+                    len(cfg.gpus.train),
                     dist=False)
     ]
     print('dataloader built')
 
-    # resume from pretrained weights
-    model = resume_from(cfg, model)
-
     # put model on gpus
-    model = MMDataParallel(model, device_ids=range(cfg.gpus.train)).cuda()
+    model = MMDataParallel(model, device_ids=cfg.gpus.train).cuda()
     print('model paralleled')
    
     optimizer = build_optimizer(model, cfg.optimizer)
@@ -94,8 +91,10 @@ def _non_dist_train(model, dataset, cfg, validate=False):
 
     runner.register_training_hooks(cfg.lr_config, cfg.optimizer_config,
                                    cfg.checkpoint_config, cfg.log_config)
-
+    
+    if cfg.resume_from:
+       runner.resume(cfg.resume_from)
+    elif cfg.load_from:
+       runner.load_checkpoint(cfg.load_from)
     runner.run(data_loaders, cfg.workflow, cfg.total_epochs)
  
-  
-      
