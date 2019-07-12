@@ -6,10 +6,10 @@ from ..registry import CONCATS
 @CONCATS.register_module
 class Concat(nn.Module):
    
-    def __init__(self, num_classes, retrieve=False):
+    def __init__(self, inplanes, inter_plane, num_classes, retrieve=False):
         super(Concat, self).__init__()
-        self.fc_fusion = nn.Linear(2*4096, 4096)
-        self.fc = nn.Linear(4096, num_classes)
+        self.fc_fusion = nn.Linear(inplanes, inter_plane)
+        self.fc = nn.Linear(inter_plane, num_classes)
         self.retrieve = retrieve
 
     def forward(self, global_x, local_x=None):

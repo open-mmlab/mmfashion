@@ -97,15 +97,5 @@ def _non_dist_train(model, dataset, cfg, validate=False):
 
     runner.run(data_loaders, cfg.workflow, cfg.total_epochs)
  
-        #   if not os.path.exists(cfg.work_dir):
-        #      os.makedirs(cfg.work_dir)
-        #   ckpt_path = os.path.join(cfg.work_dir, '%s_%s_epoch%d.pth.tar'%(cfg.arch, cfg.pooling,epoch))
-        #   torch.save({
-        #               'epoch': epoch,
-        #               'model_state_dict': model.state_dict(),
-        #               'optimizer_state_dict': optimizer.state_dict(),
-        #               } , ckpt_path)
-                  
-        #   print('Attribute Predictor saved in %s'% ckpt_path)
   
       

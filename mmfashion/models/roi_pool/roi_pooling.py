@@ -7,9 +7,15 @@ from ..registry import ROIPOOLING
 
 @ROIPOOLING.register_module
 class RoIPooling(nn.Module):
-    def __init__(self):
+    def __init__(self, pool_plane, inter_plane, outplanes, crop_size, img_size=(224,224), num_lms=8):
         super(RoIPooling, self).__init__()
-        self.maxpool = nn.MaxPool2d((2,2))
+        self.maxpool = nn.MaxPool2d(pool_plane)
+        self.linear = nn.Linear(num_lms*inter_plane, outplanes)
+
+        self.crop_size = crop_size
+        self.img_width = img_size[0]
+        self.img_height = img_size[1]
+        
     
     def _single_ROI(self, x, landmark):
         cropped_x = []
@@ -18,7 +24,7 @@ class RoIPooling(nn.Module):
                if cor==0 and landmark[i+1]==0:
                   x1, y1, x2, y2 = 0,0,2,2
                else:
-                  x1, y1 = max(int(cor/224.*7) -1, 0), max(int(landmark[i+1]/224.*7)-1, 0)
+                  x1, y1 = max(int(cor/self.img_width*self.crop_size) -1, 0), max(int(landmark[i+1]/self.img_height*self.crop_size)-1, 0)
                   x2, y2 = x1+2, y1+2
                   if x2>=7:
                      x1, x2 = 5,7
@@ -28,6 +34,7 @@ class RoIPooling(nn.Module):
             else:
                continue
         cropped_x = torch.cat(cropped_x).view(8, -1, 2, 2)
+      
         return cropped_x
 
    
@@ -39,7 +46,9 @@ class RoIPooling(nn.Module):
             single_pool = self.maxpool(cropped_x)
             single_pool = single_pool.view(-1)
             pooled.append(single_pool)
-        pooled = torch.cat(pooled).view(batch_size, -1)
+       
+        pooled = torch.stack(pooled) 
+        pooled = self.linear(pooled)
         return pooled
 
     def init_weights(self):

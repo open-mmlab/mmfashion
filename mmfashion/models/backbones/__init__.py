@@ -1,3 +1,4 @@
-from .vgg_layer import VggLayer
+from .vgg import Vgg
+from .resnet import ResNet
 
-__all__ = ['VggLayer']
+__all__ = ['Vgg', 'ResNet']

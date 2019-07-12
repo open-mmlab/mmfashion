@@ -7,18 +7,17 @@ from ..registry import GLOBALPOOLING
 
 @GLOBALPOOLING.register_module
 class GlobalPooling(nn.Module):
-    def __init__(self):
+    def __init__(self, inplanes, pool_plane, inter_plane, outplanes):
         super(GlobalPooling, self).__init__()
-        self.avgpool = nn.AdaptiveAvgPool2d((7, 7))
-        self.maxpool = nn.MaxPool2d((2,2))
+        self.avgpool = nn.AdaptiveAvgPool2d(inplanes)
+        self.maxpool = nn.MaxPool2d(pool_plane)
         self.classifier =  nn.Sequential(
-            nn.Linear(512 * 7 * 7, 4096),
+            nn.Linear(inter_plane, outplanes),
             nn.ReLU(True),
             nn.Dropout(),
-            nn.Linear(4096, 4096),
+            nn.Linear(outplanes, outplanes),
             nn.ReLU(True),
             nn.Dropout(),
-            #nn.Linear(4096, num_classes),
         )
 
     def forward(self, x):

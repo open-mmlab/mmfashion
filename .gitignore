@@ -15,6 +15,7 @@ mmfashion/checkpoint
 *.pth
 *.pth.tar
 *.txt
+*.zip
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
