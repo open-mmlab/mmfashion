@@ -3,11 +3,11 @@ import os
 
 # model settings
 arch = 'vgg'
-retrieve=False
+retrieve=True
 class_num = 463
 img_size=(224,224)
 model = dict(
-        type='RoIPredictor',
+        type='RoIRetriever',
         backbone=dict(type='Vgg'),
         global_pool=dict(type='GlobalPooling',
                          inplanes=(7,7),
@@ -21,17 +21,17 @@ model = dict(
                       crop_size=7,
                       img_size=img_size,
                       num_lms=8),
-        concat=dict(type='Concat',
+        concat=dict(type='Concat', 
                     inplanes=2*2048,
                     inter_plane=2048,
                     num_classes=class_num,
                     retrieve=retrieve),
         loss=dict(
-           type='BCEWithLogitsLoss',
-           weight=None,
-           size_average=None,
-           reduce=None,
-           reduction='mean'),
+             type='TripletLoss',
+             margin=1.0,
+             use_sigmoid=True,
+             size_average=True
+             ),
         pretrained='checkpoint/vgg16.pth',
         )
 
@@ -43,6 +43,7 @@ data_root = 'datasets/In-shop'
 img_norm = dict(
            mean=[0.485, 0.456, 0.406],
            std=[0.229, 0.224, 0.225])
+
 data = dict(
            imgs_per_gpu=8, 
            workers_per_gpu=2,
@@ -53,28 +54,31 @@ data = dict(
                    label_file=os.path.join(data_root, 'Anno/train_labels.txt'),
                    bbox_file=os.path.join(data_root, 'Anno/train_bbox.txt'),
                    landmark_file=os.path.join(data_root, 'Anno/train_landmarks.txt'),
-                   img_scale=img_size,
-                   find_three=retrieve # if retrieve, then find three items: anchor, pos, neg
+                   img_scale=(224,224),
+                   retrieve=retrieve,
+                   find_three=True
                    ),
-           test = dict(
+           query = dict(
                    type=dataset_type,
                    img_path = os.path.join(data_root, 'Img'),
-                   img_file=os.path.join(data_root, 'Anno/test_img.txt'),
-                   label_file=os.path.join(data_root, 'Anno/test_labels.txt'),
-                   bbox_file=os.path.join(data_root, 'Anno/test_bbox.txt'),
-                   landmark_file=os.path.join(data_root, 'Anno/test_landmarks.txt'),
-                   img_scale=img_size,
-                   find_three=retrieve
+                   img_file=os.path.join(data_root, 'Anno/query_img.txt'),
+                   label_file=os.path.join(data_root, 'Anno/query_labels.txt'),
+                   bbox_file=os.path.join(data_root, 'Anno/query_bbox.txt'),
+                   landmark_file=os.path.join(data_root, 'Anno/query_landmarks.txt'),
+                   img_scale=(224,224),
+                   retrieve=retrieve,
+                   find_three=False
                    ),
-           val = dict(
+           gallery = dict(
                    type=dataset_type,
                    img_path = os.path.join(data_root, 'Img'),
-                   img_file=os.path.join(data_root, 'Anno/val_img.txt'),
-                   label_file=os.path.join(data_root, 'Anno/val_labels.txt'),
-                   bbox_file=os.path.join(data_root, 'Anno/val_bbox.txt'),
-                   landmark_file=os.path.join(data_root, 'Anno/val_landmarks.txt'),
-                   img_scale=img_size,
-                   find_three=retrieve
+                   img_file=os.path.join(data_root, 'Anno/gallery_img.txt'),
+                   label_file=os.path.join(data_root, 'Anno/gallery_labels.txt'),
+                   bbox_file=os.path.join(data_root, 'Anno/gallery_bbox.txt'),
+                   landmark_file=os.path.join(data_root, 'Anno/gallery_landmarks.txt'),
+                   img_scale=(224,224),
+                   retrieve=retrieve,
+                   find_three=False
                    )
            )
 
@@ -91,9 +95,9 @@ lr_config = dict(
             warmup='linear',
             warmup_iters=500,
             warmup_ratio=0.1,
-            step=[10,20])
+            step=[20,40])
 
-checkpoint_config = dict(interval=1)
+checkpoint_config = dict(interval=5)
 log_config = dict(
     interval=10,
     hooks=[
@@ -102,14 +106,13 @@ log_config = dict(
 
 
 start_epoch=0
-total_epochs=40
-gpus=dict(train=4,
-          test=4)
-work_dir = 'checkpoint/Predict/vgg'
+total_epochs=100
+gpus=dict(train=[0,1,2,7],
+          test=[0])
+work_dir = 'checkpoint/Retriever'
 print_interval=20 # interval to print information
-save_interval=5
-resume_from = 'checkpoint/vgg16.pth' # 
-checkpoint = 'checkpoint/Predict/vgg/vgg_epoch_40.pth'
-workflow = [('train', 40)]
+resume_from = 'checkpoint/Predict/vgg/vgg_epoch_40.pth'  
+checkpoint = None #'checkpoint/Predict/vgg_RoI_epoch25.pth.tar'
+workflow = [('train', 100)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

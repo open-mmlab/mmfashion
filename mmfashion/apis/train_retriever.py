@@ -80,14 +80,14 @@ def _non_dist_train(model, dataset, cfg, validate=False):
                     dataset,
                     cfg.data.imgs_per_gpu,
                     cfg.data.workers_per_gpu,
-                    cfg.gpus.train,
+                    len(cfg.gpus.train),
                     dist=False)
     ]
     print('dataloader built')
     
     # load pretrained feature extractor
-    model = resume_from(cfg, model)
-    model = MMDataParallel(model, device_ids=range(cfg.gpus.train)).cuda()
+    model = load_checkpoint( model, cfg.resume_from)
+    model = MMDataParallel(model, device_ids=cfg.gpus.train).cuda()
     print('model paralleled')
    
     optimizer = build_optimizer(model, cfg.optimizer)

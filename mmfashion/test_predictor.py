@@ -14,7 +14,7 @@ from utils import resume_from
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a Fashion Attribute Predictor')
-    parser.add_argument('--config', help='train config file path', default='configs/RoI_Predictor.py')
+    parser.add_argument('--config', help='train config file path', default='configs/RoI_Predictor_vgg.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument('--resume_from', help='the checkpoint file to resume from')
     parser.add_argument('--validate', action='store_true',
@@ -55,8 +55,9 @@ def main():
     # build model and load checkpoint
     model = build_predictor(cfg.model)
     print('model built')
-    model = resume_from(cfg, model)
-        
+    #model = resume_from(cfg, model)
+    checkpoint = load_checkpoint(model, cfg.checkpoint, map_location='cpu')
+   
     # test
     test_predictor(
                    model, 

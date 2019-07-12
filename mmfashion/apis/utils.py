@@ -8,6 +8,8 @@ def build_optimizer(model, optim_cfg):
        optimizer = optim.SGD(model.parameters(), lr=optim_cfg.lr, momentum=optim_cfg.momentum)
     elif optim_cfg['type'] == 'Adam':
        optimizer = optim.Adam(model.parameters(), lr=optim_cfg.lr)
+    else:
+       raise TypeError('{} is not supported'.format(optim_cfg['type']))
     return optimizer
 
 
