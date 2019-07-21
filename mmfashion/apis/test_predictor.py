@@ -36,13 +36,13 @@ def _non_dist_test(model, dataset, cfg, validate=False):
                    dataset,
                    cfg.data.imgs_per_gpu,
                    cfg.data.workers_per_gpu,
-                   cfg.gpus.test,
+                   len(cfg.gpus.test),
                    dist=False,
                    shuffle=False)
 
     print('dataloader built')
  
-    model = MMDataParallel(model, device_ids=range(cfg.gpus.test)).cuda()
+    model = MMDataParallel(model, device_ids=cfg.gpus.test).cuda()
     model.eval()
    
     #collector = build_collecter(cfg.class_num)

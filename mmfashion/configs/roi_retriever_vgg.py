@@ -13,17 +13,17 @@ model = dict(
                          inplanes=(7,7),
                          pool_plane=(2,2),
                          inter_plane=512*7*7,
-                         outplanes=2048),
+                         outplanes=4096),
         roi_pool=dict(type='RoIPooling',
                       pool_plane=(2,2),
                       inter_plane=512,
-                      outplanes=2048,
+                      outplanes=4096,
                       crop_size=7,
                       img_size=img_size,
                       num_lms=8),
         concat=dict(type='Concat', 
-                    inplanes=2*2048,
-                    inter_plane=2048,
+                    inplanes=2*4096,
+                    inter_plane=4096,
                     num_classes=class_num,
                     retrieve=retrieve),
         loss=dict(
@@ -45,8 +45,8 @@ img_norm = dict(
            std=[0.229, 0.224, 0.225])
 
 data = dict(
-           imgs_per_gpu=1, 
-           workers_per_gpu=1,
+           imgs_per_gpu=4, 
+           workers_per_gpu=4,
            train = dict(
                    type=dataset_type,
                    img_path = os.path.join(data_root, 'Img'),
@@ -111,7 +111,7 @@ gpus=dict(train=[0,1,2,7],
           test=[0])
 work_dir = 'checkpoint/Retrieve/vgg'
 print_interval=20 # interval to print information
-resume_from = None #'checkpoint/Predict/vgg/vgg_epoch_40.pth'  
+resume_from = 'checkpoint/Retrieve/vgg/latest.pth'  
 load_from = 'checkpoint/Retrieve/vgg/latest.pth'
 workflow = [('train', 100)]
 dist_params = dict(backend='nccl')

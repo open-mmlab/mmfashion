@@ -91,9 +91,9 @@ def _non_dist_train(model, dataset, cfg, validate=False):
     runner.register_training_hooks(cfg.lr_config, cfg.optimizer_config,
                                    cfg.checkpoint_config, cfg.log_config)
     
-    if cfg.resume_from:
-       runner.resume(cfg.resume_from)
-    elif cfg.load_from:
-       runner.load_checkpoint(cfg.load_from)
+    #if cfg.init_weights_from:
+    #   runner.resume(cfg.init_weights_from)
+    #elif cfg.checkpoint:
+    #   runner.load_checkpoint(cfg.checkpoint)
     runner.run(data_loaders, cfg.workflow, cfg.total_epochs)
  

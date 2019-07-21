@@ -15,7 +15,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Train a Fashion Attribute Predictor')
     parser.add_argument('--config', help='train config file path', default='configs/roi_retriever_vgg.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
-    parser.add_argument('--checkpoint', type=str, default='checkpoint/Retrieve/vgg/epoch_5.pth', help='the checkpoint file to resume from')
+    parser.add_argument('--checkpoint', type=str, default='checkpoint/Predict/vgg/latest.pth', help='the checkpoint file to resume from')
     parser.add_argument('--validate', action='store_true',
                          help='whether to evaluate the checkpoint during training', default=True)
     parser.add_argument('--launcher',

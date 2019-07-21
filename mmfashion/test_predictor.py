@@ -13,9 +13,9 @@ from models import build_predictor
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a Fashion Attribute Predictor')
-    parser.add_argument('--config', help='train config file path', default='configs/roi_predictor_resnet.py')
+    parser.add_argument('--config', help='train config file path', default='configs/roi_predictor_vgg.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
-    parser.add_argument('--checkpoint', help='checkpoint file', default='checkpoint/Predict/resnet/epoch30.pth')
+    parser.add_argument('--checkpoint', help='checkpoint file', default='checkpoint/Predict/vgg/epoch_17.pth')
     parser.add_argument('--validate', action='store_true',
                          help='whether to evaluate the checkpoint during training', default=True)
     parser.add_argument('--launcher',
@@ -43,7 +43,7 @@ def main():
     logger.info('Distributed training: {}'.format(distributed))
 
     # data loader
-    data_loader = get_dataset(cfg.data.test)
+    dataset = get_dataset(cfg.data.test)
     print('dataset loaded')
 
     # build model and load checkpoint
@@ -55,7 +55,7 @@ def main():
     # test
     test_predictor(
                    model, 
-                   data_loader, 
+                   dataset, 
                    cfg, 
                    distributed=distributed, 
                    validate=args.validate,

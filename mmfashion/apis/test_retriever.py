@@ -5,6 +5,7 @@ import os.path as osp
 import re
 from collections import OrderedDict
 from scipy.spatial.distance import cdist
+import scipy.io as sio
 import numpy as np
 
 import torch
@@ -59,14 +60,15 @@ def _calculate(idxes, idx2id, query_id):
     cnt = 0
     for i in idxes:
         ids.append(idx2id[i])
+
     if query_id in ids:
        cnt += 1
     return cnt 
 
 def show_result(query_embeds, gallery_embeds, query_dict, gallery_dict):
     top1, top3, top5, top10 = 0, 0, 0,0
-    total = len(query_embeds)
-
+    total = 0
+    
     for qi, query_embed in enumerate(query_embeds):
         dist = []
         for gi, gallery_embed in enumerate(gallery_embeds):
@@ -81,10 +83,12 @@ def show_result(query_embeds, gallery_embeds, query_dict, gallery_dict):
         top3 += _calculate(order[:3], gallery_dict, query_id)
         top5 += _calculate(order[:5], gallery_dict, query_id)
         top10 += _calculate(order[:10], gallery_dict, query_id)
-        print(top1, top3, top5, top10)
-        acc1, acc3, acc5, acc10 = 100*float(top1)/ total, 100*float(top3)/ total, 100*float(top5)/ total, 100*float(top10)/ total
-        print('top1 = %.4f, top3 = %.4f, top5 = %.4f, top10 = %.4f '%
-              (acc1, acc3, acc5, acc10))
+        total += 1
+        if qi %100==0:
+           print(top1, top3, top5, top10)
+           acc1, acc3, acc5, acc10 = 100*float(top1)/ total, 100*float(top3)/ total, 100*float(top5)/ total, 100*float(top10)/ total
+           print('top1 = %.4f, top3 = %.4f, top5 = %.4f, top10 = %.4f '%
+                (acc1, acc3, acc5, acc10))
 
     print('------------- Recall Rate ------------------')
     print(top1, top3, top5, top10)
@@ -92,13 +96,24 @@ def show_result(query_embeds, gallery_embeds, query_dict, gallery_dict):
     print('top1 = %.4f, top3 = %.4f, top5 = %.4f, top10 = %.4f '%
             (acc1, acc3, acc5, acc10))
 
+
 def _non_dist_test(model, query_set, gallery_set, cfg, validate=False):
 
     model = MMDataParallel(model, device_ids=cfg.gpus.test).cuda()
     model.eval()
-
+    
+    #calculator = Calculator(num_classes= cfg.num_classes)
     query_embeds = _process_embeds(query_set, model, cfg)
     gallery_embeds = _process_embeds(gallery_set, model, cfg)
+    
+    # save as .mat
+    query_embeds_np = np.array(query_embeds)
+    print('query_embeds', query_embeds_np.shape)
+    sio.savemat('query_embeds.mat', {'embeds': query_embeds_np})
+
+    gallery_embeds_np = np.array(gallery_embeds)
+    print('gallery_embeds', gallery_embeds_np.shape)
+    sio.savemat('gallery_embeds.mat', {'embeds': gallery_embeds_np})
 
     show_result(query_embeds, gallery_embeds, query_set.idx2id, gallery_set.idx2id)
 

@@ -103,8 +103,8 @@ log_config = dict(
 
 start_epoch=0
 total_epochs=40
-gpus=dict(train=4,
-          test=4)
+gpus=dict(train=[0,1,2,7],
+          test=[0])
 work_dir = 'checkpoint/Predict/vgg'
 print_interval=20 # interval to print information
 save_interval=5

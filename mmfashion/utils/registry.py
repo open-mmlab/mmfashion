@@ -43,3 +43,30 @@ class Registry(object):
     def register_module(self, cls):
         self._register_module(cls)
         return cls
+
+def build_from_cfg(cfg, registry, default_args=None):
+    """ build a module from config dict
+    Args:
+        cfg (dict): Config dict. It should at least contain the key "type".
+        registry (:obj:`Registry`): The registry to search the type from.
+        default_args (dict, optional): Default initialization arguments.
+    Returns:
+        obj: The constructed object.
+    """
+    assert isinstance(cfg, dict) and 'type' in cfg
+    assert isinstance(default_args, dict) or default_args is None
+    args = cfg.copy()
+    obj_type = args.pop('type')
+    if mmcv.is_str(obj_type):
+        obj_type = registry.get(obj_type)
+        if obj_type is None:
+            raise KeyError('{} is not in the {} registry'.format(
+                obj_type, registry.name))
+    elif not inspect.isclass(obj_type):
+        raise TypeError('type must be a str or valid type, but got {}'.format(
+            type(obj_type)))
+    if default_args is not None:
+        for name, value in default_args.items():
+            args.setdefault(name, value)
+    return obj_type(**args)
+
