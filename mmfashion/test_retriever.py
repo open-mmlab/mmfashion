@@ -43,6 +43,8 @@ def main():
     logger.info('Distributed training: {}'.format(distributed))
 
     # data loader
+    cfg.data.query.find_three = False
+    cfg.data.gallery.find_three = False
     query_set, gallery_set = get_dataset(cfg.data.query), get_dataset(cfg.data.gallery)
     print('dataset loaded')
 

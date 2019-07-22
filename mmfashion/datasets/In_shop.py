@@ -28,10 +28,23 @@ from PIL import Image
 import numpy as np
 
 from .loader import GroupSampler, DistributedGroupSampler, DistributedSampler
+from .registry import DATASETS
 
 
+@DATASETS.register_module
 class InShopDataset(Dataset):
-    def __init__(self, img_path, img_file, label_file, bbox_file, landmark_file, img_size, find_three=False):
+    CLASSES = None
+
+    def __init__(self,
+                 img_path, 
+                 img_file, 
+                 label_file, 
+                 bbox_file, 
+                 landmark_file, 
+                 img_size,
+                 retrieve=False, 
+                 find_three=False,
+                 idx2id=None):
        self.img_path = img_path
        
        normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
@@ -152,6 +165,7 @@ class InShopDataset(Dataset):
         neg_idx = random.randint(0, len(neg_idxes)-1)
         neg_data = self.get_basic_item(neg_idx)
   
+
         data = {'anchor':anchor_data['img'],
                 'pos':pos_data['img'],
                 'neg':neg_data['img'],
@@ -159,7 +173,8 @@ class InShopDataset(Dataset):
                 'pos_lm':pos_data['landmark'],
                 'neg_lm':neg_data['landmark']}
         return data 
-         
+        
+ 
     def __getitem__(self, idx):
         if self.find_three:
            return self.get_three_items(idx)

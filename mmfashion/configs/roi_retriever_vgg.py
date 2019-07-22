@@ -38,15 +38,15 @@ model = dict(
 pooling = 'RoI'
 
 # dataset settings
-dataset_type='In-shop'
+dataset_type='InShopDataset'
 data_root = 'datasets/In-shop'
 img_norm = dict(
            mean=[0.485, 0.456, 0.406],
            std=[0.229, 0.224, 0.225])
 
 data = dict(
-           imgs_per_gpu=4, 
-           workers_per_gpu=4,
+           imgs_per_gpu=2,
+           workers_per_gpu=2,
            train = dict(
                    type=dataset_type,
                    img_path = os.path.join(data_root, 'Img'),
@@ -54,7 +54,7 @@ data = dict(
                    label_file=os.path.join(data_root, 'Anno/train_labels.txt'),
                    bbox_file=os.path.join(data_root, 'Anno/train_bbox.txt'),
                    landmark_file=os.path.join(data_root, 'Anno/train_landmarks.txt'),
-                   img_scale=(224,224),
+                   img_size=(224,224),
                    retrieve=retrieve,
                    find_three=True
                    ),
@@ -65,9 +65,10 @@ data = dict(
                    label_file=os.path.join(data_root, 'Anno/query_labels.txt'),
                    bbox_file=os.path.join(data_root, 'Anno/query_bbox.txt'),
                    landmark_file=os.path.join(data_root, 'Anno/query_landmarks.txt'),
-                   img_scale=(224,224),
+                   img_size=(224,224),
                    retrieve=retrieve,
-                   find_three=False
+                   find_three=True,
+                   idx2id = os.path.join(data_root, 'Anno/query_idx2id.txt')
                    ),
            gallery = dict(
                    type=dataset_type,
@@ -76,9 +77,10 @@ data = dict(
                    label_file=os.path.join(data_root, 'Anno/gallery_labels.txt'),
                    bbox_file=os.path.join(data_root, 'Anno/gallery_bbox.txt'),
                    landmark_file=os.path.join(data_root, 'Anno/gallery_landmarks.txt'),
-                   img_scale=(224,224),
+                   img_size=(224,224),
                    retrieve=retrieve,
-                   find_three=False
+                   find_three=True,
+                   idx2id = os.path.join(data_root, 'Anno/gallery_idx2id.txt')
                    )
            )
 
@@ -107,12 +109,12 @@ log_config = dict(
 
 start_epoch=0
 total_epochs=100
-gpus=dict(train=[0,1,2,7],
+gpus=dict(train=[1,4, 5, 6,7],
           test=[0])
 work_dir = 'checkpoint/Retrieve/vgg'
 print_interval=20 # interval to print information
-resume_from = 'checkpoint/Retrieve/vgg/latest.pth'  
-load_from = 'checkpoint/Retrieve/vgg/latest.pth'
+resume_from = None #'checkpoint/Retrieve/vgg/latest.pth'  
+load_from = None #'checkpoint/Retrieve/vgg/latest.pth'
 workflow = [('train', 100)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

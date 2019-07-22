@@ -54,7 +54,8 @@ data = dict(
                    label_file=os.path.join(data_root, 'Anno/train_labels.txt'),
                    bbox_file=os.path.join(data_root, 'Anno/train_bbox.txt'),
                    landmark_file=os.path.join(data_root, 'Anno/train_landmarks.txt'),
-                   img_scale=img_size,
+                   img_size=img_size,
+                   retrieve=retrieve,
                    find_three=retrieve # if retrieve, then find three items: anchor, pos, neg
                    ),
            test = dict(
@@ -64,7 +65,8 @@ data = dict(
                    label_file=os.path.join(data_root, 'Anno/test_labels.txt'),
                    bbox_file=os.path.join(data_root, 'Anno/test_bbox.txt'),
                    landmark_file=os.path.join(data_root, 'Anno/test_landmarks.txt'),
-                   img_scale=img_size,
+                   img_size=img_size,
+                   retrieve=retrieve,
                    find_three=retrieve
                    ),
            val = dict(
@@ -74,7 +76,8 @@ data = dict(
                    label_file=os.path.join(data_root, 'Anno/val_labels.txt'),
                    bbox_file=os.path.join(data_root, 'Anno/val_bbox.txt'),
                    landmark_file=os.path.join(data_root, 'Anno/val_landmarks.txt'),
-                   img_scale=img_size,
+                   img_size=img_size,
+                   retrieve=retrieve,
                    find_three=retrieve
                    )
            )

@@ -19,6 +19,7 @@ from mmcv.runner import Runner, DistSamplerSeedHook, obj_from_dict
 from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 
 from .env import get_root_logger
+from core import Evaluator
 from datasets import get_data, build_dataloader
 
 
@@ -37,6 +38,7 @@ def _dist_test(model, query_set, gallery_set, cfg, validate=False):
     """ not implemented yet """
     raise NotImplementedError
 
+
 def _process_embeds(dataset, model, cfg):
     data_loader = build_dataloader(
                    dataset,
@@ -46,55 +48,18 @@ def _process_embeds(dataset, model, cfg):
                    dist=False,
                    shuffle=False)
     
-    embeds = []
-    for batch_idx, data in enumerate(data_loader):
-        embed = model(data['img'],
-                      data['landmark'],
-                      return_loss=False)
-        embeds.append(embed.data.cpu().numpy())
-    return embeds
-
-
-def _calculate(idxes, idx2id, query_id):
-    ids = []
-    cnt = 0
-    for i in idxes:
-        ids.append(idx2id[i])
-
-    if query_id in ids:
-       cnt += 1
-    return cnt 
-
-def show_result(query_embeds, gallery_embeds, query_dict, gallery_dict):
-    top1, top3, top5, top10 = 0, 0, 0,0
     total = 0
-    
-    for qi, query_embed in enumerate(query_embeds):
-        dist = []
-        for gi, gallery_embed in enumerate(gallery_embeds):
-            one_dist = cdist(query_embed, gallery_embed, 'euclidean')
-            dist.append(one_dist[0][0])
-        dist = np.asarray(dist)
-                 
-        order = np.argsort(dist)
-        query_id = query_dict[qi]
+    embeds = []
+    with torch.no_grad():
+       for batch_idx, data in enumerate(data_loader):
+           embed = model(data['img'],
+                         data['landmark'],
+                         return_loss=False)
+           embeds.append(embed)
 
-        top1 += _calculate(order[:1], gallery_dict, query_id)
-        top3 += _calculate(order[:3], gallery_dict, query_id)
-        top5 += _calculate(order[:5], gallery_dict, query_id)
-        top10 += _calculate(order[:10], gallery_dict, query_id)
-        total += 1
-        if qi %100==0:
-           print(top1, top3, top5, top10)
-           acc1, acc3, acc5, acc10 = 100*float(top1)/ total, 100*float(top3)/ total, 100*float(top5)/ total, 100*float(top10)/ total
-           print('top1 = %.4f, top3 = %.4f, top5 = %.4f, top10 = %.4f '%
-                (acc1, acc3, acc5, acc10))
-
-    print('------------- Recall Rate ------------------')
-    print(top1, top3, top5, top10)
-    acc1, acc3, acc5, acc10 = 100*float(top1)/ total, 100*float(top3)/ total, 100*float(top5)/ total, 100*float(top10)/ total
-    print('top1 = %.4f, top3 = %.4f, top5 = %.4f, top10 = %.4f '%
-            (acc1, acc3, acc5, acc10))
+    embeds = torch.cat(embeds)
+    embeds = embeds.data.cpu().numpy()
+    return embeds
 
 
 def _non_dist_test(model, query_set, gallery_set, cfg, validate=False):
@@ -102,11 +67,9 @@ def _non_dist_test(model, query_set, gallery_set, cfg, validate=False):
     model = MMDataParallel(model, device_ids=cfg.gpus.test).cuda()
     model.eval()
     
-    #calculator = Calculator(num_classes= cfg.num_classes)
     query_embeds = _process_embeds(query_set, model, cfg)
     gallery_embeds = _process_embeds(gallery_set, model, cfg)
     
-    # save as .mat
     query_embeds_np = np.array(query_embeds)
     print('query_embeds', query_embeds_np.shape)
     sio.savemat('query_embeds.mat', {'embeds': query_embeds_np})
@@ -115,5 +78,6 @@ def _non_dist_test(model, query_set, gallery_set, cfg, validate=False):
     print('gallery_embeds', gallery_embeds_np.shape)
     sio.savemat('gallery_embeds.mat', {'embeds': gallery_embeds_np})
 
-    show_result(query_embeds, gallery_embeds, query_set.idx2id, gallery_set.idx2id)
+    e = Evaluator(cfg.data.query.idx2id, cfg.data.gallery.idx2id)
+    e.evaluate(query_embeds_np, gallery_embeds_np)
 

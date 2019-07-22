@@ -8,7 +8,7 @@ from mmcv import Config
 from mmcv.runner import load_checkpoint
 
 from apis import (init_dist, get_root_logger, train_retriever)
-from datasets import get_dataset
+from datasets import build_dataset
 from models import build_retriever
 
 
@@ -57,7 +57,7 @@ def main():
     print('model built')
     
     # data loader
-    dataset = get_dataset(cfg.data.train)
+    dataset = build_dataset([cfg.data.query, cfg.data.gallery])
     print('dataset loaded')
 
     # train
