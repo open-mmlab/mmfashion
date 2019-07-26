@@ -6,6 +6,7 @@ mmfashion/version.py
 
 # Data and Model Folder
 mmfashion/datasets/In-shop/
+mmfashion/datasets/Attr_Predict/
 mmfashion/checkpoint
 mmfashion/utils/temp
 

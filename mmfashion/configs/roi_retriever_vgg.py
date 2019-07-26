@@ -26,7 +26,13 @@ model = dict(
                     inter_plane=4096,
                     num_classes=class_num,
                     retrieve=retrieve),
-        loss=dict(
+        loss_cls = dict(
+                   type='BCEWithLogitsLoss',
+                   weight=None,
+                   size_average=None,
+                   reduce=None,
+                   reduction='mean'),
+        loss_retrieve=dict(
              type='TripletLoss',
              margin=1.0,
              use_sigmoid=True,
@@ -109,12 +115,12 @@ log_config = dict(
 
 start_epoch=0
 total_epochs=100
-gpus=dict(train=[1,4, 5, 6,7],
+gpus=dict(train=[0],
           test=[0])
 work_dir = 'checkpoint/Retrieve/vgg'
 print_interval=20 # interval to print information
-resume_from = None #'checkpoint/Retrieve/vgg/latest.pth'  
-load_from = None #'checkpoint/Retrieve/vgg/latest.pth'
+resume_from = 'checkpoint/Retrieve/vgg/latest.pth'  
+load_from = 'checkpoint/Retrieve/vgg/latest.pth'
 workflow = [('train', 100)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

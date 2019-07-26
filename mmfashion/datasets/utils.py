@@ -8,6 +8,7 @@ import torch.nn as nn
 from torch.autograd import Variable
 
 from .In_shop import InShopDataset
+from .Attr_Pred import AttrDataset
 
 def to_tensor(data):
     """Convert objects of various python types to :obj:`torch.Tensor`.
@@ -51,10 +52,13 @@ def get_dataset(data_cfg):
     if data_cfg['type'] == 'In-shop':
        dataset = InShopDataset(data_cfg.img_path, data_cfg.img_file,
                               data_cfg.label_file, data_cfg.bbox_file,
-                              data_cfg.landmark_file, data_cfg.img_scale,
+                              data_cfg.landmark_file, data_cfg.img_size,
                               data_cfg.find_three)
-
+    elif data_cfg['type'] == 'Attr_Pred':
+       dataset = AttrDataset(data_cfg.img_path, data_cfg.img_file,
+                             data_cfg.label_file, data_cfg.bbox_file,
+                             data_cfg.landmark_file, data_cfg.img_size)
     else:
-       raise TypeError('type {} does not exist.'.fomat(data_cfg['type']))
+       raise TypeError('type {} does not exist.'.format(data_cfg['type']))
 
     return dataset 

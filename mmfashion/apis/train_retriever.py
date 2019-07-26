@@ -42,13 +42,14 @@ def parse_losses(losses):
 
 def batch_processor(model, data, train_mode):
     anchor = data['anchor']
+    label = data['label']
     pos = data['pos']
     neg = data['neg']
     anchor_lm = data['anchor_lm']
     pos_lm = data['pos_lm']
     neg_lm = data['neg_lm']
 
-    losses = model(anchor, anchor_lm, pos,pos_lm, neg,neg_lm)
+    losses = model(anchor, anchor_lm, label, pos,pos_lm, neg,neg_lm)
     loss, log_vars = parse_losses(losses)
     
     outputs = dict(

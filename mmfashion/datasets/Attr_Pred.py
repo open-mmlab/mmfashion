@@ -32,7 +32,7 @@ from .registry import DATASETS
 
 
 @DATASETS.register_module
-class InShopDataset(Dataset):
+class AttrDataset(Dataset):
     CLASSES = None
 
     def __init__(self,
@@ -42,8 +42,6 @@ class InShopDataset(Dataset):
                  bbox_file, 
                  landmark_file, 
                  img_size,
-                 retrieve=False, 
-                 find_three=False,
                  idx2id=None):
        self.img_path = img_path
        
@@ -59,19 +57,6 @@ class InShopDataset(Dataset):
        # read img names
        fp = open(img_file, 'r')
        self.img_list = [x.strip() for x in fp]
-
-       # collect id
-       self.id2idx, self.idx2id = {},{}
-       self.ids = []
-       for idx, img_name in enumerate(self.img_list):
-           img_id = int(img_name.split('/')[3].split('_')[1])
-           self.idx2id[idx] = img_id
-           if img_id not in self.id2idx:
-              self.id2idx[img_id] = [idx]
-              self.ids.append(img_id)
-           else:
-              self.id2idx[img_id].append(idx)
-       fp.close()
 
        # read labels
        self.labels = np.loadtxt(label_file, dtype=np.float32)
@@ -92,12 +77,9 @@ class InShopDataset(Dataset):
        else:
           self.landmarks = None
        
-       self.find_three = find_three
-
     
     def get_basic_item(self, idx):
        img = Image.open(os.path.join(self.img_path, self.img_list[idx]))
-       img_id = int(self.img_list[idx].split('/')[3].split('_')[1])
 
        width, height = img.size
        if self.with_bbox:
@@ -118,7 +100,7 @@ class InShopDataset(Dataset):
 
        label = torch.from_numpy(self.labels[idx])
        landmark = []
-       # compute the shifted variety
+       # compute the shiftness
        origin_landmark = self.landmarks[idx]
        for i, l in enumerate(origin_landmark):
            if i%2==0: # x
@@ -132,55 +114,13 @@ class InShopDataset(Dataset):
        landmark = torch.from_numpy(np.array(landmark)).float()
        data = {'img':img,
                'label':label,
-               'id':img_id,
                'landmark':landmark}
  
        return data
    
 
-    def get_three_items(self, idx):
-        """return anchor, positive and negative 
-        """
-        anchor_img =  self.img_list[idx]
-        anchor_data = self.get_basic_item(idx) 
-        anchor_id = int(self.img_list[idx].split('/')[3].split('_')[1])
-
-        # get positive example
-        pos_idxes = self.id2idx[anchor_id]
-        if len(pos_idxes)==1: # just one item
-           pos_data = anchor_data
-        else:
-           random_pos_idx = pos_idxes[random.randint(0, len(pos_idxes)-1)]
-           while random_pos_idx == idx:
-              random_pos_idx = pos_idxes[random.randint(0, len(pos_idxes)-1)]
-           pos_data = self.get_basic_item(random_pos_idx)
-
-        # get negative example
-        id_len = len(self.ids)
-        random_id = self.ids[random.randint(0, id_len-1)]
-        while random_id == anchor_id:
-              random_id = self.ids[random.randint(0, id_len-1)]
-        neg_id = random_id
-        neg_idxes = self.id2idx[neg_id]
-        neg_idx = random.randint(0, len(neg_idxes)-1)
-        neg_data = self.get_basic_item(neg_idx)
-  
-
-        data = {'anchor':anchor_data['img'],
-                'label':anchor_data['label'],
-                'pos':pos_data['img'],
-                'neg':neg_data['img'],
-                'anchor_lm':anchor_data['landmark'],
-                'pos_lm':pos_data['landmark'],
-                'neg_lm':neg_data['landmark']}
-        return data 
-        
- 
     def __getitem__(self, idx):
-        if self.find_three:
-           return self.get_three_items(idx)
-        else:
-           return self.get_basic_item(idx)
+        return self.get_basic_item(idx)
    
    
     def __len__(self):

@@ -35,6 +35,7 @@ class BaseRetriever(nn.Module):
    @abstractmethod
    def forward_train(self, 
                      anchor, 
+                     label,
                      pos,
                      neg,
                      anchor_lm,
@@ -45,6 +46,7 @@ class BaseRetriever(nn.Module):
    def forward(self, 
                anchor, 
                anchor_lm,
+               label=None,
                pos=None, 
                pos_lm=None,
                neg=None, 
@@ -52,6 +54,7 @@ class BaseRetriever(nn.Module):
                return_loss=True):
        if return_loss:
           return self.forward_train(anchor,
+                                    label,
                                     pos,
                                     neg,
                                     anchor_lm,

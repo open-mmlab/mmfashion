@@ -18,9 +18,10 @@ class Concat(nn.Module):
            x = self.fc_fusion(x)
         else:
            x = global_x
-        
+                
+        pred = self.fc(x)
+  
         if self.retrieve:
-           return x
-        
-        x = self.fc(x)
-        return x
+           return x, pred
+        else:
+           return pred

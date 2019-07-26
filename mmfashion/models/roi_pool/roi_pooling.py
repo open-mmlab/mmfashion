@@ -12,6 +12,8 @@ class RoIPooling(nn.Module):
         self.maxpool = nn.MaxPool2d(pool_plane)
         self.linear = nn.Linear(num_lms*inter_plane, outplanes)
         
+        self.inter_plane = inter_plane
+        self.outplanes = outplanes
         self.num_lms = num_lms
         self.crop_size = crop_size
         self.img_width = img_size[0]
@@ -51,6 +53,7 @@ class RoIPooling(nn.Module):
         pooled = torch.stack(pooled) 
         pooled = self.linear(pooled)
         return pooled
+
 
     def init_weights(self):
         for m in self.modules():
