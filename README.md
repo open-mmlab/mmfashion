@@ -2,7 +2,12 @@
 
 ## Introduction
 
-mmfashion is an open source visual fashion analysis toolbox based on PyTorch **(ZW: PyTorch1.1 or higher?)**.
+`mmfashion` is an open source visual fashion analysis toolbox based on PyTorch.
+
+
+## Requirements
+* [PyTorch](https://pytorch.org/) (version >= 0.4.1)
+* [mmdetection](https://github.com/open-mmlab/mmdetection) (version >= 0.6)
 
 
 ## Installation
@@ -23,16 +28,18 @@ mmfashion is an open source visual fashion analysis toolbox based on PyTorch **(
 
 ## Development
 
-1. [Design documentation](https://github.com/open-mmlab/mmfashion/blob/master/doc/design.md)
+1. [Design Documentation](https://github.com/open-mmlab/mmfashion/blob/master/doc/design.md)
 
 2. [Issues](https://github.com/open-mmlab/mmfashion/issues)
 
 
 ## Dataset
 
-1. [DeepFashion](http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion.html)
+1. [DeepFashion (Category and Attribute Prediction Benchmark)](http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion/AttributePrediction.html)
 
-2. **(ZW: Please elaborate how to download and pre-process the dataset.)**
+2. [DeepFashion (In-Shop Clothes Retrieval Benchmark)](http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion/InShopRetrieval.html)
+
+**(ZW: Please elaborate how to download and pre-process the dataset.)**
 
 
 ## Model Zoo
