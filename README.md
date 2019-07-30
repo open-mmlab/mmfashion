@@ -7,8 +7,8 @@
 
 ## Requirements
 * [PyTorch](https://pytorch.org/) (version >= 0.4.1)
-* [mmdetection](https://github.com/open-mmlab/mmdetection) (version >= 0.6)
-
+* [mmdetection](https://github.com/open-mmlab/mmdetection) (version >= 0.6) 
+**(Vera: no need to install mmdetection.)**
 
 ## Installation
 
@@ -41,17 +41,52 @@
 
 **(ZW: Please elaborate how to download and pre-process the dataset.)**
 
+```
+**(Vera: dataset download instruction.)**
+
+To use the DeepFashion dataset you need to download it and extract to the 'data/Attr_Pred' and 'data/In_shop' folders.
+You need to follow this repo(......) to re-organize the dataset. 
+The directory should be like this:
+
+```
+
+```
+mmfashion
+├── mmfashion
+├── tools
+├── configs
+├── data
+│   ├── Attr_Predict
+│   │   ├── Anno
+│   |   │   ├──train.txt
+|   |   |   ├──test.txt
+│   |   │   ├──val.txt
+│   |   │   ├──train_attr.txt
+│   |   │   ├── ...
+│   │   ├── Img
+│   |   │   ├──img
+│   │   ├── Eval
+│   |   │   ├── ...
+│   ├── In_shop
+│   │   ├── Anno
+│   |   │   ├──train.txt
+|   |   |   ├──query.txt
+│   |   │   ├──gallery.txt
+│   |   │   ├──train_labels.txt
+│   |   │   ├── ...
+
+
 
 ## Model Zoo
 
 ### Attribute Prediction
 
-|   Backbone  |      Pooling     |      Loss     |  Top-5 Acc. |      Download      |
-| :---------: | :--------------: | :-----------: | :---------: | :----------------: |
-|    VGG-16   |  Global Pooling  | Cross-Entropy |             |     [model]()      |
-|    VGG-16   | Landmark Pooling | Cross-Entropy |             |     [model]()      |
-|  ResNet-50  |  Global Pooling  | Cross-Entropy |             |     [model]()      |
-|  ResNet-50  | Landmark Pooling | Cross-Entropy |             |     [model]()      |
+|   Backbone  |      Pooling     |      Loss     | Top-5 Recall. | Top-5 Acc. |      Download      |
+| :---------: | :--------------: | :-----------: | :-----------: |:---------: | :----------------: |
+|    VGG-16   |  Global Pooling  | Cross-Entropy |               |            |     [model]()      |
+|    VGG-16   | Landmark Pooling | Cross-Entropy |     22.3      |   99.25    |     [model]()      |
+|  ResNet-50  |  Global Pooling  | Cross-Entropy |               |            |     [model]()      |
+|  ResNet-50  | Landmark Pooling | Cross-Entropy |               |            |     [model]()      |
 
 ### In-Shop Clothes Retrieval
 
