@@ -76,7 +76,7 @@ mmfashion
 │   |   │   ├── ...
 
 
-
+```
 ## Model Zoo
 
 ### Attribute Prediction
