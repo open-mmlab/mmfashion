@@ -10,7 +10,7 @@ from mmcv.runner import load_checkpoint
 from apis import (init_dist, get_root_logger, train_retriever)
 from datasets import build_dataset
 from models import build_retriever
-
+from utils import init_weights_from
 
 
 def parse_args():
@@ -55,6 +55,9 @@ def main():
     # build predictor to extract embeddings
     model = build_retriever(cfg.model)
     print('model built')
+   
+    if cfg.init_weights_from:
+       model = init_weights_from(cfg.init_weights_from, model)
     
     # data loader
     dataset = build_dataset([cfg.data.query, cfg.data.gallery])

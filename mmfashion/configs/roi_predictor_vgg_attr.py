@@ -99,13 +99,13 @@ log_config = dict(
 start_epoch=0
 total_epochs=40
 gpus=dict(train=[0,1,2,3],
-          test=[0])
+          test=[0,1,2,3])
 work_dir = 'checkpoint/Predict/vgg/attr_pred'
 print_interval=20 # interval to print information
 save_interval=5
 init_weights_from = 'checkpoint/vgg16.pth' 
 resume_from=None
-checkpoint = None# 'checkpoint/Predict/vgg/vgg_epoch_40.pth'
+checkpoint = 'checkpoint/Predict/vgg/attr_pred/latest.pth'
 workflow = [('train', 40)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

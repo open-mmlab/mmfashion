@@ -1,5 +1,7 @@
 from __future__ import division
 
+import numpy as np
+
 import torch
 import torch.nn as nn
 
@@ -20,6 +22,9 @@ class RoIPooling(nn.Module):
         self.img_height = img_size[1]
         self.roi_size = roi_size
       
+        self.a, self.b = 2*self.roi_size/float(self.crop_size), 2*self.roi_size/float(self.crop_size)
+        
+
     def _single_ROI(self, x, landmark):
         cropped_x = []
         for i,cor in enumerate(landmark):
@@ -42,15 +47,31 @@ class RoIPooling(nn.Module):
 
    
     def forward(self, features, landmarks):
-        pooled = []
+        """batch-wise RoI pooling.
+        Args:
+            features(tensor): the feature maps to be pooled
+            landmarks(tensor): crop the region of interest based on the landmarks(bs, self.num_lms)
+        """
         batch_size = features.size(0)
-        for i,x in enumerate(features):
-            cropped_x = self._single_ROI(x, landmarks[i])
-            single_pool = self.maxpool(cropped_x)
-            single_pool = single_pool.view(-1)
-            pooled.append(single_pool)
-       
-        pooled = torch.stack(pooled) 
+        landmarks = landmarks.view(batch_size, self.num_lms,2)
+        ab = [np.array([[self.a, 0],[0, self.b]]) for _ in range(batch_size)]
+        ab = np.stack(ab, axis=0)
+        ab = torch.from_numpy(ab).float().cuda()
+        size = torch.Size((batch_size, features.size(1), self.roi_size, self.roi_size))
+
+        pooled = []
+        for l in range(self.num_lms):
+            tx = -1+2*landmarks[:,l,0]/float(self.crop_size)
+            ty = -1+2*landmarks[:,l,1]/float(self.crop_size)
+            t_xy = torch.stack((tx,ty)).view(batch_size, 2, 1)
+            theta = torch.cat((ab, t_xy), 2)
+         
+            flowfield = nn.functional.affine_grid(theta, size)
+            one_pooled = nn.functional.grid_sample(features, flowfield, padding_mode='border')
+            one_pooled = self.maxpool(one_pooled).view(batch_size, self.inter_plane)
+            pooled.append(one_pooled)
+        
+        pooled = torch.stack(pooled, dim=1).view(batch_size, -1)
         pooled = self.linear(pooled)
         return pooled
 
