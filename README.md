@@ -41,14 +41,21 @@
 
 **(ZW: Please elaborate how to download and pre-process the dataset.)**
 
-```
 **(Vera: dataset download instruction.)**
 
-To use the DeepFashion dataset you need to download it and extract to the 'data/Attr_Pred' and 'data/In_shop' folders.
-You need to follow this repo(......) to re-organize the dataset. 
-The directory should be like this:
+To use the DeepFashion dataset you need to first download it to 'data/' , then follow the following steps to re-organize the dataset. 
 
 ```
+cd data/
+mv Category\ and\ Attribute\ Prediction\ Benchmark Attr_Predict
+mv In-shop\ Clothes\ Retrieval\ Benchmark In-shop
+python prepare_attr_pred.py
+python prepare_in_shop.py
+
+```
+
+The directory should be like this:
+
 
 ```
 mmfashion
@@ -67,7 +74,7 @@ mmfashion
 │   |   │   ├──img
 │   │   ├── Eval
 │   |   │   ├── ...
-│   ├── In_shop
+│   ├── In-shop
 │   │   ├── Anno
 │   |   │   ├──train.txt
 |   |   |   ├──query.txt

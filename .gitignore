@@ -9,6 +9,8 @@ mmfashion/datasets/In-shop/
 mmfashion/datasets/Attr_Predict/
 mmfashion/checkpoint
 mmfashion/utils/temp
+data/In-shop
+data/Attr_Predict
 
 *.pyc
 *.png
