@@ -1,12 +1,15 @@
-dist: trusty
+dist: xenial
 language: python
 
 python:
-  - "2.7"
+  - "3.5"
   - "3.6"
+  - "3.7"
 
 install:
-  true
+  - pip install isort flake8 yapf
 
 script:
-  true
+  - flake8
+  - isort -rc --check-only --diff mmfashion/ tools/
+  - yapf -r -d --style .style.yapf mmfashion/ tools/

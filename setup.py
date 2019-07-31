@@ -31,8 +31,8 @@ def get_git_hash():
         env['LANGUAGE'] = 'C'
         env['LANG'] = 'C'
         env['LC_ALL'] = 'C'
-        out = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                               env=env).communicate()[0]
+        out = subprocess.Popen(
+            cmd, stdout=subprocess.PIPE, env=env).communicate()[0]
         return out
 
     try:
@@ -101,25 +101,24 @@ def get_version():
 
 if __name__ == '__main__':
     write_version_py()
-    setup(name='mmfashion',
-          version=get_version(),
-          description='Open MMLab Fashion Toolbox',
-          long_description=readme(),
-          keywords='computer vision, fashion',
-          url='https://github.com/open-mmlab/mmfashion',
-          classifiers=[
-              'Development Status :: 4 - Beta',
-              'License :: OSI Approved :: Apache Software License',
-              'Operating System :: OS Independent',
-              'Programming Language :: Python :: 2',
-              'Programming Language :: Python :: 2.7',
-              'Programming Language :: Python :: 3',
-              'Programming Language :: Python :: 3.4',
-              'Programming Language :: Python :: 3.5',
-              'Programming Language :: Python :: 3.6',
-          ],
-          license='GPLv3',
-          setup_requires=['pytest-runner'],
-          tests_require=['pytest'],
-          install_requires=['mmcv', 'numpy', 'torch', 'torchvision'],
-          zip_safe=False)
+    setup(
+        name='mmfashion',
+        version=get_version(),
+        description='Open MMLab Fashion Toolbox',
+        long_description=readme(),
+        keywords='computer vision, fashion',
+        url='https://github.com/open-mmlab/mmfashion',
+        classifiers=[
+            'Development Status :: 4 - Beta',
+            'License :: OSI Approved :: Apache Software License',
+            'Operating System :: OS Independent',
+            'Programming Language :: Python :: 3',
+            'Programming Language :: Python :: 3.5',
+            'Programming Language :: Python :: 3.6',
+            'Programming Language :: Python :: 3.7',
+        ],
+        license='GPLv3',
+        setup_requires=['pytest-runner'],
+        tests_require=['pytest'],
+        install_requires=['mmcv', 'numpy', 'torch', 'torchvision'],
+        zip_safe=False)

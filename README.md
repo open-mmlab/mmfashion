@@ -6,9 +6,11 @@
 
 
 ## Requirements
-* [PyTorch](https://pytorch.org/) (version >= 0.4.1)
-* [mmdetection](https://github.com/open-mmlab/mmdetection) (version >= 0.6) 
-**(Vera: no need to install mmdetection.)**
+
+- Python 3.5+
+- [PyTorch 0.4.1+](https://pytorch.org/)
+- [mmcv](https://github.com/open-mmlab/mmcv)
+
 
 ## Installation
 
@@ -26,13 +28,6 @@
     ```
 
 
-## Development
-
-1. [Design Documentation](https://github.com/open-mmlab/mmfashion/blob/master/doc/design.md)
-
-2. [Issues](https://github.com/open-mmlab/mmfashion/issues)
-
-
 ## Dataset
 
 1. [DeepFashion (Category and Attribute Prediction Benchmark)](http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion/AttributePrediction.html)
@@ -43,7 +38,7 @@
 
 **(Vera: dataset download instruction.)**
 
-To use the DeepFashion dataset you need to first download it to 'data/' , then follow these steps to re-organize the dataset. 
+To use the DeepFashion dataset you need to first download it to 'data/' , then follow these steps to re-organize the dataset.
 
 ```
 cd data/
@@ -84,6 +79,8 @@ mmfashion
 
 
 ```
+
+
 ## Model Zoo
 
 ### Attribute Prediction
@@ -103,6 +100,11 @@ mmfashion
 |    VGG-16   | Landmark Pooling | Cross-Entropy |             |     [model]()      |
 |  ResNet-50  |  Global Pooling  | Cross-Entropy |             |     [model]()      |
 |  ResNet-50  | Landmark Pooling | Cross-Entropy |             |     [model]()      |
+
+
+## Contributing
+
+We appreciate all contributions to improve MMDetection. Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for the contributing guideline.
 
 
 ## Contributors
