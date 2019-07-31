@@ -43,7 +43,7 @@
 
 **(Vera: dataset download instruction.)**
 
-To use the DeepFashion dataset you need to first download it to 'data/' , then follow the following steps to re-organize the dataset. 
+To use the DeepFashion dataset you need to first download it to 'data/' , then follow these steps to re-organize the dataset. 
 
 ```
 cd data/
