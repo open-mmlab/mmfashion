@@ -3,6 +3,7 @@ from torch.utils.data.dataset import ConcatDataset as _ConcatDataset
 
 from .registry import DATASETS
 
+
 @DATASETS.register_module
 class ConcatDataset(_ConcatDataset):
     """A wrapper of concatenated dataset.
@@ -48,4 +49,3 @@ class RepeatDataset(object):
 
     def __len__(self):
         return self.times * self._ori_len
-

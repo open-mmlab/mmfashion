@@ -44,6 +44,7 @@ class Registry(object):
         self._register_module(cls)
         return cls
 
+
 def build_from_cfg(cfg, registry, default_args=None):
     """ build a module from config dict
     Args:
@@ -69,4 +70,3 @@ def build_from_cfg(cfg, registry, default_args=None):
         for name, value in default_args.items():
             args.setdefault(name, value)
     return obj_type(**args)
-

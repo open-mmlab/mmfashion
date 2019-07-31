@@ -2,6 +2,7 @@ import os
 
 PREFIX = 'In-shop/Anno'
 
+
 def split_img():
     fn = open('In-shop/Eval/list_eval_partition.txt').readlines()
     train = open(os.path.join(PREFIX, 'train_img.txt'), 'w')
@@ -11,17 +12,17 @@ def split_img():
     for i, line in enumerate(fn[2:]):
         aline = line.strip('\n').split()
         img, id, prefix = aline[0], aline[1], aline[2]
-        if prefix=='train':
-           train.write(img)
-           train.write('\n')
+        if prefix == 'train':
+            train.write(img)
+            train.write('\n')
         else:
-           if prefix =='query':
-              query.write(img)
-              query.write('\n')
+            if prefix == 'query':
+                query.write(img)
+                query.write('\n')
 
-           elif prefix == 'gallery':
-              gallery.write(img)
-              gallery.write('\n')
+            elif prefix == 'gallery':
+                gallery.write(img)
+                gallery.write('\n')
 
     train.close()
     query.close()
@@ -38,16 +39,16 @@ def split_label():
 
     def get_label(fn, prefix):
         rf = open(fn).readlines()
-        wf = open(os.path.join(PREFIX,'%s_labels.txt'%prefix), 'w')
+        wf = open(os.path.join(PREFIX, '%s_labels.txt' % prefix), 'w')
         for line in rf:
             aline = line.strip('\n').split('/')
             id = aline[3]
             label = id2label[id]
             for l in label:
-                if l=='1':
-                   wf.write('1 ')
+                if l == '1':
+                    wf.write('1 ')
                 else:
-                   wf.write('0 ')
+                    wf.write('0 ')
             wf.write('\n')
         wf.close()
 
@@ -68,12 +69,12 @@ def split_bbox():
 
     def get_bbox(fn, prefix):
         namef = open(fn).readlines()
-        wf = open(os.path.join(PREFIX, '%s_bbox.txt'%prefix), 'w')
+        wf = open(os.path.join(PREFIX, '%s_bbox.txt' % prefix), 'w')
         for i, name in enumerate(namef):
             name = name.strip('\n')
             bbox = name2bbox[name]
             for cor in bbox:
-                wf.write('%s '% cor)
+                wf.write('%s ' % cor)
             wf.write('\n')
         wf.close()
 
@@ -91,26 +92,26 @@ def split_lms():
         landmark = []
 
         for j, l in enumerate(aline[3:]):
-            if j%3==0:
-               if l!='0':
-                  continue
-               else:
-                  landmark += [aline[j+1], aline[j+2]]
+            if j % 3 == 0:
+                if l != '0':
+                    continue
+                else:
+                    landmark += [aline[j + 1], aline[j + 2]]
         name2lm[name] = landmark
 
     def get_lm(fn, prefix):
         lines = open(fn).readlines()
-        wf = open(os.path.join(PREFIX,'%s_landmarks.txt'%prefix), 'w')
+        wf = open(os.path.join(PREFIX, '%s_landmarks.txt' % prefix), 'w')
 
         for line in lines:
             name = line.strip('\n')
             lms = name2lm[name]
             cnt = len(lms)
-            while cnt<16:
-               lms.append('0')
-               cnt = len(lms)
+            while cnt < 16:
+                lms.append('0')
+                cnt = len(lms)
             for lm in lms:
-                wf.write('%s '% lm)
+                wf.write('%s ' % lm)
             wf.write('\n')
         wf.close()
 
@@ -119,9 +120,8 @@ def split_lms():
     get_lm(os.path.join(PREFIX, 'gallery_img.txt'), 'gallery')
 
 
-
 if __name__ == '__main__':
-   split_img()
-   split_label()
-   split_bbox()
-   split_lms()
+    split_img()
+    split_label()
+    split_bbox()
+    split_lms()

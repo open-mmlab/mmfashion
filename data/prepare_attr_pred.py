@@ -6,22 +6,22 @@ def split_img():
     rf = open('Attr_Predict/Eval/list_eval_partition.txt').readlines()
     wf1 = open(os.path.join(PREFIX, 'train.txt'), 'w')
     wf2 = open(os.path.join(PREFIX, 'test.txt'), 'w')
-    wf3 = open(os.path.join(PREFIX, 'val.txt'),'w')
+    wf3 = open(os.path.join(PREFIX, 'val.txt'), 'w')
 
-    for i,line in enumerate(rf[2:]):
+    for i, line in enumerate(rf[2:]):
         aline = line.strip('\n').split()
         imgname, prefix = aline[0], aline[1]
         if prefix == 'train':
-           wf1.write('%s\n'%imgname)
+            wf1.write('%s\n' % imgname)
         elif prefix == 'test':
-           wf2.write('%s\n'% imgname)
+            wf2.write('%s\n' % imgname)
         else:
-           wf3.write('%s\n'%imgname)
+            wf3.write('%s\n' % imgname)
 
     wf1.close()
     wf2.close()
     wf3.close()
-    
+
     train_img = open(os.path.join(PREFIX, 'train.txt')).readlines()
     test_img = open(os.path.join(PREFIX, 'test.txt')).readlines()
     val_img = open(os.path.join(PREFIX, 'val.txt')).readlines()
@@ -42,12 +42,12 @@ def split_attribute(train_img, test_img, val_img):
             d[imgname] = []
             attrs = aline[1:]
             for ai, a in enumerate(attrs):
-                if int(a)<=0:
-                   d[imgname].append(0)
+                if int(a) <= 0:
+                    d[imgname].append(0)
                 else:
-                   d[imgname].append(int(a))
+                    d[imgname].append(int(a))
         return d
-     
+
     attributes = sort_attr()
 
     def write_attr(imgs, wf):
@@ -55,7 +55,7 @@ def split_attribute(train_img, test_img, val_img):
             imgname = line.strip('\n')
             attr = attributes[imgname]
             for a in attr:
-                wf.write('%s '% str(a))
+                wf.write('%s ' % str(a))
             wf.write('\n')
         wf.close()
 
@@ -82,7 +82,7 @@ def split_bbox(train_img, test_img, val_img):
         return d
 
     bboxes = sort_bbox()
-    
+
     def write_lm(imgs, wf):
         for i, line in enumerate(imgs):
             imgname = line.strip('\n')
@@ -98,7 +98,7 @@ def split_bbox(train_img, test_img, val_img):
 
 
 def split_lms(train_img, test_img, val_img):
-    rf = open(os.path.join(PREFIX, 'list_landmarks.txt').readlines()
+    rf = open(os.path.join(PREFIX, 'list_landmarks.txt')).readlines()
     wf1 = open(os.path.join(PREFIX, 'train_landmarks.txt'), 'w')
     wf2 = open(os.path.join(PREFIX, 'test_landmarks.txt'), 'w')
     wf3 = open(os.path.join(PREFIX, 'val_landmarks.txt'), 'w')
@@ -111,35 +111,35 @@ def split_lms(train_img, test_img, val_img):
             d[imgname] = []
             lms = aline[2:]
             for li, lm in enumerate(lms):
-                if li%3==0:
-                   continue
+                if li % 3 == 0:
+                    continue
                 else:
-                   d[imgname].append(int(lm))
+                    d[imgname].append(int(lm))
         return d
 
-     landmarks = sort_lm()
-     
-     def write_lm(imgs, wf):
-         for i,line in enumerate(imgs):
-             imgname = line.strip('\n')
-             lm = landmarks[imgname]
-             for a in lm:
-                 wf.write('%s ' % str(a))
+    landmarks = sort_lm()
 
-             num_lm = len(lm)
-             if num_lm<16:
-                for cnt in range(16-num_lm):
+    def write_lm(imgs, wf):
+        for i, line in enumerate(imgs):
+            imgname = line.strip('\n')
+            lm = landmarks[imgname]
+            for a in lm:
+                wf.write('%s ' % str(a))
+
+            num_lm = len(lm)
+            if num_lm < 16:
+                for cnt in range(16 - num_lm):
                     wf.write('0 ')
-             wf.write('\n')
-         wf.close()
-  
-     write_lm(train_img, wf1)
-     write_lm(test_img, wf2)
-     write_lm(val_img, wf3)
+            wf.write('\n')
+        wf.close()
+
+    write_lm(train_img, wf1)
+    write_lm(test_img, wf2)
+    write_lm(val_img, wf3)
 
 
 if __name__ == '__main__':
-   train_img, test_img, val_img = split_img()
-   split_attribute(train_img, test_img, val_img)
-   split_bbox(train_img, test_img, val_img)
-   split_lms(train_img, test_img, val_img)
+    train_img, test_img, val_img = split_img()
+    split_attribute(train_img, test_img, val_img)
+    split_bbox(train_img, test_img, val_img)
+    split_lms(train_img, test_img, val_img)

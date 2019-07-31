@@ -14,7 +14,7 @@ def _concat_dataset(cfgs):
 
 def build_dataset(cfg):
     if isinstance(cfg, (list, tuple)):
-       dataset = _concat_dataset(cfg)
+        dataset = _concat_dataset(cfg)
     else:
-       dataset = build_from_cfg(cfg, DATASETS)
+        dataset = build_from_cfg(cfg, DATASETS)
     return dataset

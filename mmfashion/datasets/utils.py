@@ -10,6 +10,7 @@ from torch.autograd import Variable
 from .In_shop import InShopDataset
 from .Attr_Pred import AttrDataset
 
+
 def to_tensor(data):
     """Convert objects of various python types to :obj:`torch.Tensor`.
     Supported types are: :class:`numpy.ndarray`, :class:`torch.Tensor`,
@@ -37,28 +38,30 @@ def get_basic_data(data):
 
     return imgs, target, landmark
 
+
 def get_data(cfg, data):
     if cfg.find_three:
-       anchor_data, pos_data, neg_data = data
-       anchor, anchor_lbl, anchor_lm = get_basic_data(anchor_data)
-       pos, pos_lbl, pos_lm = get_basic_data(pos_data)
-       neg, neg_lbl, neg_lm = get_basic_data(neg_data)
-       return anchor, anchor_lm, pos, pos_lm, neg, neg_lm
-       
+        anchor_data, pos_data, neg_data = data
+        anchor, anchor_lbl, anchor_lm = get_basic_data(anchor_data)
+        pos, pos_lbl, pos_lm = get_basic_data(pos_data)
+        neg, neg_lbl, neg_lm = get_basic_data(neg_data)
+        return anchor, anchor_lm, pos, pos_lm, neg, neg_lm
+
     else:
-       return get_basic_data(data)
-    
+        return get_basic_data(data)
+
+
 def get_dataset(data_cfg):
     if data_cfg['type'] == 'In-shop':
-       dataset = InShopDataset(data_cfg.img_path, data_cfg.img_file,
-                              data_cfg.label_file, data_cfg.bbox_file,
-                              data_cfg.landmark_file, data_cfg.img_size,
-                              data_cfg.find_three)
+        dataset = InShopDataset(data_cfg.img_path, data_cfg.img_file,
+                                data_cfg.label_file, data_cfg.bbox_file,
+                                data_cfg.landmark_file, data_cfg.img_size,
+                                data_cfg.find_three)
     elif data_cfg['type'] == 'Attr_Pred':
-       dataset = AttrDataset(data_cfg.img_path, data_cfg.img_file,
-                             data_cfg.label_file, data_cfg.bbox_file,
-                             data_cfg.landmark_file, data_cfg.img_size)
+        dataset = AttrDataset(data_cfg.img_path, data_cfg.img_file,
+                              data_cfg.label_file, data_cfg.bbox_file,
+                              data_cfg.landmark_file, data_cfg.img_size)
     else:
-       raise TypeError('type {} does not exist.'.format(data_cfg['type']))
+        raise TypeError('type {} does not exist.'.format(data_cfg['type']))
 
-    return dataset 
+    return dataset

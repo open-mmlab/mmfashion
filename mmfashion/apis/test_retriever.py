@@ -23,15 +23,21 @@ from core import Evaluator
 from datasets import get_data, build_dataloader
 
 
-def test_retriever(model, query_set, gallery_set, cfg, distributed=False, validate=False, logger=None):
+def test_retriever(model,
+                   query_set,
+                   gallery_set,
+                   cfg,
+                   distributed=False,
+                   validate=False,
+                   logger=None):
     if logger is None:
-       logger = get_root_logger(cfg.log_level)
-    
+        logger = get_root_logger(cfg.log_level)
+
     # start testing predictor
-    if distributed: # to do 
-       _dist_test(model, query_set, gallery_set, cfg, validate=validate)
+    if distributed:  # to do
+        _dist_test(model, query_set, gallery_set, cfg, validate=validate)
     else:
-      _non_dist_test(model, query_set, gallery_set, cfg, validate=validate)
+        _non_dist_test(model, query_set, gallery_set, cfg, validate=validate)
 
 
 def _dist_test(model, query_set, gallery_set, cfg, validate=False):
@@ -41,21 +47,19 @@ def _dist_test(model, query_set, gallery_set, cfg, validate=False):
 
 def _process_embeds(dataset, model, cfg):
     data_loader = build_dataloader(
-                   dataset,
-                   cfg.data.imgs_per_gpu,
-                   cfg.data.workers_per_gpu,
-                   len(cfg.gpus.test),
-                   dist=False,
-                   shuffle=False)
-    
+        dataset,
+        cfg.data.imgs_per_gpu,
+        cfg.data.workers_per_gpu,
+        len(cfg.gpus.test),
+        dist=False,
+        shuffle=False)
+
     total = 0
     embeds = []
     with torch.no_grad():
-       for batch_idx, data in enumerate(data_loader):
-           embed = model(data['img'],
-                         data['landmark'],
-                         return_loss=False)
-           embeds.append(embed)
+        for batch_idx, data in enumerate(data_loader):
+            embed = model(data['img'], data['landmark'], return_loss=False)
+            embeds.append(embed)
 
     embeds = torch.cat(embeds)
     embeds = embeds.data.cpu().numpy()
@@ -66,10 +70,10 @@ def _non_dist_test(model, query_set, gallery_set, cfg, validate=False):
 
     model = MMDataParallel(model, device_ids=cfg.gpus.test).cuda()
     model.eval()
-    
+
     query_embeds = _process_embeds(query_set, model, cfg)
     gallery_embeds = _process_embeds(gallery_set, model, cfg)
-    
+
     query_embeds_np = np.array(query_embeds)
     print('query_embeds', query_embeds_np.shape)
     sio.savemat('query_embeds.mat', {'embeds': query_embeds_np})
@@ -80,4 +84,3 @@ def _non_dist_test(model, query_set, gallery_set, cfg, validate=False):
 
     e = Evaluator(cfg.data.query.idx2id, cfg.data.gallery.idx2id)
     e.evaluate(query_embeds_np, gallery_embeds_np)
-

@@ -1,10 +1,12 @@
 import mmcv
 from torch import nn
 
-from .registry import (BACKBONES, GLOBALPOOLING, ROIPOOLING, CONCATS, PREDICTOR, RETRIEVER, LOSSES)
+from .registry import (BACKBONES, GLOBALPOOLING, ROIPOOLING, CONCATS,
+                       PREDICTOR, RETRIEVER, LOSSES)
+
 
 def _build_module(cfg, registry, default_args):
-    assert isinstance(cfg, dict) and 'type' in cfg 
+    assert isinstance(cfg, dict) and 'type' in cfg
     assert isinstance(default_args, dict) or default_args is None
     args = cfg.copy()
     obj_type = args.pop('type')
@@ -24,30 +26,35 @@ def _build_module(cfg, registry, default_args):
 
 def build(cfg, registry, default_args=None):
     if isinstance(cfg, list):
-       modules = [_build_module(cfg_, registry, default_args) for cfg_ in cfg]
-       return nn.Sequential(*module)
+        modules = [_build_module(cfg_, registry, default_args) for cfg_ in cfg]
+        return nn.Sequential(*module)
     else:
-       return _build_module(cfg, registry, default_args)
+        return _build_module(cfg, registry, default_args)
 
 
 def build_backbone(cfg):
     return build(cfg, BACKBONES)
 
+
 def build_global_pool(cfg):
     return build(cfg, GLOBALPOOLING)
+
 
 def build_roi_pool(cfg):
     return build(cfg, ROIPOOLING)
 
+
 def build_concat(cfg):
     return build(cfg, CONCATS)
+
 
 def build_loss(cfg):
     return build(cfg, LOSSES)
 
+
 def build_predictor(cfg):
     return build(cfg, PREDICTOR)
 
+
 def build_retriever(cfg):
     return build(cfg, RETRIEVER)
-

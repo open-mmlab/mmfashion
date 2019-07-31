@@ -4,4 +4,8 @@ from .loader import GroupSampler, DistributedGroupSampler, build_dataloader
 from .builder import build_dataset
 from .dataset_wrappers import ConcatDataset
 
-__all__ = ['InShopDataset', 'to_tensor', 'get_data', 'get_dataset', 'GroupSampler', 'DistributedGroupSampler', 'build_dataloader', 'build_dataset', 'ConcatDataset']
+__all__ = [
+    'InShopDataset', 'to_tensor', 'get_data', 'get_dataset', 'GroupSampler',
+    'DistributedGroupSampler', 'build_dataloader', 'build_dataset',
+    'ConcatDataset'
+]

@@ -9,17 +9,19 @@ from importlib import import_module
 import torch
 import torch.nn as nn
 
+
 def save_checkpoint(cfg, epoch, model, optimizer):
     if not os.path.exists(cfg.work_dir):
-       os.makedirs(cfg.work_dir)
-    ckpt_path = os.path.join(cfg.work_dir, '%s_%s_epoch%d.pth.tar'%(cfg.arch, cfg.pooling,epoch))
+        os.makedirs(cfg.work_dir)
+    ckpt_path = os.path.join(
+        cfg.work_dir, '%s_%s_epoch%d.pth.tar' % (cfg.arch, cfg.pooling, epoch))
     torch.save({
-                'epoch': epoch,
-                'model_state_dict': model.state_dict(),
-                'optimizer_state_dict': optimizer.state_dict(),
-                } , ckpt_path)
+        'epoch': epoch,
+        'model_state_dict': model.state_dict(),
+        'optimizer_state_dict': optimizer.state_dict(),
+    }, ckpt_path)
 
-    print('Attribute Predictor saved in %s'% ckpt_path)
+    print('Attribute Predictor saved in %s' % ckpt_path)
 
 
 def load_checkpoint(filename, model, strict=False, logger=None):
@@ -34,7 +36,10 @@ def load_checkpoint(filename, model, strict=False, logger=None):
             'No state_dict found in checkpoint file {}'.format(filename))
     # strip prefix of state_dict
     if list(state_dict.keys())[0].startswith('module.'):
-        state_dict = {k[7:]: v for k, v in checkpoint['model_state_dict'].items()}
+        state_dict = {
+            k[7:]: v
+            for k, v in checkpoint['model_state_dict'].items()
+        }
     # load state_dict
     if hasattr(model, 'module'):
         load_state_dict(model.module, state_dict, strict, logger)
@@ -46,10 +51,10 @@ def load_checkpoint(filename, model, strict=False, logger=None):
 def init_weights_from(init_from, model):
     # resume from ImageNet pretrained weights for backbone
     load_state_dict(model.backbone, torch.load(init_from))
-      
+
     return model
 
- 
+
 def load_state_dict(module, state_dict, strict=False, logger=None):
     """Load state_dict to a module.
     This method is modified from :meth:`torch.nn.Module.load_state_dict`.
