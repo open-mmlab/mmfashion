@@ -1,4 +1,4 @@
-from utils import Registry
+from ..utils import Registry
 
 BACKBONES = Registry('backbone')  # basic feature extractor
 GLOBALPOOLING = Registry('global_pool')  # global pooling

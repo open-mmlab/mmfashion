@@ -16,7 +16,7 @@ from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 
 from .env import get_root_logger
 from .utils import build_optimizer, build_criterion
-from datasets import get_data, build_dataloader
+from ..datasets import get_data, build_dataloader
 
 
 def parse_losses(losses):
