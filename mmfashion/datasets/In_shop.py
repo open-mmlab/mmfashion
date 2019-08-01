@@ -108,6 +108,7 @@ class InShopDataset(Dataset):
             bbox_w = x2 - x1
             bbox_h = y2 - y1
             img = img.crop(box=(x1, y1, x2, y2))
+            img.show()
         else:
             bbox_w, bbox_h = self.img_size[0], self.img_size[1]
 

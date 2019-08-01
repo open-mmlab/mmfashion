@@ -2,8 +2,7 @@ import os
 
 # model settings
 arch = 'vgg'
-retrieve = False
-class_num = 463
+class_num = 1000
 img_size = (224, 224)
 model = dict(
     type='RoIPredictor',
@@ -26,8 +25,7 @@ model = dict(
         type='Concat',
         inplanes=2 * 4096,
         inter_plane=4096,
-        num_classes=class_num,
-        retrieve=retrieve),
+        num_classes=class_num),
     loss=dict(
         type='BCEWithLogitsLoss',
         weight=None,
@@ -39,41 +37,36 @@ model = dict(
 pooling = 'RoI'
 
 # dataset settings
-dataset_type = 'In-shop'
-data_root = 'datasets/In-shop'
+dataset_type = 'Attr_Pred'
+data_root = '../data/Attr_Predict'
 img_norm = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 data = dict(
-    imgs_per_gpu=8,
-    workers_per_gpu=2,
+    imgs_per_gpu=32,
+    workers_per_gpu=4,
     train=dict(
         type=dataset_type,
         img_path=os.path.join(data_root, 'Img'),
-        img_file=os.path.join(data_root, 'Anno/train_img.txt'),
-        label_file=os.path.join(data_root, 'Anno/train_labels.txt'),
-        bbox_file=os.path.join(data_root, 'Anno/train_bbox.txt'),
-        landmark_file=os.path.join(data_root, 'Anno/train_landmarks.txt'),
-        img_size=img_size,
-        find_three=
-        retrieve  # if retrieve, then find three items: anchor, pos, neg
-    ),
+        img_file=os.path.join(data_root, 'train.txt'),
+        label_file=os.path.join(data_root, 'train_attr.txt'),
+        bbox_file=os.path.join(data_root, 'train_bbox.txt'),
+        landmark_file=os.path.join(data_root, 'train_landmarks.txt'),
+        img_size=img_size),
     test=dict(
         type=dataset_type,
         img_path=os.path.join(data_root, 'Img'),
-        img_file=os.path.join(data_root, 'Anno/test_img.txt'),
-        label_file=os.path.join(data_root, 'Anno/test_labels.txt'),
-        bbox_file=os.path.join(data_root, 'Anno/test_bbox.txt'),
-        landmark_file=os.path.join(data_root, 'Anno/test_landmarks.txt'),
-        img_size=img_size,
-        find_three=retrieve),
+        img_file=os.path.join(data_root, 'test.txt'),
+        label_file=os.path.join(data_root, 'test_attr.txt'),
+        bbox_file=os.path.join(data_root, 'test_bbox.txt'),
+        landmark_file=os.path.join(data_root, 'test_landmarks.txt'),
+        img_size=img_size),
     val=dict(
         type=dataset_type,
         img_path=os.path.join(data_root, 'Img'),
-        img_file=os.path.join(data_root, 'Anno/val_img.txt'),
-        label_file=os.path.join(data_root, 'Anno/val_labels.txt'),
-        bbox_file=os.path.join(data_root, 'Anno/val_bbox.txt'),
-        landmark_file=os.path.join(data_root, 'Anno/val_landmarks.txt'),
-        img_size=img_size,
-        find_three=retrieve))
+        img_file=os.path.join(data_root, 'val.txt'),
+        label_file=os.path.join(data_root, 'val_attr.txt'),
+        bbox_file=os.path.join(data_root, 'val_bbox.txt'),
+        landmark_file=os.path.join(data_root, 'val_landmarks.txt'),
+        img_size=img_size))
 
 # optimizer
 optimizer = dict(type='SGD', lr=1e-3, momentum=0.9)
@@ -95,13 +88,13 @@ log_config = dict(
 
 start_epoch = 0
 total_epochs = 40
-gpus = dict(train=[0, 1, 2, 7], test=[0])
-work_dir = 'checkpoint/Predict/vgg'
+gpus = dict(train=[0, 1, 2, 3], test=[0, 1, 2, 3])
+work_dir = 'checkpoint/Predict/vgg/attr_pred'
 print_interval = 20  # interval to print information
 save_interval = 5
 init_weights_from = 'checkpoint/vgg16.pth'
 resume_from = None
-checkpoint = None  # 'checkpoint/Predict/vgg/vgg_epoch_40.pth'
+checkpoint = 'checkpoint/Predict/vgg/attr_pred/latest.pth'
 workflow = [('train', 40)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

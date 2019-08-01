@@ -18,7 +18,7 @@ def parse_args():
     parser.add_argument(
         '--config',
         help='train config file path',
-        default='configs/roi_predictor_vgg.py')
+        default='configs/predict/roi_predictor_vgg_inshop.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument('--checkpoint', help='checkpoint file', default=None)
     parser.add_argument(

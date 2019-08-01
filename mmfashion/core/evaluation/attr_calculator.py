@@ -130,8 +130,8 @@ class Calculator(object):
                self.precision['top10']))
 
         self.compute_recall()
-        print('[TOP %d Recall] top3 = %.2f, top5 = %.2f, top10 = %.2f' %
-              (self.topn, self.recall['top3'], self.recall['top5'],
+        print('[Recall] top3 = %.2f, top5 = %.2f, top10 = %.2f' %
+              (self.recall['top3'], self.recall['top5'],
                self.recall['top10']))
 
         self.compute_accuracy()

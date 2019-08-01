@@ -26,12 +26,14 @@ class BasePredictor(nn.Module):
     def aug_test(self, imgs, landmarks):
         pass
 
+    @abstractmethod
     def forward_test(self, imgs, landmarks=None):
-        num_augs = len(imgs)
-        if num_augs == 1:  # single image test
-            return self.simple_test(imgs[0], landmarks[0])
-        else:
-            return self.aug_test(imgs, landmarks)
+        pass
+        #num_augs = len(imgs)
+        #if num_augs == 1:  # single image test
+        #    return self.simple_test(imgs[0], landmarks[0])
+        #else:
+        #    return self.aug_test(imgs, landmarks)
 
     @abstractmethod
     def forward_train(self, imgs, labels, landmarks):

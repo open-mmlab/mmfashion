@@ -5,7 +5,7 @@ arch = 'vgg'
 class_num = 1000
 img_size = (224, 224)
 model = dict(
-    type='RoIPredictor',
+    type='GlobalPredictor',
     backbone=dict(type='Vgg'),
     global_pool=dict(
         type='GlobalPooling',
@@ -13,14 +13,6 @@ model = dict(
         pool_plane=(2, 2),
         inter_plane=512 * 7 * 7,
         outplanes=4096),
-    roi_pool=dict(
-        type='RoIPooling',
-        pool_plane=(2, 2),
-        inter_plane=512,
-        outplanes=4096,
-        crop_size=7,
-        img_size=img_size,
-        num_lms=8),
     concat=dict(
         type='Concat',
         inplanes=2 * 4096,
@@ -34,11 +26,11 @@ model = dict(
         reduction='mean'),
     pretrained='checkpoint/vgg16.pth')
 
-pooling = 'RoI'
+pooling = 'Global'
 
 # dataset settings
 dataset_type = 'Attr_Pred'
-data_root = 'datasets/Attr_Predict'
+data_root = '../data/Attr_Predict'
 img_norm = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 data = dict(
     imgs_per_gpu=32,

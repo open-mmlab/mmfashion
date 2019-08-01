@@ -9,7 +9,7 @@ from ..registry import PREDICTOR
 
 
 @PREDICTOR.register_module
-class RoIPredictor(BasePredictor):
+class GlobalPredictor(BasePredictor):
 
     def __init__(self,
                  backbone,
@@ -27,15 +27,15 @@ class RoIPredictor(BasePredictor):
 
         self.backbone = builder.build_backbone(backbone)
         self.global_pool = builder.build_global_pool(global_pool)
-
-        assert roi_pool is not None
-        self.roi_pool = builder.build_roi_pool(roi_pool)
+      
+        assert roi_pool is None
 
         self.concat = builder.build_concat(concat)
         self.loss = builder.build_loss(loss)
 
 
     def forward_train(self, x, label, landmarks):
+        assert landmarks is None
         # 1. conv layers extract global features
         x = self.backbone(x)
 
@@ -43,11 +43,8 @@ class RoIPredictor(BasePredictor):
         global_x = self.global_pool(x)
         global_x = global_x.view(global_x.size(0), -1)
 
-        # 3. roi pooling
-        local_x = self.roi_pool(x, landmarks)
-
         # 4. concat
-        pred = self.concat(global_x, local_x)
+        pred = self.concat(global_x)
 
         losses = dict()
         loss = self.loss(pred, label)
@@ -56,33 +53,30 @@ class RoIPredictor(BasePredictor):
         return losses
 
 
-    def simple_test(self, x, landmarks=None):
+    def simple_test(self, x, landmarks):
         """Test single image"""
+        assert landmarks is None
         x = x.unsqueeze(0)
-        landmarks = landmarks.unsqueeze(0)
-
-        pred = self.aug_test(x, landmarks)[0]
+        pred = self.aug_test(x)[0]
         return pred
 
 
-    def aug_test(self, x, landmarks=None):
+    def aug_test(self, x, landmarks):
         """Test batch of images"""
+        assert landmarks is None
         x = self.backbone(x)
         global_x = self.global_pool(x)
         global_x = global_x.view(global_x.size(0), -1)
-        local_x = self.roi_pool(x, landmarks)
-
-        pred = self.concat(global_x, local_x)
+        pred = self.concat(global_x)
         return pred
 
-   
+
     def forward_test(self, x, landmarks):
+        assert landmarks is None
         x = self.backbone(x)
         global_x = self.global_pool(x)
         global_x = global_x.view(global_x.size(0), -1)
-        local_x = self.roi_pool(x, landmarks)
-
-        pred = self.concat(global_x, local_x)
+        pred = self.concat(global_x)
         return pred
 
 
@@ -90,5 +84,4 @@ class RoIPredictor(BasePredictor):
         super(RoIPredictor, self).init_weights(pretrained)
         self.backbone.init_weights(pretrained=pretrained)
         self.global_pool.init_weights(pretrained=pretrained)
-        self.roi_pool.init_weights()
         self.concat.init_weights(pretrained=pretrained)

@@ -42,7 +42,7 @@ pooling = 'RoI'
 
 # dataset settings
 dataset_type = 'InShopDataset'
-data_root = 'datasets/In-shop'
+data_root = '../data/In-shop'
 img_norm = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
 data = dict(
@@ -105,7 +105,7 @@ gpus = dict(train=[0, 1, 2, 3], test=[0])
 work_dir = 'checkpoint/Retrieve/vgg'
 print_interval = 20  # interval to print information
 resume_from = None
-load_from = None
+load_from = 'checkpoint/Retrieve/vgg/latest.pth'
 init_weights_from = 'checkpoint/Predict/vgg/attr_pred/latest.pth'
 workflow = [('train', 100)]
 dist_params = dict(backend='nccl')

@@ -19,7 +19,7 @@ def parse_args():
     parser.add_argument(
         '--config',
         help='train config file path',
-        default='configs/roi_retriever_vgg.py')
+        default='configs/retriever/roi_retriever_vgg.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument(
         '--resume_from', help='the checkpoint file to resume from')
@@ -70,7 +70,7 @@ def main():
         model = init_weights_from(cfg.init_weights_from, model)
 
     # data loader
-    dataset = build_dataset([cfg.data.query, cfg.data.gallery])
+    dataset = build_dataset(cfg.data.train)
     print('dataset loaded')
 
     # train

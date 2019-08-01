@@ -8,7 +8,7 @@
 ## Requirements
 
 - Python 3.5+
-- [PyTorch 0.4.1+](https://pytorch.org/)
+- [PyTorch 1.0.0+](https://pytorch.org/)
 - [mmcv](https://github.com/open-mmlab/mmcv)
 
 

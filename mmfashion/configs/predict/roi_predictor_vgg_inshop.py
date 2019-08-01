@@ -1,23 +1,23 @@
 import os
 
 # model settings
-arch = 'resnet'
-retrieve = True
+arch = 'vgg'
+retrieve = False
 class_num = 463
 img_size = (224, 224)
-mode = dict(
-    type='RoIRetriever',
-    backbone=dict(type='ResNet'),
+model = dict(
+    type='RoIPredictor',
+    backbone=dict(type='Vgg'),
     global_pool=dict(
         type='GlobalPooling',
         inplanes=(7, 7),
         pool_plane=(2, 2),
-        inter_plane=2048 * 7 * 7,
+        inter_plane=512 * 7 * 7,
         outplanes=4096),
     roi_pool=dict(
         type='RoIPooling',
         pool_plane=(2, 2),
-        inter_plane=2048,
+        inter_plane=512,
         outplanes=4096,
         crop_size=7,
         img_size=img_size,
@@ -28,25 +28,22 @@ mode = dict(
         inter_plane=4096,
         num_classes=class_num,
         retrieve=retrieve),
-    loss_cls=dict(
-        type='BCEWithLogitLoss',
+    loss=dict(
+        type='BCEWithLogitsLoss',
         weight=None,
         size_average=None,
         reduce=None,
         reduction='mean'),
-    loss_retrieve=dict(
-        type='TripletLoss', margin=1.0, use_sigmoid=True, size_average=True),
-    pretrained='checkpoint/resnet50.pth')
+    pretrained='checkpoint/vgg16.pth')
 
 pooling = 'RoI'
 
 # dataset settings
 dataset_type = 'In-shop'
-data_root = 'datasets/In-shop'
+data_root = '../data/In-shop'
 img_norm = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-
 data = dict(
-    imgs_per_gpu=4,
+    imgs_per_gpu=8,
     workers_per_gpu=2,
     train=dict(
         type=dataset_type,
@@ -56,7 +53,6 @@ data = dict(
         bbox_file=os.path.join(data_root, 'Anno/train_bbox.txt'),
         landmark_file=os.path.join(data_root, 'Anno/train_landmarks.txt'),
         img_size=img_size,
-        retrieve=retrieve,
         find_three=
         retrieve  # if retrieve, then find three items: anchor, pos, neg
     ),
@@ -68,7 +64,6 @@ data = dict(
         bbox_file=os.path.join(data_root, 'Anno/test_bbox.txt'),
         landmark_file=os.path.join(data_root, 'Anno/test_landmarks.txt'),
         img_size=img_size,
-        retrieve=retrieve,
         find_three=retrieve),
     val=dict(
         type=dataset_type,
@@ -78,7 +73,6 @@ data = dict(
         bbox_file=os.path.join(data_root, 'Anno/val_bbox.txt'),
         landmark_file=os.path.join(data_root, 'Anno/val_landmarks.txt'),
         img_size=img_size,
-        retrieve=retrieve,
         find_three=retrieve))
 
 # optimizer
@@ -89,7 +83,7 @@ optimizer_config = dict()
 lr_config = dict(
     policy='step',
     warmup='linear',
-    warmup_iter=500,
+    warmup_iters=500,
     warmup_ratio=0.1,
     step=[10, 20])
 
@@ -100,12 +94,14 @@ log_config = dict(
     ])
 
 start_epoch = 0
-total_epochs = 100
-gpus = dict(train=[0, 1, 2, 3], test=[0])
-work_dir = 'checkpoint/Retrieve/resnet'
-print_interval = 20,
-resume_from = 'checkpoint/Predict/resnet/latest.pth'
-load_from = None
-workflow = [('train', 100)]
+total_epochs = 40
+gpus = dict(train=[0, 1, 2, 7], test=[0])
+work_dir = 'checkpoint/Predict/vgg'
+print_interval = 20  # interval to print information
+save_interval = 5
+init_weights_from = 'checkpoint/vgg16.pth'
+resume_from = None
+checkpoint = 'checkpoint/Retrieve/vgg/latest.pth'
+workflow = [('train', 40)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

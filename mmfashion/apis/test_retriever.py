@@ -59,7 +59,7 @@ def _process_embeds(dataset, model, cfg):
     with torch.no_grad():
         for batch_idx, data in enumerate(data_loader):
             embed = model(data['img'], data['landmark'], return_loss=False)
-            embeds.append(embed)
+            embeds.append(F.sigmoid(embed))
 
     embeds = torch.cat(embeds)
     embeds = embeds.data.cpu().numpy()
