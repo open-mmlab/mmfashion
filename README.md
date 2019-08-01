@@ -34,10 +34,6 @@
 
 2. [DeepFashion (In-Shop Clothes Retrieval Benchmark)](http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion/InShopRetrieval.html)
 
-**(ZW: Please elaborate how to download and pre-process the dataset.)**
-
-**(Vera: dataset download instruction.)**
-
 To use the DeepFashion dataset you need to first download it to 'data/' , then follow these steps to re-organize the dataset.
 
 ```
@@ -104,12 +100,13 @@ mmfashion
 
 ## Contributing
 
-We appreciate all contributions to improve MMDetection. Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for the contributing guideline.
+We appreciate all contributions to improve MMFashion. Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for the contributing guideline.
 
 
-## Contributors
+## Team
 
-* Xin Liu ([veralauee](https://github.com/veralauee))
+* Xin Liu ([veralauee](https://github.com/veralauee)) &nbsp;&nbsp;&nbsp; (main contributor for fashion attributes / retrieval / recommendation)
+* Sijie Yan ([yysijie](https://github.com/yysijie)) &nbsp;&nbsp;&nbsp; (main contributor for fashion landmarks / parsing)
 * Jiancheng Li ([lijiancheng0614](https://github.com/lijiancheng0614))
 * Jiaqi Wang ([myownskyW7](https://github.com/myownskyW7))
 * Ziwei Liu ([liuziwei7](https://github.com/liuziwei7))

@@ -120,5 +120,5 @@ if __name__ == '__main__':
         license='GPLv3',
         setup_requires=['pytest-runner'],
         tests_require=['pytest'],
-        install_requires=['mmcv', 'numpy', 'torch', 'torchvision'],
+        install_requires=['mmcv', 'numpy', 'scikit-image', 'pandas', 'torch', 'torchvision'],
         zip_safe=False)
