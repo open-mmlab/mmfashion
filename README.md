@@ -105,8 +105,8 @@ We appreciate all contributions to improve MMFashion. Please refer to [CONTRIBUT
 
 ## Team
 
-* Xin Liu ([veralauee](https://github.com/veralauee)) (main contributor for fashion attribute/retrieval)
-* Sijie Yan ([yysijie](https://github.com/yysijie)) (main contributor for fashion landmarks/parsing)
+* Xin Liu ([veralauee](https://github.com/veralauee)) &nbsp;&nbsp;&nbsp; (main contributor for fashion attributes / retrieval / recommendation)
+* Sijie Yan ([yysijie](https://github.com/yysijie)) &nbsp;&nbsp;&nbsp; (main contributor for fashion landmarks / parsing)
 * Jiancheng Li ([lijiancheng0614](https://github.com/lijiancheng0614))
 * Jiaqi Wang ([myownskyW7](https://github.com/myownskyW7))
 * Ziwei Liu ([liuziwei7](https://github.com/liuziwei7))
