@@ -16,7 +16,7 @@ from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 
 from .env import get_root_logger
 from .utils import build_optimizer, build_criterion
-from ..datasets import get_data, build_dataloader
+from datasets import build_dataloader
 
 
 def parse_losses(losses):
@@ -42,9 +42,9 @@ def parse_losses(losses):
 def batch_processor(model, data, train_mode):
     img = data['img']
     landmark = data['landmark']
-    label = data['label']
-
-    losses = model(img, label, landmark)
+    attr = data['label']
+    cate = data['cate']
+    losses = model(img, attr, cate, landmark)
     loss, log_vars = parse_losses(losses)
 
     outputs = dict(loss=loss, log_vars=log_vars, num_samples=len(img.data))
@@ -95,8 +95,4 @@ def _non_dist_train(model, dataset, cfg, validate=False):
     runner.register_training_hooks(cfg.lr_config, cfg.optimizer_config,
                                    cfg.checkpoint_config, cfg.log_config)
 
-    #if cfg.init_weights_from:
-    #   runner.resume(cfg.init_weights_from)
-    #elif cfg.checkpoint:
-    #   runner.load_checkpoint(cfg.checkpoint)
     runner.run(data_loaders, cfg.workflow, cfg.total_epochs)

@@ -15,12 +15,8 @@ class RoIPredictor(BasePredictor):
                  backbone,
                  global_pool,
                  concat,
-                 loss=dict(
-                     type='BCEWithLogitsLoss',
-                     weight=None,
-                     size_average=None,
-                     reduce=None,
-                     reduction='mean'),
+                 loss_cate,
+                 loss_attr,
                  roi_pool=None,
                  pretrained=None):
         super(BasePredictor, self).__init__()
@@ -32,10 +28,11 @@ class RoIPredictor(BasePredictor):
         self.roi_pool = builder.build_roi_pool(roi_pool)
 
         self.concat = builder.build_concat(concat)
-        self.loss = builder.build_loss(loss)
+        self.loss_attr = builder.build_loss(loss_attr)
+        self.loss_cate = builder.build_loss(loss_cate)
 
 
-    def forward_train(self, x, label, landmarks):
+    def forward_train(self, x, attr, cate, landmarks):
         # 1. conv layers extract global features
         x = self.backbone(x)
 
@@ -47,11 +44,11 @@ class RoIPredictor(BasePredictor):
         local_x = self.roi_pool(x, landmarks)
 
         # 4. concat
-        pred = self.concat(global_x, local_x)
-
+        attr_pred, cate_pred = self.concat(global_x, local_x)
         losses = dict()
-        loss = self.loss(pred, label)
-        losses['loss'] = loss
+        cate = cate.view(-1)
+        losses['loss_cate'] = self.loss_cate(cate_pred, cate)
+        losses['loss_attr'] = self.loss_attr(attr_pred, attr)
 
         return losses
 
@@ -61,7 +58,7 @@ class RoIPredictor(BasePredictor):
         x = x.unsqueeze(0)
         landmarks = landmarks.unsqueeze(0)
 
-        pred = self.aug_test(x, landmarks)[0]
+        attr_pred, cate_pred = self.aug_test(x, landmarks)[0]
         return pred
 
 
@@ -72,8 +69,8 @@ class RoIPredictor(BasePredictor):
         global_x = global_x.view(global_x.size(0), -1)
         local_x = self.roi_pool(x, landmarks)
 
-        pred = self.concat(global_x, local_x)
-        return pred
+        attr_pred, cate_pred = self.concat(global_x, local_x)
+        return attr_pred, cate_pred
 
    
     def forward_test(self, x, landmarks):
@@ -82,8 +79,8 @@ class RoIPredictor(BasePredictor):
         global_x = global_x.view(global_x.size(0), -1)
         local_x = self.roi_pool(x, landmarks)
 
-        pred = self.concat(global_x, local_x)
-        return pred
+        attr_pred, cate_pred = self.concat(global_x, local_x)
+        return attr_pred, cate_pred
 
 
     def init_weights(self, pretrained=None):

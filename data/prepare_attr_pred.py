@@ -1,5 +1,6 @@
 import os
-PREFIX = 'Attr_Predict/Anno'
+import numpy as np
+PREFIX = 'Attr_Predict'
 
 
 def split_img():
@@ -21,11 +22,6 @@ def split_img():
     wf1.close()
     wf2.close()
     wf3.close()
-
-    train_img = open(os.path.join(PREFIX, 'train.txt')).readlines()
-    test_img = open(os.path.join(PREFIX, 'test.txt')).readlines()
-    val_img = open(os.path.join(PREFIX, 'val.txt')).readlines()
-    return train_img, test_img, val_img
 
 
 def split_attribute(train_img, test_img, val_img):
@@ -97,6 +93,41 @@ def split_bbox(train_img, test_img, val_img):
     write_lm(val_img, wf3)
 
 
+def split_category(train_img, test_img, val_img):
+    train_img = open(os.path.join(PREFIX, 'train.txt')).readlines()
+    test_img = open(os.path.join(PREFIX, 'test.txt')).readlines()
+    val_img = open(os.path.join(PREFIX, 'val.txt')).readlines()
+
+    wf1 = open(os.path.join(PREFIX, 'train_cate.txt'), 'w')
+    wf2 = open(os.path.join(PREFIX, 'test_cate.txt'), 'w')
+    wf3 = open(os.path.join(PREFIX, 'val_cate.txt'), 'w')
+
+    def gather_cate():
+        d = dict()
+        rf = open(os.path.join(PREFIX, 'Anno/list_category_img.txt')).readlines()
+        for i, line in enumerate(rf[2:]):
+            aline = line.strip('\n').split()
+            imgname, cate = aline[0], aline[1]
+            d[imgname] = cate
+
+        return d
+     
+    img2cate = gather_cate()
+    
+    def write_cate(imgs, wf):
+        #cate_ids = []
+        for i, line in enumerate(imgs):
+            imgname = line.strip('\n').split()[0]
+            cate_id = int(img2cate[imgname])
+            #cate_ids.append(cate_id)
+            wf.write('%d\n'%cate_id)   
+         
+
+    write_cate(train_img, wf1)
+    write_cate(test_img, wf2)
+    write_cate(val_img, wf3)
+
+
 def split_lms(train_img, test_img, val_img):
     rf = open(os.path.join(PREFIX, 'list_landmarks.txt')).readlines()
     wf1 = open(os.path.join(PREFIX, 'train_landmarks.txt'), 'w')
@@ -139,7 +170,13 @@ def split_lms(train_img, test_img, val_img):
 
 
 if __name__ == '__main__':
-    train_img, test_img, val_img = split_img()
-    split_attribute(train_img, test_img, val_img)
-    split_bbox(train_img, test_img, val_img)
-    split_lms(train_img, test_img, val_img)
+    #split_img()
+    train_img = open(os.path.join(PREFIX, 'train.txt')).readlines()
+    test_img = open(os.path.join(PREFIX, 'test.txt')).readlines()
+    val_img = open(os.path.join(PREFIX, 'val.txt')).readlines()
+
+    #split_attribute(train_img, test_img, val_img)
+    split_category(train_img, test_img, val_img)
+    #split_bbox(train_img, test_img, val_img)
+    #split_lms(train_img, test_img, val_img)
+

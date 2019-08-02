@@ -1,6 +1,6 @@
 import os
 
-PREFIX = 'In-shop/Anno'
+PREFIX = 'In-shop/'
 
 
 def split_img():

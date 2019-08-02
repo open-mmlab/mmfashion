@@ -15,7 +15,13 @@ class GlobalPredictor(BasePredictor):
                  backbone,
                  global_pool,
                  concat,
-                 loss=dict(
+                 loss_cate = dict(
+                     type='CELoss',
+                     weight=None,
+                     size_average=None,
+                     reduce=None,
+                     reduction='mean'),
+                 loss_attr=dict(
                      type='BCEWithLogitsLoss',
                      weight=None,
                      size_average=None,
@@ -31,11 +37,11 @@ class GlobalPredictor(BasePredictor):
         assert roi_pool is None
 
         self.concat = builder.build_concat(concat)
-        self.loss = builder.build_loss(loss)
+        self.loss_attr = builder.build_loss(loss_attr)
+        self.loss_cate = builder.build_loss(loss_cate)
 
 
-    def forward_train(self, x, label, landmarks):
-        assert landmarks is None
+    def forward_train(self, x, label, cate, landmarks):
         # 1. conv layers extract global features
         x = self.backbone(x)
 
@@ -44,18 +50,17 @@ class GlobalPredictor(BasePredictor):
         global_x = global_x.view(global_x.size(0), -1)
 
         # 4. concat
-        pred = self.concat(global_x)
+        attr_pred, cate_pred = self.concat(global_x)
 
         losses = dict()
-        loss = self.loss(pred, label)
-        losses['loss'] = loss
+        losses['loss_attr'] = self.loss_attr(attr_pred, label)
+        losses['loss_cate'] = self.loss_cate(cate_pred, cate.view(-1))
 
         return losses
 
 
     def simple_test(self, x, landmarks):
         """Test single image"""
-        assert landmarks is None
         x = x.unsqueeze(0)
         pred = self.aug_test(x)[0]
         return pred
@@ -63,7 +68,6 @@ class GlobalPredictor(BasePredictor):
 
     def aug_test(self, x, landmarks):
         """Test batch of images"""
-        assert landmarks is None
         x = self.backbone(x)
         global_x = self.global_pool(x)
         global_x = global_x.view(global_x.size(0), -1)
@@ -72,7 +76,6 @@ class GlobalPredictor(BasePredictor):
 
 
     def forward_test(self, x, landmarks):
-        assert landmarks is None
         x = self.backbone(x)
         global_x = self.global_pool(x)
         global_x = global_x.view(global_x.size(0), -1)

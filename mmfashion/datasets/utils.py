@@ -31,26 +31,6 @@ def to_tensor(data):
             type(data)))
 
 
-def get_basic_data(data):
-    imgs = Variable(data['img']).cuda()
-    target = Variable(data['label']).cuda()
-    landmark = Variable(data['landmark']).cuda()
-
-    return imgs, target, landmark
-
-
-def get_data(cfg, data):
-    if cfg.find_three:
-        anchor_data, pos_data, neg_data = data
-        anchor, anchor_lbl, anchor_lm = get_basic_data(anchor_data)
-        pos, pos_lbl, pos_lm = get_basic_data(pos_data)
-        neg, neg_lbl, neg_lm = get_basic_data(neg_data)
-        return anchor, anchor_lm, pos, pos_lm, neg, neg_lm
-
-    else:
-        return get_basic_data(data)
-
-
 def get_dataset(data_cfg):
     if data_cfg['type'] == 'In-shop':
         dataset = InShopDataset(data_cfg.img_path, data_cfg.img_file,
@@ -59,7 +39,8 @@ def get_dataset(data_cfg):
                                 data_cfg.find_three)
     elif data_cfg['type'] == 'Attr_Pred':
         dataset = AttrDataset(data_cfg.img_path, data_cfg.img_file,
-                              data_cfg.label_file, data_cfg.bbox_file,
+                              data_cfg.label_file,
+                              data_cfg.cate_file, data_cfg.bbox_file,
                               data_cfg.landmark_file, data_cfg.img_size)
     else:
         raise TypeError('type {} does not exist.'.format(data_cfg['type']))

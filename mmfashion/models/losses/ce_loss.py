@@ -6,7 +6,7 @@ from ..registry import LOSSES
 
 
 @LOSSES.register_module
-class CrossEntropyLoss(nn.Module):
+class CELoss(nn.Module):
 
     def __init__(self,
                  weight=None,
@@ -14,8 +14,11 @@ class CrossEntropyLoss(nn.Module):
                  ignore_index=-100,
                  reduce=None,
                  reduction='mean'):
-        super(CrossEntropyLoss, self).__init__()
+        super(CELoss, self).__init__()
+
+        self.weight = weight
         self.ignore_index = ignore_index
+        self.reduction = reduction
 
     def forward(self, input, target):
         return F.cross_entropy(

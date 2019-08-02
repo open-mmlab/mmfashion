@@ -1,3 +1,4 @@
+from __future__ import division
 from functools import partial
 
 import shutil
@@ -39,6 +40,7 @@ class AttrDataset(Dataset):
                  img_path,
                  img_file,
                  label_file,
+                 cate_file,
                  bbox_file,
                  landmark_file,
                  img_size,
@@ -58,8 +60,13 @@ class AttrDataset(Dataset):
         fp = open(img_file, 'r')
         self.img_list = [x.strip() for x in fp]
 
-        # read labels
+        # read labels and category annotations
         self.labels = np.loadtxt(label_file, dtype=np.float32)
+        # read categories
+        self.categories = []
+        catefn = open(cate_file).readlines()
+        for i, line in enumerate(catefn):
+            self.categories.append(line.strip('\n'))
 
         self.img_size = img_size
 
@@ -78,7 +85,7 @@ class AttrDataset(Dataset):
             self.landmarks = None
 
     def get_basic_item(self, idx):
-        img = Image.open(os.path.join(self.img_path, self.img_list[idx]))
+        img = Image.open(os.path.join(self.img_path, self.img_list[idx])).convert('RGB')
 
         width, height = img.size
         if self.with_bbox:
@@ -94,10 +101,11 @@ class AttrDataset(Dataset):
             bbox_w, bbox_h = self.img_size[0], self.img_size[1]
 
         img.thumbnail(self.img_size, Image.ANTIALIAS)
-        img = img.convert('RGB')
         img = self.transform(img)
 
         label = torch.from_numpy(self.labels[idx])
+        cate = torch.LongTensor([int(self.categories[idx])-1])
+
         landmark = []
         # compute the shiftness
         origin_landmark = self.landmarks[idx]
@@ -111,8 +119,7 @@ class AttrDataset(Dataset):
                 l_y = float(l_y) / height * self.img_size[1]
                 landmark.append(l_y)
         landmark = torch.from_numpy(np.array(landmark)).float()
-        data = {'img': img, 'label': label, 'landmark': landmark}
-
+        data = {'img': img, 'label': label, 'cate':cate, 'landmark': landmark}
         return data
 
     def __getitem__(self, idx):

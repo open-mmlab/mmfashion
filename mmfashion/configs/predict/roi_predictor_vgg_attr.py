@@ -2,8 +2,10 @@ import os
 
 # model settings
 arch = 'vgg'
-class_num = 1000
+attribute_num = 1000 # num of attributes
+category_num = 48 # num of categories
 img_size = (224, 224)
+
 model = dict(
     type='RoIPredictor',
     backbone=dict(type='Vgg'),
@@ -25,8 +27,15 @@ model = dict(
         type='Concat',
         inplanes=2 * 4096,
         inter_plane=4096,
-        num_classes=class_num),
-    loss=dict(
+        num_classes = attribute_num,
+        num_cate = category_num),
+    loss_cate = dict(
+        type='CELoss',
+        weight=None,
+        size_average=None,
+        reduce=None,
+        reduction='mean'),
+    loss_attr = dict(
         type='BCEWithLogitsLoss',
         weight=None,
         size_average=None,
@@ -48,6 +57,7 @@ data = dict(
         img_path=os.path.join(data_root, 'Img'),
         img_file=os.path.join(data_root, 'train.txt'),
         label_file=os.path.join(data_root, 'train_attr.txt'),
+        cate_file=os.path.join(data_root, 'train_cate.txt'),
         bbox_file=os.path.join(data_root, 'train_bbox.txt'),
         landmark_file=os.path.join(data_root, 'train_landmarks.txt'),
         img_size=img_size),
@@ -56,6 +66,7 @@ data = dict(
         img_path=os.path.join(data_root, 'Img'),
         img_file=os.path.join(data_root, 'test.txt'),
         label_file=os.path.join(data_root, 'test_attr.txt'),
+        cate_file=os.path.join(data_root, 'test_cate.txt'),
         bbox_file=os.path.join(data_root, 'test_bbox.txt'),
         landmark_file=os.path.join(data_root, 'test_landmarks.txt'),
         img_size=img_size),
@@ -64,6 +75,7 @@ data = dict(
         img_path=os.path.join(data_root, 'Img'),
         img_file=os.path.join(data_root, 'val.txt'),
         label_file=os.path.join(data_root, 'val_attr.txt'),
+        cate_file=os.path.join(data_root, 'val_cate.txt'),
         bbox_file=os.path.join(data_root, 'val_bbox.txt'),
         landmark_file=os.path.join(data_root, 'val_landmarks.txt'),
         img_size=img_size))
@@ -93,7 +105,7 @@ work_dir = 'checkpoint/Predict/vgg/attr_pred'
 print_interval = 20  # interval to print information
 save_interval = 5
 init_weights_from = 'checkpoint/vgg16.pth'
-resume_from = None
+resume_from = 'checkpoint/Predict/vgg/attr_pred/latest.pth'
 checkpoint = 'checkpoint/Predict/vgg/attr_pred/latest.pth'
 workflow = [('train', 40)]
 dist_params = dict(backend='nccl')

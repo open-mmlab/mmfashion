@@ -55,22 +55,20 @@ mmfashion
 ├── configs
 ├── data
 │   ├── Attr_Predict
-│   │   ├── Anno
-│   |   │   ├──train.txt
-|   |   |   ├──test.txt
-│   |   │   ├──val.txt
-│   |   │   ├──train_attr.txt
-│   |   │   ├── ...
+│   |   ├──train.txt
+|   |   ├──test.txt
+│   |   |──val.txt
+│   |   |──train_attr.txt
+│   |   ├── ...
 │   │   ├── Img
 │   |   │   ├──img
 │   │   ├── Eval
 │   |   │   ├── ...
 │   ├── In-shop
-│   │   ├── Anno
-│   |   │   ├──train.txt
-|   |   |   ├──query.txt
-│   |   │   ├──gallery.txt
-│   |   │   ├──train_labels.txt
+│   |   ├──train.txt
+|   |   ├──query.txt
+│   |   ├──gallery.txt
+│   |   ├──train_labels.txt
 │   |   │   ├── ...
 
 

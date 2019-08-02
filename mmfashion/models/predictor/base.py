@@ -29,19 +29,14 @@ class BasePredictor(nn.Module):
     @abstractmethod
     def forward_test(self, imgs, landmarks=None):
         pass
-        #num_augs = len(imgs)
-        #if num_augs == 1:  # single image test
-        #    return self.simple_test(imgs[0], landmarks[0])
-        #else:
-        #    return self.aug_test(imgs, landmarks)
 
     @abstractmethod
-    def forward_train(self, imgs, labels, landmarks):
+    def forward_train(self, imgs, labels, cates, landmarks):
         pass
 
-    def forward(self, img, label, landmarks=None, return_loss=True):
+    def forward(self, img, attr, cate, landmarks=None, return_loss=True):
         if return_loss:
-            return self.forward_train(img, label, landmarks)
+            return self.forward_train(img, attr, cate, landmarks)
         else:
             return self.forward_test(img, landmarks)
 

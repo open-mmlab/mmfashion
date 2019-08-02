@@ -42,6 +42,7 @@ class InShopDataset(Dataset):
                  bbox_file,
                  landmark_file,
                  img_size,
+                 roi_plane_size=None,
                  retrieve=False,
                  find_three=False,
                  idx2id=None):
@@ -77,6 +78,7 @@ class InShopDataset(Dataset):
         self.labels = np.loadtxt(label_file, dtype=np.float32)
 
         self.img_size = img_size
+        self.roi_plane_size = roi_plane_size 
 
         # load bbox
         if bbox_file:
@@ -97,39 +99,41 @@ class InShopDataset(Dataset):
     def get_basic_item(self, idx):
         img = Image.open(os.path.join(self.img_path, self.img_list[idx]))
         img_id = int(self.img_list[idx].split('/')[3].split('_')[1])
-
         width, height = img.size
+        
         if self.with_bbox:
             bbox_cor = self.bboxes[idx]
-            x1 = max(0, int(bbox_cor[0]) - 10)
-            y1 = max(0, int(bbox_cor[1]) - 10)
-            x2 = int(bbox_cor[2]) + 10
-            y2 = int(bbox_cor[3]) + 10
+            x1 = max(0, int(bbox_cor[0]) - 20)
+            y1 = max(0, int(bbox_cor[1]) - 20)
+            x2 = int(bbox_cor[2]) + 20
+            y2 = int(bbox_cor[3]) + 20
             bbox_w = x2 - x1
             bbox_h = y2 - y1
             img = img.crop(box=(x1, y1, x2, y2))
-            img.show()
         else:
             bbox_w, bbox_h = self.img_size[0], self.img_size[1]
 
         img.thumbnail(self.img_size, Image.ANTIALIAS)
         img = img.convert('RGB')
-        img = self.transform(img)
 
         label = torch.from_numpy(self.labels[idx])
         landmark = []
         # compute the shifted variety
+
         origin_landmark = self.landmarks[idx]
         for i, l in enumerate(origin_landmark):
             if i % 2 == 0:  # x
                 l_x = max(0, l - x1)
-                l_x = float(l_x) / width * self.img_size[0]
+                l_x = float(l_x) / width * self.roi_plane_size
                 landmark.append(l_x)
             else:  # y
                 l_y = max(0, l - y1)
-                l_y = float(l_y) / height * self.img_size[1]
+                l_y = float(l_y) / height * self.roi_plane_size
                 landmark.append(l_y)
+
         landmark = torch.from_numpy(np.array(landmark)).float()
+        
+        img = self.transform(img)
         data = {'img': img, 'label': label, 'id': img_id, 'landmark': landmark}
 
         return data
