@@ -13,18 +13,18 @@ class RoIPooling(nn.Module):
 
     def __init__(self,
                  pool_plane,
-                 inter_plane,
-                 outplanes,
+                 inter_channels,
+                 outchannels,
                  crop_size=7,
                  img_size=(224, 224),
                  num_lms=8,
                  roi_size=2):
         super(RoIPooling, self).__init__()
         self.maxpool = nn.MaxPool2d(pool_plane)
-        self.linear = nn.Linear(num_lms * inter_plane, outplanes)
+        self.linear = nn.Linear(num_lms * inter_channels, outchannels)
 
-        self.inter_plane = inter_plane
-        self.outplanes = outplanes
+        self.inter_channels = inter_channels
+        self.outchannels = outchannels
         self.num_lms = num_lms
         self.crop_size = crop_size
         self.img_width = img_size[0]
@@ -49,7 +49,7 @@ class RoIPooling(nn.Module):
         ab = torch.from_numpy(ab).float().cuda()
         size = torch.Size((batch_size, features.size(1), self.roi_size,
                            self.roi_size))
-
+        
         pooled = []
         for l in range(self.num_lms):
             tx = -1 + 2 * landmarks[:, l, 0] / float(self.crop_size)
@@ -61,9 +61,8 @@ class RoIPooling(nn.Module):
             one_pooled = nn.functional.grid_sample(
                 features, flowfield, padding_mode='border')
             one_pooled = self.maxpool(one_pooled).view(batch_size,
-                                                       self.inter_plane)
+                                                       self.inter_channels)
             pooled.append(one_pooled)
-
         pooled = torch.stack(pooled, dim=1).view(batch_size, -1)
         pooled = self.linear(pooled)
         return pooled

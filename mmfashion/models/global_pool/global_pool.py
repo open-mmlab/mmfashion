@@ -9,15 +9,17 @@ from ..registry import GLOBALPOOLING
 @GLOBALPOOLING.register_module
 class GlobalPooling(nn.Module):
 
-    def __init__(self, inplanes, pool_plane, inter_plane, outplanes):
+    def __init__(self, inplanes, pool_plane, inter_channels, outchannels ):
         super(GlobalPooling, self).__init__()
         self.avgpool = nn.AdaptiveAvgPool2d(inplanes)
-        self.maxpool = nn.MaxPool2d(pool_plane)
+
+        inter_plane = inter_channels[0]*inplanes[0]*inplanes[1]
+       
         self.classifier = nn.Sequential(
-            nn.Linear(inter_plane, outplanes),
+            nn.Linear(inter_plane, inter_channels[1]),
             nn.ReLU(True),
             nn.Dropout(),
-            nn.Linear(outplanes, outplanes),
+            nn.Linear(inter_channels[1], outchannels),
             nn.ReLU(True),
             nn.Dropout(),
         )
@@ -25,6 +27,5 @@ class GlobalPooling(nn.Module):
     def forward(self, x):
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
- 
         global_pool = self.classifier(x)
         return global_pool

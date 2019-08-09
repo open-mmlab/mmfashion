@@ -15,20 +15,24 @@ class RoIRetriever(BaseRetriever):
                  backbone,
                  global_pool,
                  concat,
-                 loss_cls=dict(
+                 loss_attr=dict(
                      type='BCEWithLogitsLoss',
                      weight=None,
                      size_average=None,
                      reduce=None,
                      reduction='mean'),
+                 loss_id=dict(
+                     type='CELoss',
+                     weight=None,
+                     size_average=None,
+                     reduce=None,
+                     reduction='mean'),
                  loss_retrieve=dict(
-                     type='TripletLoss',
-                     margin=1.0,
-                     use_sigmoid=True,
-                     size_average=True),
+                     type='CosineEmbeddingLoss',
+                     margin=0.2),
                  roi_pool=None,
                  pretrained=None):
-        super(BaseRetriever, self).__init__()
+        super(RoIRetriever, self).__init__()
 
         self.backbone = builder.build_backbone(backbone)
         self.global_pool = builder.build_global_pool(global_pool)
@@ -37,8 +41,11 @@ class RoIRetriever(BaseRetriever):
             self.roi_pool = builder.build_roi_pool(roi_pool)
 
         self.concat = builder.build_concat(concat)
-        self.loss_cls = builder.build_loss(loss_cls)
+
+        self.loss_attr = builder.build_loss(loss_attr)
+        self.loss_id = builder.build_loss(loss_id)
         self.loss_retrieve = builder.build_loss(loss_retrieve)
+
 
     def extract_feat(self, x, landmarks):
         x = self.backbone(x)
@@ -50,11 +57,13 @@ class RoIRetriever(BaseRetriever):
         else:
             local_x = None
 
-        embed, pred = self.concat(global_x, local_x)
-        return embed, pred
+        embed, attr_pred, id_pred = self.concat(global_x, local_x)
+        return embed, attr_pred, id_pred
+
 
     def forward_train(self,
                       anchor,
+                      id,
                       label,
                       pos,
                       neg,
@@ -62,28 +71,30 @@ class RoIRetriever(BaseRetriever):
                       pos_lm=None,
                       neg_lm=None):
         # extract features
-        anchor_embed, pred = self.extract_feat(anchor, anchor_lm)
-        pos_embed, _ = self.extract_feat(pos, pos_lm)
-        neg_embed, _ = self.extract_feat(neg, neg_lm)
-
+        anchor_embed, attr_pred, id_pred = self.extract_feat(anchor, anchor_lm)
+        pos_embed, _,_ = self.extract_feat(pos, pos_lm)
+        neg_embed, _,_ = self.extract_feat(neg, neg_lm)
+        
         losses = dict()
-
-        losses['loss_cls'] = self.loss_cls(pred, label)
-        losses['loss_retrieve'] = self.loss_retrieve(anchor_embed, pos_embed,
-                                                     neg_embed)
+        losses['loss_attr'] = self.loss_attr(attr_pred, label)
+        losses['loss_id'] = 0.1*self.loss_id(id_pred, id)
+        losses['loss_sim'] = 100*self.loss_retrieve(anchor_embed, pos_embed, torch.tensor(1.).cuda())
+        losses['loss_dissim'] = self.loss_retrieve(anchor_embed, neg_embed, torch.tensor(-1.).cuda())
+        
         return losses
+
 
     def simple_test(self, x, landmarks=None):
         """Test single image"""
         x = x.unsqueeze(0)
         if landmarks is not None:
             landmarks = landmarks.unsqueeze(0)
-        embed, pred = self.extract_feat(x, landmarks)
+        embed, attr_pred, id_pred = self.extract_feat(x, landmarks)
         return embed
 
     def aug_test(self, x, landmarks=None):
         """Test batch of images"""
-        embed, pred = self.extract_feat(x, landmarks)
+        embed, attr_pred, id_pred = self.extract_feat(x, landmarks)
         return embed
 
     def init_weights(self, pretrained=None):

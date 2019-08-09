@@ -84,7 +84,6 @@ class Evaluator(object):
                                               query_feat,
                                               gallery_embeds)
             
-            print('single_recall', single_recall)
             for k in self.topks:
                 self.recall[k].append(single_recall[k])
             self.show_results()

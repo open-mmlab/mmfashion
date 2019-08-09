@@ -34,8 +34,11 @@ def to_tensor(data):
 def get_dataset(data_cfg):
     if data_cfg['type'] == 'In-shop':
         dataset = InShopDataset(data_cfg.img_path, data_cfg.img_file,
-                                data_cfg.label_file, data_cfg.bbox_file,
+                                data_cfg.label_file, 
+                                data_cfg.id_file,
+                                data_cfg.bbox_file,
                                 data_cfg.landmark_file, data_cfg.img_size,
+                                data_cfg.roi_plane_size,
                                 data_cfg.find_three)
     elif data_cfg['type'] == 'Attr_Pred':
         dataset = AttrDataset(data_cfg.img_path, data_cfg.img_file,

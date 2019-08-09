@@ -42,6 +42,7 @@ def parse_losses(losses):
 
 def batch_processor(model, data, train_mode):
     anchor = data['anchor']
+    id = data['id']
     label = data['label']
     pos = data['pos']
     neg = data['neg']
@@ -49,7 +50,7 @@ def batch_processor(model, data, train_mode):
     pos_lm = data['pos_lm']
     neg_lm = data['neg_lm']
 
-    losses = model(anchor, anchor_lm, label, pos, pos_lm, neg, neg_lm)
+    losses = model(anchor, id, label, pos, neg, anchor_lm, pos_lm, neg_lm)
     loss, log_vars = parse_losses(losses)
 
     outputs = dict(loss=loss, log_vars=log_vars, num_samples=len(anchor.data))
@@ -99,8 +100,8 @@ def _non_dist_train(model, dataset, cfg, validate=False):
     runner.register_training_hooks(cfg.lr_config, cfg.optimizer_config,
                                    cfg.checkpoint_config, cfg.log_config)
 
-    if cfg.resume_from:
+    if cfg.resume_from :
         runner.resume(cfg.resume_from)
-    elif cfg.load_from:
+    elif cfg.load_from :
         runner.load_checkpoint(cfg.load_from)
     runner.run(data_loaders, cfg.workflow, cfg.total_epochs)

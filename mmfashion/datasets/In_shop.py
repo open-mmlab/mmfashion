@@ -39,15 +39,16 @@ class InShopDataset(Dataset):
                  img_path,
                  img_file,
                  label_file,
+                 id_file,
                  bbox_file,
                  landmark_file,
                  img_size,
-                 roi_plane_size=None,
+                 roi_plane_size=7,
                  retrieve=False,
                  find_three=False,
                  idx2id=None):
         self.img_path = img_path
-
+        
         normalize = transforms.Normalize(
             mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
         self.transform = transforms.Compose([
@@ -62,14 +63,16 @@ class InShopDataset(Dataset):
         self.img_list = [x.strip() for x in fp]
 
         # collect id
-        self.id2idx, self.idx2id = {}, {}
         self.ids = []
-        for idx, img_name in enumerate(self.img_list):
-            img_id = int(img_name.split('/')[3].split('_')[1])
+        id_fn = open(id_file).readlines()
+        self.id2idx, self.idx2id = {}, {}
+        for idx, line in enumerate(id_fn):
+            img_id = int(line.strip('\n'))
+            self.ids.append(img_id)
             self.idx2id[idx] = img_id
+
             if img_id not in self.id2idx:
                 self.id2idx[img_id] = [idx]
-                self.ids.append(img_id)
             else:
                 self.id2idx[img_id].append(idx)
         fp.close()
@@ -96,9 +99,10 @@ class InShopDataset(Dataset):
 
         self.find_three = find_three
 
+
     def get_basic_item(self, idx):
         img = Image.open(os.path.join(self.img_path, self.img_list[idx]))
-        img_id = int(self.img_list[idx].split('/')[3].split('_')[1])
+        img_id = self.ids[idx]
         width, height = img.size
         
         if self.with_bbox:
@@ -132,43 +136,43 @@ class InShopDataset(Dataset):
                 landmark.append(l_y)
 
         landmark = torch.from_numpy(np.array(landmark)).float()
-        
         img = self.transform(img)
-        data = {'img': img, 'label': label, 'id': img_id, 'landmark': landmark}
-
+        data = {'img': img, 'id': img_id, 'label': label, 'landmark': landmark}
         return data
+
 
     def get_three_items(self, idx):
         """return anchor, positive and negative
         """
         anchor_img = self.img_list[idx]
         anchor_data = self.get_basic_item(idx)
-        anchor_id = int(self.img_list[idx].split('/')[3].split('_')[1])
+        anchor_id = self.ids[idx]
 
         # get positive example
         pos_idxes = self.id2idx[anchor_id]
         if len(pos_idxes) == 1:  # just one item
             pos_data = anchor_data
         else:
-            random_pos_idx = pos_idxes[random.randint(0, len(pos_idxes) - 1)]
+            random_pos_idx = pos_idxes[random.randint(0, len(pos_idxes)-1)]
             while random_pos_idx == idx:
                 random_pos_idx = pos_idxes[random.randint(
                     0,
-                    len(pos_idxes) - 1)]
+                    len(pos_idxes)-1)]
             pos_data = self.get_basic_item(random_pos_idx)
 
         # get negative example
         id_len = len(self.ids)
-        random_id = self.ids[random.randint(0, id_len - 1)]
+        random_id = self.ids[random.randint(0, id_len-1)]
         while random_id == anchor_id:
-            random_id = self.ids[random.randint(0, id_len - 1)]
+            random_id = self.ids[random.randint(0, id_len-1)]
         neg_id = random_id
         neg_idxes = self.id2idx[neg_id]
-        neg_idx = random.randint(0, len(neg_idxes) - 1)
+        neg_idx = neg_idxes[random.randint(0, len(neg_idxes) - 1)]
         neg_data = self.get_basic_item(neg_idx)
 
         data = {
             'anchor': anchor_data['img'],
+            'id': anchor_data['id'],
             'label': anchor_data['label'],
             'pos': pos_data['img'],
             'neg': neg_data['img'],

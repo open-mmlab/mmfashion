@@ -62,8 +62,8 @@ class GlobalPredictor(BasePredictor):
     def simple_test(self, x, landmarks):
         """Test single image"""
         x = x.unsqueeze(0)
-        pred = self.aug_test(x)[0]
-        return pred
+        attr_pred, cate_pred = self.aug_test(x)[0]
+        return attr_pred, cate_pred
 
 
     def aug_test(self, x, landmarks):
@@ -71,16 +71,16 @@ class GlobalPredictor(BasePredictor):
         x = self.backbone(x)
         global_x = self.global_pool(x)
         global_x = global_x.view(global_x.size(0), -1)
-        pred = self.concat(global_x)
-        return pred
+        attr_pred, cate_pred = self.concat(global_x)
+        return attr_pred, cate_pred
 
 
     def forward_test(self, x, landmarks):
         x = self.backbone(x)
         global_x = self.global_pool(x)
         global_x = global_x.view(global_x.size(0), -1)
-        pred = self.concat(global_x)
-        return pred
+        attr_pred, cate_pred = self.concat(global_x)
+        return attr_pred, cate_pred
 
 
     def init_weights(self, pretrained=None):

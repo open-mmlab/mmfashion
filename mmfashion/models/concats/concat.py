@@ -7,11 +7,20 @@ from ..registry import CONCATS
 @CONCATS.register_module
 class Concat(nn.Module):
 
-    def __init__(self, inplanes, inter_plane, num_classes, num_cate=48, retrieve=False):
+    def __init__(self, inchannels, inter_channels, num_attr, num_cate=48, retrieve=False):
         super(Concat, self).__init__()
-        self.fc_fusion = nn.Linear(inplanes, inter_plane)
-        self.fc = nn.Linear(inter_plane, num_classes)
-        self.cate_fc = nn.Linear(inter_plane, num_cate)
+        # concat global and local
+        self.fc_fusion = nn.Linear(inchannels, inter_channels[0]) 
+        
+        # attribute prediction
+        self.fc_attr = nn.Linear(inter_channels[0], num_attr)
+        
+        # project feature embeds to another plane: self.fc_cate[0]
+        # category/id prediction: self.fc_cate[1] 
+        self.fc_cate = nn.Sequential(
+                          nn.Linear(inter_channels[0], inter_channels[1]),
+                          nn.Linear(inter_channels[1], num_cate)
+                          )
 
         self.retrieve = retrieve
 
@@ -23,10 +32,12 @@ class Concat(nn.Module):
         else:
             x = global_x
 
-        attr_pred = self.fc(x)
-        cate_pred = self.cate_fc(x)
- 
+        attr_pred = self.fc_attr(x)
+
         if self.retrieve:
-            return x, attr_pred
+            embed = self.fc_cate[0](x)
+            id_pred = self.fc_cate[1](embed)
+            return embed, attr_pred, id_pred
         else:
+            cate_pred = self.fc_cate(x)
             return attr_pred, cate_pred

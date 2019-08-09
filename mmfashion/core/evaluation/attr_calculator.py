@@ -16,7 +16,7 @@ class Calculator(object):
         """
         self.collector = dict()
         self.total = 0  # the number of total predictions
-        num_classes = cfg.class_num
+        num_classes = cfg.attribute_num
         for i in tops_type:
             tp, tn, fp, fn = np.zeros(num_classes), np.zeros(
                 num_classes), np.zeros(num_classes), np.zeros(num_classes)
@@ -61,7 +61,7 @@ class Calculator(object):
         elif isinstance(pred, np.ndarray):
             data = pred
         else:
-            raise TypeError('type {} cannot be calculated.'.format(type(data)))
+            raise TypeError('type {} cannot be calculated.'.format(type(pred)))
 
         for i in range(pred.size(0)):
             self.total += 1

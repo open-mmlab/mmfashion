@@ -34,21 +34,22 @@ class BaseRetriever(nn.Module):
             return self.aug_test(imgs, landmarks)
 
     @abstractmethod
-    def forward_train(self, anchor, label, pos, neg, anchor_lm, pos_lm,
+    def forward_train(self, anchor, id, label, pos, neg, anchor_lm, pos_lm,
                       neg_lm):
         pass
 
     def forward(self,
                 anchor,
-                anchor_lm,
+                id=None,
                 label=None,
                 pos=None,
-                pos_lm=None,
                 neg=None,
+                anchor_lm=None,
+                pos_lm=None,
                 neg_lm=None,
                 return_loss=True):
         if return_loss:
-            return self.forward_train(anchor, label, pos, neg, anchor_lm,
+            return self.forward_train(anchor, id, label, pos, neg, anchor_lm,
                                       pos_lm, neg_lm)
         else:
             return self.forward_test(anchor, anchor_lm)

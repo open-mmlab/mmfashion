@@ -46,8 +46,7 @@ class RoIPredictor(BasePredictor):
         # 4. concat
         attr_pred, cate_pred = self.concat(global_x, local_x)
         losses = dict()
-        cate = cate.view(-1)
-        losses['loss_cate'] = self.loss_cate(cate_pred, cate)
+        losses['loss_cate'] = self.loss_cate(cate_pred, cate.view(-1))
         losses['loss_attr'] = self.loss_attr(attr_pred, attr)
 
         return losses
@@ -59,7 +58,7 @@ class RoIPredictor(BasePredictor):
         landmarks = landmarks.unsqueeze(0)
 
         attr_pred, cate_pred = self.aug_test(x, landmarks)[0]
-        return pred
+        return attr_pred, cate_pred
 
 
     def aug_test(self, x, landmarks=None):
