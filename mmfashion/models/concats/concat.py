@@ -15,12 +15,10 @@ class Concat(nn.Module):
     def forward(self, global_x, local_x=None):
         if local_x is not None:
             x = torch.cat((global_x, local_x), 1)
-            print('concat', x.size())
             x = self.fc_fusion(x)
         else:
             x = global_x
 
-        x = self.fc_fusion(x)
         return x
 
     def init_weights(self):

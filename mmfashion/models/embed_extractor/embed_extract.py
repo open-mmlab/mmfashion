@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from .. import builder
+from ..builder import build_loss
 from ..registry import EMBEDEXTRACTOR
 
 @EMBEDEXTRACTOR.register_module
@@ -12,6 +12,7 @@ class EmbedExtractor(nn.Module):
                 inter_channels,
                 loss_id=dict(
                         type='CELoss',
+                        ratio=1,
                         weight=None,
                         size_average=None,
                         reduce=None,
@@ -24,22 +25,22 @@ class EmbedExtractor(nn.Module):
        self.bn = nn.BatchNorm1d(inter_channels[0], inter_channels[1])
        self.id_linear = nn.Linear(inter_channels[0], inter_channels[1])
  
-       self.loss_id = builder.build_loss(loss_id)
+       self.loss_id = build_loss(loss_id)
        if loss_triplet is not None:
-          self.loss_triplet = builder.build_loss(loss_triplet)
+          self.loss_triplet = build_loss(loss_triplet)
 
 
    def forward_train(self, x, id, triplet, pos, neg):
-       losses = dict()
        embed = self.embed_linear(x)
        id_pred = self.id_linear(embed)
 
-       losses['loss_id'] = self.loss_id(id_pred, id)
+       loss_id = self.loss_id(id_pred, id)
        if triplet:
           pos_embed = self.embed_linear(pos)
           neg_embed = self.embed_linear(neg)
-          losses['loss_triplet'] = self.loss_triplet(embed, pos_embed, neg_embed)
-       return losses
+          loss_id += self.loss_triplet(embed, pos_embed, neg_embed)
+       
+       return loss_id
 
    def forward_test(self, x):
        embed = self.embed_linear(x)
@@ -49,9 +50,10 @@ class EmbedExtractor(nn.Module):
 
    def forward(self, x, id, train=False, triplet=False, pos=None, neg=None):
        if train:
-          return forward_train(x, id, triplet, pos, neg)
+          return self.forward_train(x, id, triplet, pos, neg)
        else:
-          return forward_test(x)          
+          return self.forward_test(x)          
+
 
    def init_weights(self):
        nn.init.xavier_uniform_(self.embed_linear.weight)

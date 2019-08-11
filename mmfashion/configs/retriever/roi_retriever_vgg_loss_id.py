@@ -31,7 +31,7 @@ model = dict(
         type='EmbedExtractor',
         inchannels = 4096,
         inter_channels = [256, id_num],
-        loss_id = dict(type='CELoss'),
+        loss_id = dict(type='CELoss', ratio=1),
         loss_triplet=None),
     attr_predictor = None,  
     pretrained='checkpoint/vgg16.pth')
@@ -106,12 +106,12 @@ log_config = dict(
 
 start_epoch = 0
 total_epochs = 100
-gpus = dict(train=[0,1,2,3], test=[0])
+gpus = dict(train=[0,1], test=[0])
 work_dir = 'checkpoint/Retrieve/vgg'
 print_interval = 20  # interval to print information
 resume_from = None
 load_from = None #'checkpoint/Retrieve/vgg/latest.pth'
-init_weights_from = 'checkpoint/Predict/vgg/latest.pth'
+init_weights_from = 'checkpoint/vgg16.pth'
 workflow = [('train', 100)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

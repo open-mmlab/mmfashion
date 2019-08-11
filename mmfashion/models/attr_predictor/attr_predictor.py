@@ -24,6 +24,7 @@ class AttrPredictor(nn.Module):
         x = self.linear(x)
         if train:
            loss_attr = self.loss_attr(x, target)
+           return loss_attr
         else:
            return x
     
