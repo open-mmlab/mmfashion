@@ -25,6 +25,7 @@ class Calculator(object):
             self.collector['top%s' % (str(i))]['tn'] = tn
             self.collector['top%s' % (str(i))]['fp'] = fp
             self.collector['top%s' % (str(i))]['fn'] = fn
+
         """ precision = true_positive/(true_positive+false_positive)"""
         self.precision = dict()
         """ accuracy = (true_positive+true_negative)/total_precision"""

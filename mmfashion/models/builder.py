@@ -2,6 +2,7 @@ import mmcv
 from torch import nn
 
 from .registry import (BACKBONES, GLOBALPOOLING, ROIPOOLING, CONCATS,
+                       EMBEDEXTRACTOR, ATTRPREDICTOR,
                        PREDICTOR, RETRIEVER, LOSSES)
 
 
@@ -46,6 +47,12 @@ def build_roi_pool(cfg):
 
 def build_concat(cfg):
     return build(cfg, CONCATS)
+
+def build_attr_predictor(cfg):
+    return build(cfg, ATTRPREDICTOR)
+
+def build_embed_extractor(cfg):
+    return build(cfg, EMBEDEXTRACTOR)
 
 
 def build_loss(cfg):

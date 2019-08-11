@@ -15,36 +15,38 @@ class RoIRetriever(BaseRetriever):
                  backbone,
                  global_pool,
                  concat,
-                 loss_attr=dict(
-                     type='BCEWithLogitsLoss',
-                     weight=None,
-                     size_average=None,
-                     reduce=None,
-                     reduction='mean'),
-                 loss_id=dict(
-                     type='CELoss',
-                     weight=None,
-                     size_average=None,
-                     reduce=None,
-                     reduction='mean'),
-                 loss_retrieve=dict(
-                     type='CosineEmbeddingLoss',
-                     margin=0.2),
+                 embed_extractor,
+                 attr_predictor=dict(
+                     type='AttrPredictor',
+                     inchannels=4096,
+                     outchannels=463,
+                     loss_attr=dict(
+                          type='BCEWithLogitsLoss',
+                          weight=None,
+                          size_average=None,
+                          reduce=None,
+                          reduction='mean')),
                  roi_pool=None,
                  pretrained=None):
         super(RoIRetriever, self).__init__()
 
         self.backbone = builder.build_backbone(backbone)
         self.global_pool = builder.build_global_pool(global_pool)
-
+        
         if roi_pool is not None:
             self.roi_pool = builder.build_roi_pool(roi_pool)
+        else:
+            self.roi_pool = None
 
         self.concat = builder.build_concat(concat)
-
-        self.loss_attr = builder.build_loss(loss_attr)
-        self.loss_id = builder.build_loss(loss_id)
-        self.loss_retrieve = builder.build_loss(loss_retrieve)
+        self.embed_extractor = builder.build_embed_extractor(embed_extractor)
+ 
+        if attr_predictor is not None:
+           self.attr_predictor = builder.build_attr_predictor(attr_predictor)
+        else:
+           self.attr_predictor = None
+   
+        self.init_weights(pretrained=pretrained)
 
 
     def extract_feat(self, x, landmarks):
@@ -57,29 +59,39 @@ class RoIRetriever(BaseRetriever):
         else:
             local_x = None
 
-        embed, attr_pred, id_pred = self.concat(global_x, local_x)
-        return embed, attr_pred, id_pred
+        x = self.concat(global_x, local_x)
+        return x
 
 
     def forward_train(self,
                       anchor,
                       id,
-                      label,
-                      pos,
-                      neg,
+                      attr=None,
+                      pos=None,
+                      neg=None,
                       anchor_lm=None,
                       pos_lm=None,
                       neg_lm=None):
-        # extract features
-        anchor_embed, attr_pred, id_pred = self.extract_feat(anchor, anchor_lm)
-        pos_embed, _,_ = self.extract_feat(pos, pos_lm)
-        neg_embed, _,_ = self.extract_feat(neg, neg_lm)
         
         losses = dict()
-        losses['loss_attr'] = self.loss_attr(attr_pred, label)
-        losses['loss_id'] = 0.1*self.loss_id(id_pred, id)
-        losses['loss_sim'] = 100*self.loss_retrieve(anchor_embed, pos_embed, torch.tensor(1.).cuda())
-        losses['loss_dissim'] = self.loss_retrieve(anchor_embed, neg_embed, torch.tensor(-1.).cuda())
+        
+        # extract features
+        anchor_feat = self.extract_feat(anchor, anchor_lm)
+ 
+        if pos is not None:
+           pos_feat = self.extract_feat(pos, pos_lm)
+           neg_feat = self.extract_feat(neg, neg_lm)
+           losses['loss_id'] = self.embed_extractor(anchor_feat, 
+                                                    id,
+                                                    train=True,
+                                                    triplet=True,
+                                                    pos=pos_feat, neg=neg_feat)
+        
+        else:
+           losses['loss_id'] = self.embed_extractor(anchor_feat, id)
+
+        if attr is not None:
+           losses['loss_attr'] = self.attr_predictor(anchor_feat, attr)
         
         return losses
 
@@ -89,20 +101,27 @@ class RoIRetriever(BaseRetriever):
         x = x.unsqueeze(0)
         if landmarks is not None:
             landmarks = landmarks.unsqueeze(0)
-        embed, attr_pred, id_pred = self.extract_feat(x, landmarks)
+        feat = self.extract_feat(x, landmarks)
+        embed = self.embed_extractor(feat)
         return embed
 
     def aug_test(self, x, landmarks=None):
         """Test batch of images"""
-        embed, attr_pred, id_pred = self.extract_feat(x, landmarks)
+        feat = self.extract_feat(x, landmarks)
+        embed = self.embed_extractor(x)
         return embed
 
     def init_weights(self, pretrained=None):
         super(RoIRetriever, self).init_weights(pretrained)
         self.backbone.init_weights(pretrained=pretrained)
-        self.global_pool.init_weights(pretrained=pretrained)
+        self.global_pool.init_weights()
 
-        if self.with_roi_pool:
+        if self.roi_pool is not None:
             self.roi_pool.init_weights()
+          
+        self.concat.init_weights()
+        self.embed_extractor.init_weights()
 
-        self.concat.init_weights(pretrained=pretrained)
+        if self.attr_predictor is not None:
+           self.attr_predictor.init_weights()   
+         

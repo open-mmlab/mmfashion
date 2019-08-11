@@ -1,6 +1,6 @@
 import os
 
-PREFIX = 'In-shop/'
+PREFIX = 'In-shop/Anno'
 
 
 def split_img():
@@ -59,7 +59,7 @@ def split_label():
 
 def split_ids():
     id2label = dict()
-    rf = open(os.path.join(PREFIX, 'Anno/list_item_inshop.txt')).readlines()
+    rf = open(os.path.join(PREFIX, 'list_item_inshop.txt')).readlines()
     for i, line in enumerate(rf[1:]):
         id2label[line.strip('\n')] = i
 
@@ -70,12 +70,12 @@ def split_ids():
              wf.write('%s\n'%str(label))
         wf.close()
 
-    rf1 = open(os.path.join(PREFIX, 'Anno/train_img.txt')).readlines()
-    rf2 = open(os.path.join(PREFIX, 'Anno/query_img.txt')).readlines()
-    rf3 = open(os.path.join(PREFIX, 'Anno/gallery_img.txt')).readlines()
-    wf1 = open(os.path.join(PREFIX, 'Anno/train_id.txt'), 'w')
-    wf2 = open(os.path.join(PREFIX, 'Anno/query_id.txt'), 'w')
-    wf3 = open(os.path.join(PREFIX, 'Anno/gallery_id.txt'), 'w')
+    rf1 = open(os.path.join(PREFIX, 'train_img.txt')).readlines()
+    rf2 = open(os.path.join(PREFIX, 'query_img.txt')).readlines()
+    rf3 = open(os.path.join(PREFIX, 'gallery_img.txt')).readlines()
+    wf1 = open(os.path.join(PREFIX, 'train_id.txt'), 'w')
+    wf2 = open(os.path.join(PREFIX, 'query_id.txt'), 'w')
+    wf3 = open(os.path.join(PREFIX, 'gallery_id.txt'), 'w')
     write_id(rf1, wf1)
     write_id(rf2, wf2)
     write_id(rf3, wf3)

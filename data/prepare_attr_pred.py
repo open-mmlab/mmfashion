@@ -1,6 +1,6 @@
 import os
 import numpy as np
-PREFIX = 'Attr_Predict'
+PREFIX = 'Attr_Predict/Anno'
 
 
 def split_img():
@@ -104,7 +104,7 @@ def split_category(train_img, test_img, val_img):
 
     def gather_cate():
         d = dict()
-        rf = open(os.path.join(PREFIX, 'Anno/list_category_img.txt')).readlines()
+        rf = open(os.path.join(PREFIX, 'list_category_img.txt')).readlines()
         for i, line in enumerate(rf[2:]):
             aline = line.strip('\n').split()
             imgname, cate = aline[0], aline[1]
@@ -170,13 +170,13 @@ def split_lms(train_img, test_img, val_img):
 
 
 if __name__ == '__main__':
-    #split_img()
+    split_img()
     train_img = open(os.path.join(PREFIX, 'train.txt')).readlines()
     test_img = open(os.path.join(PREFIX, 'test.txt')).readlines()
     val_img = open(os.path.join(PREFIX, 'val.txt')).readlines()
 
-    #split_attribute(train_img, test_img, val_img)
+    split_attribute(train_img, test_img, val_img)
     split_category(train_img, test_img, val_img)
-    #split_bbox(train_img, test_img, val_img)
-    #split_lms(train_img, test_img, val_img)
+    split_bbox(train_img, test_img, val_img)
+    split_lms(train_img, test_img, val_img)
 

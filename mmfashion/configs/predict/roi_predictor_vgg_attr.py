@@ -105,8 +105,8 @@ work_dir = 'checkpoint/Predict/vgg/attr_pred'
 print_interval = 20  # interval to print information
 save_interval = 5
 init_weights_from = 'checkpoint/vgg16.pth'
-resume_from = 'checkpoint/Predict/vgg/attr_pred/latest.pth'
-checkpoint = 'checkpoint/Predict/vgg/attr_pred/latest.pth'
+resume_from = 'checkpoint/Predict/vgg/latest.pth'
+checkpoint = 'checkpoint/Predict/vgg/latest.pth'
 workflow = [('train', 40)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

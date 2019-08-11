@@ -137,7 +137,7 @@ class InShopDataset(Dataset):
 
         landmark = torch.from_numpy(np.array(landmark)).float()
         img = self.transform(img)
-        data = {'img': img, 'id': img_id, 'label': label, 'landmark': landmark}
+        data = {'img': img, 'id': img_id, 'attr': label, 'landmark': landmark}
         return data
 
 
@@ -171,9 +171,9 @@ class InShopDataset(Dataset):
         neg_data = self.get_basic_item(neg_idx)
 
         data = {
-            'anchor': anchor_data['img'],
+            'img': anchor_data['img'],
             'id': anchor_data['id'],
-            'label': anchor_data['label'],
+            'attr': anchor_data['label'],
             'pos': pos_data['img'],
             'neg': neg_data['img'],
             'anchor_lm': anchor_data['landmark'],

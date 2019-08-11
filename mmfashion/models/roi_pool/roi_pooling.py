@@ -21,7 +21,10 @@ class RoIPooling(nn.Module):
                  roi_size=2):
         super(RoIPooling, self).__init__()
         self.maxpool = nn.MaxPool2d(pool_plane)
-        self.linear = nn.Linear(num_lms * inter_channels, outchannels)
+        self.linear = nn.Sequential(
+                      nn.Linear(num_lms * inter_channels, outchannels),
+                      nn.ReLU(True),
+                      nn.Dropout())
 
         self.inter_channels = inter_channels
         self.outchannels = outchannels

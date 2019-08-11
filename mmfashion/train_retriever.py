@@ -19,7 +19,7 @@ def parse_args():
     parser.add_argument(
         '--config',
         help='train config file path',
-        default='configs/retriever/roi_retriever_resnet.py')
+        default='configs/retriever/roi_retriever_vgg_loss_id.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument(
         '--resume_from', help='the checkpoint file to resume from')
