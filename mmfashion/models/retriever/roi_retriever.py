@@ -102,13 +102,13 @@ class RoIRetriever(BaseRetriever):
         if landmarks is not None:
             landmarks = landmarks.unsqueeze(0)
         feat = self.extract_feat(x, landmarks)
-        embed = self.embed_extractor(feat)
+        embed = self.embed_extractor.forward_test(feat)
         return embed
 
     def aug_test(self, x, landmarks=None):
         """Test batch of images"""
         feat = self.extract_feat(x, landmarks)
-        embed = self.embed_extractor(x)
+        embed = self.embed_extractor.forward_test(feat)
         return embed
 
     def init_weights(self, pretrained=None):

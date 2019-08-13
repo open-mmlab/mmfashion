@@ -26,9 +26,9 @@ model = dict(
     concat=dict(
         type='Concat',
         inchannels=2 * 4096,
-        inter_channels=[4096, 256],
-        num_attr = attribute_num,
-        num_cate = category_num),
+        outchannels=4096),
+    attr_predictor=dict(
+
     loss_cate = dict(
         type='CELoss',
         weight=None,

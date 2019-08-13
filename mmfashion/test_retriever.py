@@ -18,7 +18,7 @@ def parse_args():
     parser.add_argument(
         '--config',
         help='train config file path',
-        default='configs/retriever/roi_retriever_vgg.py')
+        default='configs/retriever/roi_retriever_vgg_loss_id.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument(
         '--checkpoint',
@@ -52,6 +52,9 @@ def main():
         distributed = True
         init_dist(args.launcher, **cfg.dist_params)
 
+    if args.checkpoint is not None:
+       cfg.load_from = args.checkpoint
+
     # init logger
     logger = get_root_logger(cfg.log_level)
     logger.info('Distributed training: {}'.format(distributed))
@@ -67,7 +70,8 @@ def main():
     model = build_retriever(cfg.model)
     print('model built')
 
-    checkpoint = load_checkpoint(model, args.checkpoint, map_location='cpu')
+    checkpoint = load_checkpoint(model, cfg.load_from, map_location='cpu')
+    print('load checkpoint from: {}'.format(cfg.load_from))
 
     # test
     test_retriever(

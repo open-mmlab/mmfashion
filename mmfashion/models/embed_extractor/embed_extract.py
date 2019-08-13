@@ -42,10 +42,11 @@ class EmbedExtractor(nn.Module):
        
        return loss_id
 
+
    def forward_test(self, x):
        embed = self.embed_linear(x)
-       id_pred = self.id_linear(embed)
-       return id_pred
+       #id_pred = self.id_linear(embed)
+       return embed
 
 
    def forward(self, x, id, train=False, triplet=False, pos=None, neg=None):

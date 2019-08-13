@@ -19,11 +19,11 @@ class Evaluator(object):
         for k in topks:
             self.recall[k] = []
 
-        self.query_dict = self.load_dict(query_dict_fn)
-        self.gallery_dict = self.load_dict(gallery_dict_fn)
+        self.query_dict, self.query_id2idx = self.get_id_dict(query_dict_fn)
+        self.gallery_dict, self.gallery_id2idx = self.get_id_dict(gallery_dict_fn)
 
-        self.query_id2idx = self.inverse_dict(self.query_dict)
-        self.gallery_id2idx = self.inverse_dict(self.gallery_dict)
+        #self.query_id2idx = self.inverse_dict(self.query_dict)
+        #self.gallery_id2idx = self.inverse_dict(self.gallery_dict)
 
 
     def load_dict(self, fn):
@@ -91,14 +91,31 @@ class Evaluator(object):
         self.show_results()
 
 
+    def get_id_dict(self,id_file):
+        ids = []
+        id_fn = open(id_file).readlines()
+        id2idx, idx2id = {}, {}
+        for idx, line in enumerate(id_fn):
+           img_id = int(line.strip('\n'))
+           ids.append(img_id)
+           idx2id[idx] = img_id
+           
+           if img_id not in id2idx:
+              id2idx[img_id] = [idx]
+           else:
+              id2idx[img_id].append(idx)
+        return idx2id, id2idx
+
+
 if __name__ == "__main__":
    query_embeds = sio.loadmat('query_embeds.mat')['embeds']
    print('query_embeds', query_embeds.shape)
 
-   gallery_embeds = sio.loadmat('query_embeds.mat')['embeds']
+   gallery_embeds = sio.loadmat('gallery_embeds.mat')['embeds']
    print('gallery_embeds', gallery_embeds.shape)
 
-   query_dict = 'datasets/In-shop/Anno/query_idx2id.txt'
-   gallery_dict = 'datasets/In-shop/Anno/query_idx2id.txt'
-   e = Evaluator(query_dict, gallery_dict)
+   
+   query_dict_fn = '/home/zwliu/FashionComp/mmfashion-prerelease/data/In-shop/Anno/query_id.txt'
+   gallery_dict_fn = '/home/zwliu/FashionComp/mmfashion-prerelease/data/In-shop/Anno/gallery_id.txt'
+   e = Evaluator(query_dict_fn, gallery_dict_fn)
    e.evaluate(query_embeds, gallery_embeds)

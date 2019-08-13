@@ -59,7 +59,7 @@ def _process_embeds(dataset, model, cfg):
     with torch.no_grad():
         for batch_idx, data in enumerate(data_loader):
             embed = model(data['img'], data['landmark'], return_loss=False)
-            embeds.append(torch.sigmoid(embed))
+            embeds.append(embed)
 
     embeds = torch.cat(embeds)
     embeds = embeds.data.cpu().numpy()
@@ -82,5 +82,5 @@ def _non_dist_test(model, query_set, gallery_set, cfg, validate=False):
     print('gallery_embeds', gallery_embeds_np.shape)
     sio.savemat('gallery_embeds.mat', {'embeds': gallery_embeds_np})
 
-    e = Evaluator(cfg.data.query.idx2id, cfg.data.gallery.idx2id)
+    e = Evaluator(cfg.data.query.id_file, cfg.data.gallery.id_file)
     e.evaluate(query_embeds_np, gallery_embeds_np)

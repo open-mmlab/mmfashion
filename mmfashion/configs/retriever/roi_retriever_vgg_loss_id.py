@@ -110,7 +110,7 @@ gpus = dict(train=[0,1], test=[0])
 work_dir = 'checkpoint/Retrieve/vgg'
 print_interval = 20  # interval to print information
 resume_from = None
-load_from = None #'checkpoint/Retrieve/vgg/latest.pth'
+load_from = 'checkpoint/Retrieve/vgg/latest.pth'
 init_weights_from = 'checkpoint/vgg16.pth'
 workflow = [('train', 100)]
 dist_params = dict(backend='nccl')

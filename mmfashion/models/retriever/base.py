@@ -40,9 +40,9 @@ class BaseRetriever(nn.Module):
 
     def forward(self,
                 img,
-                id,
-                attr=None,
                 landmark=None,
+                id=None,
+                attr=None,
                 pos=None,
                 neg=None,
                 pos_lm=None,
