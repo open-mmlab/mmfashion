@@ -1,32 +1,22 @@
 import torch
 import torch.nn as nn
 
-from .. import builder
+from ..builder import build_loss
 from ..registry import ATTRPREDICTOR
 
 @ATTRPREDICTOR.register_module
 class AttrPredictor(nn.Module):
     def __init__(self, 
                  inchannels, 
-                 outchannels,
-                 loss_attr=dict(
-                          type='BCEWithLogitsLoss',
-                          weight=None,
-                          size_average=None,
-                          reduce=None,
-                          reduction='mean')):
+                 outchannels):
        super(AttrPredictor, self).__init__()
-       self.linear = nn.Linear(inchannels, outchannels)
-       self.loss_attr = builder.build_loss(loss_attr)
-
-
-    def forward(self, x, target=None, train=False):
-        x = self.linear(x)
-        if train:
-           loss_attr = self.loss_attr(x, target)
-           return loss_attr
-        else:
-           return x
-    
+       self.linear_attr = nn.Linear(inchannels, outchannels[0])
+       self.linear_cate = nn.Linear(inchannels, outchannels[1])
+ 
+    def forward(self, x, attr=None, cate=None, train=False):
+        attr_pred = self.linear_attr(x)
+        cate_pred = self.linear_cate(x)
+        return attr_pred, cate_pred
+ 
     def init_weights(self):
         nn.init.normal_(self.linear, 0, 0.01) 

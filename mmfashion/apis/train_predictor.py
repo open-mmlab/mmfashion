@@ -40,14 +40,10 @@ def parse_losses(losses):
 
 
 def batch_processor(model, data, train_mode):
-    img = data['img']
-    landmark = data['landmark']
-    attr = data['label']
-    cate = data['cate']
-    losses = model(img, attr, cate, landmark)
+    losses = model(**data)
     loss, log_vars = parse_losses(losses)
 
-    outputs = dict(loss=loss, log_vars=log_vars, num_samples=len(img.data))
+    outputs = dict(loss=loss, log_vars=log_vars, num_samples=len(data))
     return outputs
 
 

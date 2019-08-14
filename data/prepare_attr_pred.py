@@ -62,9 +62,9 @@ def split_attribute(train_img, test_img, val_img):
 
 def split_bbox(train_img, test_img, val_img):
     rf = open(os.path.join(PREFIX, 'list_bbox.txt')).readlines()
-    wf1 = open(os.path.join(PREFIX, 'train_bbox.txt')).readlines()
-    wf2 = open(os.path.join(PREFIX, 'test_bbox.txt')).readlines()
-    wf3 = open(os.path.join(PREFIX, 'val_bbox.txt')).readlines()
+    wf1 = open(os.path.join(PREFIX, 'train_bbox.txt'), 'w')
+    wf2 = open(os.path.join(PREFIX, 'test_bbox.txt'), 'w')
+    wf3 = open(os.path.join(PREFIX, 'val_bbox.txt'), 'w')
 
     def sort_bbox():
         d = dict()
@@ -79,7 +79,7 @@ def split_bbox(train_img, test_img, val_img):
 
     bboxes = sort_bbox()
 
-    def write_lm(imgs, wf):
+    def write_bbox(imgs, wf):
         for i, line in enumerate(imgs):
             imgname = line.strip('\n')
             bbox = bboxes[imgname]
@@ -87,10 +87,10 @@ def split_bbox(train_img, test_img, val_img):
                 wf.write('%s ' % str(b))
             wf.write('\n')
         wf.close()
-
-    write_lm(train_img, wf1)
-    write_lm(test_img, wf2)
-    write_lm(val_img, wf3)
+    
+    write_bbox(train_img, wf1)
+    write_bbox(test_img, wf2)
+    write_bbox(val_img, wf3)
 
 
 def split_category(train_img, test_img, val_img):
@@ -111,18 +111,16 @@ def split_category(train_img, test_img, val_img):
             d[imgname] = cate
 
         return d
-     
+
     img2cate = gather_cate()
-    
+
     def write_cate(imgs, wf):
         #cate_ids = []
         for i, line in enumerate(imgs):
             imgname = line.strip('\n').split()[0]
             cate_id = int(img2cate[imgname])
             #cate_ids.append(cate_id)
-            wf.write('%d\n'%cate_id)   
-         
-
+            wf.write('%d\n'%cate_id)
     write_cate(train_img, wf1)
     write_cate(test_img, wf2)
     write_cate(val_img, wf3)
@@ -176,7 +174,8 @@ if __name__ == '__main__':
     val_img = open(os.path.join(PREFIX, 'val.txt')).readlines()
 
     split_attribute(train_img, test_img, val_img)
-    split_category(train_img, test_img, val_img)
-    split_bbox(train_img, test_img, val_img)
-    split_lms(train_img, test_img, val_img)
+    #split_category(train_img, test_img, val_img)
+    #split_bbox(train_img, test_img, val_img)
+    #split_lms(train_img, test_img, val_img)
+
 

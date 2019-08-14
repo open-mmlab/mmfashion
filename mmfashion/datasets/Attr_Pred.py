@@ -60,8 +60,9 @@ class AttrDataset(Dataset):
         fp = open(img_file, 'r')
         self.img_list = [x.strip() for x in fp]
 
-        # read labels and category annotations
+        # read attribute labels and category annotations
         self.labels = np.loadtxt(label_file, dtype=np.float32)
+        
         # read categories
         self.categories = []
         catefn = open(cate_file).readlines()
@@ -119,7 +120,7 @@ class AttrDataset(Dataset):
                 l_y = float(l_y) / height * self.img_size[1]
                 landmark.append(l_y)
         landmark = torch.from_numpy(np.array(landmark)).float()
-        data = {'img': img, 'label': label, 'cate':cate, 'landmark': landmark}
+        data = {'img': img, 'attr': label, 'cate':cate, 'landmark': landmark}
         return data
 
     def __getitem__(self, idx):

@@ -19,26 +19,30 @@ class BasePredictor(nn.Module):
         return hasattr(self, 'roi_pool') and self.roi_pool is not None
 
     @abstractmethod
-    def simple_test(self, imgs, landmarks):
+    def simple_test(self, img, landmark):
         pass
 
     @abstractmethod
-    def aug_test(self, imgs, landmarks):
+    def aug_test(self, img, landmark):
         pass
 
-    @abstractmethod
-    def forward_test(self, imgs, landmarks=None):
-        pass
-
-    @abstractmethod
-    def forward_train(self, imgs, labels, cates, landmarks):
-        pass
-
-    def forward(self, img, attr, cate, landmarks=None, return_loss=True):
-        if return_loss:
-            return self.forward_train(img, attr, cate, landmarks)
+    
+    def forward_test(self, img, landmark=None):
+        num_augs = len(img)
+        if num_augs == 1:  # single image test
+            return self.simple_test(img[0], landmark[0])
         else:
-            return self.forward_test(img, landmarks)
+            return self.aug_test(img, landmark)    
+
+    @abstractmethod
+    def forward_train(self, img, attr, cate, landmark):
+        pass
+
+    def forward(self, img, attr, cate, landmark=None, return_loss=True):
+        if return_loss:
+            return self.forward_train(img, attr, cate, landmark)
+        else:
+            return self.forward_test(img, landmark)
 
     def init_weights(self, pretrained=None):
         if pretrained is not None:

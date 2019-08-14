@@ -28,19 +28,18 @@ model = dict(
         inchannels=2 * 4096,
         outchannels=4096),
     attr_predictor=dict(
-
-    loss_cate = dict(
-        type='CELoss',
-        weight=None,
-        size_average=None,
-        reduce=None,
-        reduction='mean'),
-    loss_attr = dict(
+        type='AttrPredictor',
+        inchannels=4096,
+        outchannels=[attribute_num, category_num]),
+    loss_attr=dict(
         type='BCEWithLogitsLoss',
         weight=None,
         size_average=None,
         reduce=None,
         reduction='mean'),
+    loss_cate=dict(
+        type='CELoss',
+        ratio=1),
     pretrained='checkpoint/vgg16.pth')
 
 pooling = 'RoI'
