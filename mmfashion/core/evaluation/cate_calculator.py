@@ -5,7 +5,7 @@ from scipy.spatial.distance import cdist
 import torch
 
 class CateCalculator(object):
-    def __init__(self, cfg, topn=10):
+    def __init__(self, cfg, topns=[3,5,10]):
         self.collector = dict()
         self.num_cate = cfg.category_num
         # true positive
@@ -16,6 +16,8 @@ class CateCalculator(object):
 
         # num of total predictions
         self.total = 0
+        # topn category prediction
+        self.topns = topns
 
 
     def collect_result(self, pred, target):
@@ -43,7 +45,13 @@ class CateCalculator(object):
             recall_rate[i] = float(tp) / self.total
             if self.target_per_cate[i] == 0:
                empty += 1
+        
+        sorted_recall_rate = sorted(recall_rate)[::-1]
+        topn_recall = dict()
+        for topn in self.topns:
+            topn_recall[topn] = 100 * sum(sorted_recall_rate[:topn]) / min(topn, self.num_cate-empty)
+            print('top%d recall rate %.2f' %(topn, topn_recall[topn]))
 
         # average recall rate for all categories
         avg_recall_rate = 100 * sum(recall_rate) / (self.num_cate-empty)
-        print('[Recall Rate] = %.2f' % avg_recall_rate)
+        print('[Avg Recall Rate] = %.2f' % avg_recall_rate)
