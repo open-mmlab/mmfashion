@@ -16,7 +16,7 @@ from mmcv.runner import Runner, DistSamplerSeedHook, obj_from_dict
 from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 
 from .env import get_root_logger
-from core import Calculator
+from core import AttrCalculator, CateCalculator
 from datasets import build_dataloader
 
 
@@ -50,19 +50,22 @@ def _non_dist_test(model, dataset, cfg, validate=False):
     model = MMDataParallel(model, device_ids=cfg.gpus.test).cuda()
     model.eval()
 
-    calculator = Calculator(cfg)
+    attr_calculator = AttrCalculator(cfg)
+    cate_calculator = CateCalculator(cfg)
 
     for batch_idx, testdata in enumerate(data_loader):
         imgs = testdata['img']
         landmarks = testdata['landmark']
-        labels = testdata['label']
-        id = testdata['id']
+        attr = testdata['attr']
+        cate = testdata['cate']
 
-        attr_pred, cate_pred = model(imgs, labels, id, landmarks, return_loss=False)
-        calculator.collect_result(attr_pred, labels)
-
+        attr_pred, cate_pred = model(imgs, attr, cate, landmarks, return_loss=False)
+        attr_calculator.collect_result(attr_pred, attr)
+        cate_calculator.collect_result(cate_pred, cate)
 
         if batch_idx % cfg.print_interval == 0:
-            calculator.show_result(batch_idx)
+            attr_calculator.show_result(batch_idx)
+            cate_calculator.show_result()
 
-    calculator.show_result()
+    attr_calculator.show_result()
+    cate_calculator.show_result()

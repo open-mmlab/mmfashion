@@ -5,7 +5,7 @@ from scipy.spatial.distance import cdist
 import torch
 
 
-class Calculator(object):
+class AttrCalculator(object):
 
     def __init__(self, cfg, tops_type=[3, 5, 10]):
         """ create the empty array to count
@@ -56,6 +56,7 @@ class Calculator(object):
                 else:
                     top['tn'][i] += 1
 
+
     def collect_result(self, pred, target):
         if isinstance(pred, torch.Tensor):
             data = pred.data.cpu().numpy()
@@ -73,6 +74,7 @@ class Calculator(object):
             self.collect(idx5, target[i], self.collector['top5'])
             self.collect(idx10, target[i], self.collector['top10'])
 
+
     def compute_one_recall(self, tp, fn):
         empty = 0
         recall = np.zeros(tp.shape)
@@ -89,6 +91,7 @@ class Calculator(object):
         for key, top in self.collector.items():
             self.recall[key] = self.compute_one_recall(top['tp'], top['fn'])
 
+
     def compute_one_precision(self, tp, fp):
         empty = 0
         precision = np.zeros(tp.shape)
@@ -98,13 +101,14 @@ class Calculator(object):
                 continue
             else:
                 precision[i] = float(tp[i]) / float(tp[i] + fp[i])
-
-        return 100 * float(np.sum(precision)) / (len(precision) - empty)
+        sorted_precison = sorted(precision)[::-1]
+        return 100 * sum(sorted_precison[:self.topn]) / self.topn
 
     def compute_precision(self):
         for key, top in self.collector.items():
             self.precision[key] = self.compute_one_precision(
                 top['tp'], top['fp'])
+
 
     def compute_one_accuracy(self, tp, tn):
         empty = 0
@@ -126,6 +130,7 @@ class Calculator(object):
             print('Total')
 
         self.compute_precision()
+        print('-------------- Attribute Prediction -------------')
         print('[Precision] top3 = %.2f, top5 = %.2f, top10 = %.2f' %
               (self.precision['top3'], self.precision['top5'],
                self.precision['top10']))
@@ -139,3 +144,5 @@ class Calculator(object):
         print('[Accuracy] top3 = %.2f, top5 = %.2f, top10 = %.2f' %
               (self.accuracy['top3'], self.accuracy['top5'],
                self.accuracy['top10']))
+
+        print('\n')
