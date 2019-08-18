@@ -14,19 +14,10 @@ class RoIRetriever(BaseRetriever):
     def __init__(self,
                  backbone,
                  global_pool,
+                 roi_pool,
                  concat,
                  embed_extractor,
-                 attr_predictor=dict(
-                     type='AttrPredictor',
-                     inchannels=4096,
-                     outchannels=463,
-                     loss_attr=dict(
-                          type='BCEWithLogitsLoss',
-                          weight=None,
-                          size_average=None,
-                          reduce=None,
-                          reduction='mean')),
-                 roi_pool=None,
+                 attr_predictor=None,
                  pretrained=None):
         super(RoIRetriever, self).__init__()
 

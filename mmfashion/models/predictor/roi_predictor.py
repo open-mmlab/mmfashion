@@ -17,15 +17,6 @@ class RoIPredictor(BasePredictor):
                  concat,
                  attr_predictor,
                  roi_pool=None,
-                 loss_attr=dict(
-                          type='BCEWithLogitsLoss',
-                          weight=None,
-                          size_average=None,
-                          reduce=None,
-                          reduction='mean'),
-                 loss_cate=dict(
-                          type='CELoss',
-                          ratio=1),
                  pretrained=None):
         super(BasePredictor, self).__init__()
 
@@ -37,11 +28,6 @@ class RoIPredictor(BasePredictor):
 
         self.concat = builder.build_concat(concat)
         self.attr_predictor = builder.build_attr_predictor(attr_predictor)
-
-        if loss_attr is not None:
-           self.loss_attr = builder.build_loss(loss_attr)
-        if loss_cate is not None:
-           self.loss_cate = builder.build_loss(loss_cate)
 
 
     def forward_train(self, x, landmark, attr, cate=None):
@@ -59,9 +45,8 @@ class RoIPredictor(BasePredictor):
         feat = self.concat(global_x, local_x)
         
         # 5. attribute prediction
-        attr_pred = self.attr_predictor(feat)
         losses = dict()
-        losses['loss_attr'] = self.loss_attr(attr_pred, attr)
+        losses['loss_attr'] = self.attr_predictor(feat,attr, return_loss=True)
 
         return losses
 
