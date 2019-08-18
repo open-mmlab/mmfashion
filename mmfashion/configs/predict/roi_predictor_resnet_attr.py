@@ -30,20 +30,14 @@ model = dict(
     attr_predictor=dict(
         type='AttrPredictor',
         inchannels=4096,
-        outchannels=[attribute_num, category_num]),
+        outchannels=attribute_num),
     loss_attr=dict(
         type='BCEWithLogitsLoss',
         weight=None,
         size_average=None,
         reduce=None,
         reduction='mean'),
-    loss_cate = dict(
-        type='CELoss',
-        ratio=1,
-        weight=None,
-        size_average=None,
-        reduce=None,
-        reduction='mean'),
+    loss_cate=None,
     pretrained='checkpoint/resnet50.pth')
 
 pooling = 'RoI'
@@ -103,8 +97,8 @@ log_config = dict(
 
 start_epoch = 0
 total_epochs = 40
-gpus = dict(train=[0,1,2,3], test=[0, 1, 2, 3])
-work_dir = 'checkpoint/Predict/resnet/attr_pred'
+gpus = dict(train=[0,1,2,3], test=[0,1])
+work_dir = 'checkpoint/Predict/resnet/roi'
 print_interval = 20  # interval to print information
 save_interval = 5
 init_weights_from = 'checkpoint/resnet50.pth'

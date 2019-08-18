@@ -1,30 +1,31 @@
 import os
 
 # model settings
-arch = 'vgg'
+arch = 'resnet'
 attribute_num = 1000
 category_num = 48
 img_size = (224, 224)
+
 model = dict(
     type='GlobalPredictor',
-    backbone=dict(type='Vgg'),
+    backbone=dict(type='ResNet'),
     global_pool=dict(
         type='GlobalPooling',
         inplanes=(7, 7),
         pool_plane=(2, 2),
-        inter_channels=[512, 4096],
+        inter_channels=[2048, 4096],
         outchannels=4096),
     attr_predictor=dict(
         type='AttrPredictor',
         inchannels=4096,
         outchannels=attribute_num),
-    loss_attr = dict(
+    loss_attr=dict(
         type='BCEWithLogitsLoss',
         weight=None,
         size_average=None,
         reduce=None,
         reduction='mean'),
-    pretrained='checkpoint/vgg16.pth')
+    pretrained='checkpoint/resnet50.pth')
 
 pooling = 'Global'
 
@@ -33,7 +34,7 @@ dataset_type = 'Attr_Pred'
 data_root = '../data/Attr_Predict'
 img_norm = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 data = dict(
-    imgs_per_gpu=16,
+    imgs_per_gpu=8,
     workers_per_gpu=4,
     train=dict(
         type=dataset_type,
@@ -83,13 +84,13 @@ log_config = dict(
 
 start_epoch = 0
 total_epochs = 40
-gpus = dict(train=[0, 1, 2, 3], test=[0, 1, 2, 3])
-work_dir = 'checkpoint/Predict/vgg/global'
+gpus = dict(train=[0,1], test=[0,1])
+work_dir = 'checkpoint/Predict/resnet/global'
 print_interval = 20  # interval to print information
 save_interval = 5
-init_weights_from = 'checkpoint/vgg16.pth'
+init_weights_from = 'checkpoint/resnet50.pth'
 resume_from = None
-checkpoint = None
-workflow = [('train', total_epochs)]
+checkpoint = None 
+workflow = [('train', 40)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

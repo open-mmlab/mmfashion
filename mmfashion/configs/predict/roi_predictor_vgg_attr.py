@@ -30,16 +30,14 @@ model = dict(
     attr_predictor=dict(
         type='AttrPredictor',
         inchannels=4096,
-        outchannels=[attribute_num, category_num]),
+        outchannels=attribute_num),
     loss_attr=dict(
         type='BCEWithLogitsLoss',
         weight=None,
         size_average=None,
         reduce=None,
         reduction='mean'),
-    loss_cate=dict(
-        type='CELoss',
-        ratio=1),
+    loss_cate=None,
     pretrained='checkpoint/vgg16.pth')
 
 pooling = 'RoI'
@@ -97,15 +95,15 @@ log_config = dict(
         dict(type='TextLoggerHook'),
     ])
 
-start_epoch = 0
-total_epochs = 40
+start_epoch = 51
+total_epochs = 80
 gpus = dict(train=[0, 1, 2, 3], test=[0, 1, 2, 3])
-work_dir = 'checkpoint/Predict/vgg/'
+work_dir = 'checkpoint/Predict/vgg/roi'
 print_interval = 20  # interval to print information
 save_interval = 5
 init_weights_from = 'checkpoint/vgg16.pth'
-resume_from = 'checkpoint/Predict/vgg/latest.pth'
-checkpoint = 'checkpoint/Predict/vgg/latest.pth'
-workflow = [('train', 40)]
+resume_from = 'checkpoint/Predict/vgg/roi/epoch_50.pth'
+checkpoint =  'checkpoint/Predict/vgg/roi/epoch_50.pth'
+workflow = [('train', total_epochs)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

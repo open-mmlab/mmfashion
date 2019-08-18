@@ -20,12 +20,13 @@ class AttrCalculator(object):
         for i in tops_type:
             tp, tn, fp, fn = np.zeros(num_classes), np.zeros(
                 num_classes), np.zeros(num_classes), np.zeros(num_classes)
-            self.collector['top%s' % (str(i))] = dict()
-            self.collector['top%s' % (str(i))]['tp'] = tp
-            self.collector['top%s' % (str(i))]['tn'] = tn
-            self.collector['top%s' % (str(i))]['fp'] = fp
-            self.collector['top%s' % (str(i))]['fn'] = fn
-
+            pos = np.zeros(num_classes)
+            self.collector['top%s' % str(i)] = dict()
+            self.collector['top%s' % str(i)]['tp'] = tp
+            self.collector['top%s' % str(i)]['tn'] = tn
+            self.collector['top%s' % str(i)]['fp'] = fp
+            self.collector['top%s' % str(i)]['fn'] = fn
+            self.collector['top%s' % str(i)]['pos'] = pos
         """ precision = true_positive/(true_positive+false_positive)"""
         self.precision = dict()
         """ accuracy = (true_positive+true_negative)/total_precision"""
@@ -47,11 +48,13 @@ class AttrCalculator(object):
         for i, t in enumerate(target):
             if t == 1:
                 if i in indexes:
+                    top['pos'][i] += 1
                     top['tp'][i] += 1
                 else:
                     top['fn'][i] += 1
             if t == 0:
                 if i in indexes:
+                    top['pos'][i] += 1
                     top['fp'][i] += 1
                 else:
                     top['tn'][i] += 1
@@ -85,29 +88,29 @@ class AttrCalculator(object):
             else:
                 recall[i] = float(tp[i]) / float(tp[i] + fn[i])
         sorted_recall = sorted(recall)[::-1]
-        return 100 * sum(sorted_recall[:self.topn]) / self.topn
+        return 100 * sum(sorted_recall[:self.topn]) / min(self.topn, len(sorted_recall)-empty)
 
     def compute_recall(self):
         for key, top in self.collector.items():
             self.recall[key] = self.compute_one_recall(top['tp'], top['fn'])
 
 
-    def compute_one_precision(self, tp, fp):
+    def compute_one_precision(self, tp, fp, pos):
         empty = 0
         precision = np.zeros(tp.shape)
         for i, num in enumerate(tp):
-            if tp[i] + fp[i] == 0:
+            if pos[i] == 0:
                 empty += 1
                 continue
             else:
-                precision[i] = float(tp[i]) / float(tp[i] + fp[i])
-        sorted_precison = sorted(precision)[::-1]
-        return 100 * sum(sorted_precison[:self.topn]) / self.topn
+                precision[i] = float(tp[i]) / float(pos[i])
+        sorted_precision = sorted(precision)[::-1]
+        return 100 * sum(sorted_precision[:self.topn]) / min(self.topn, len(sorted_precision)-empty)
 
     def compute_precision(self):
         for key, top in self.collector.items():
             self.precision[key] = self.compute_one_precision(
-                top['tp'], top['fp'])
+                top['tp'], top['fp'], top['pos'])
 
 
     def compute_one_accuracy(self, tp, tn):
@@ -129,11 +132,11 @@ class AttrCalculator(object):
         else:
             print('Total')
 
-        self.compute_precision()
-        print('-------------- Attribute Prediction -------------')
-        print('[Precision] top3 = %.2f, top5 = %.2f, top10 = %.2f' %
-              (self.precision['top3'], self.precision['top5'],
-               self.precision['top10']))
+        #self.compute_precision()
+        #print('-------------- Attribute Prediction -------------')
+        #print('[Precision] top3 = %.2f, top5 = %.2f, top10 = %.2f' %
+        #      (self.precision['top3'], self.precision['top5'],
+        #       self.precision['top10']))
 
         self.compute_recall()
         print('[Recall] top3 = %.2f, top5 = %.2f, top10 = %.2f' %

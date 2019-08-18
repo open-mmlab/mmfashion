@@ -10,13 +10,11 @@ class AttrPredictor(nn.Module):
                  inchannels, 
                  outchannels):
        super(AttrPredictor, self).__init__()
-       self.linear_attr = nn.Linear(inchannels, outchannels[0])
-       self.linear_cate = nn.Linear(inchannels, outchannels[1])
+       self.linear_attr = nn.Linear(inchannels, outchannels)
  
-    def forward(self, x, attr=None, cate=None, train=False):
+    def forward(self, x):
         attr_pred = self.linear_attr(x)
-        cate_pred = self.linear_cate(x)
-        return attr_pred, cate_pred
- 
+        return attr_pred
+
     def init_weights(self):
         nn.init.normal_(self.linear, 0, 0.01) 

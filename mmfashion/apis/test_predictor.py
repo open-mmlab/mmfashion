@@ -51,21 +51,16 @@ def _non_dist_test(model, dataset, cfg, validate=False):
     model.eval()
 
     attr_calculator = AttrCalculator(cfg)
-    cate_calculator = CateCalculator(cfg)
 
     for batch_idx, testdata in enumerate(data_loader):
         imgs = testdata['img']
-        landmarks = testdata['landmark']
+        landmark = testdata['landmark']
         attr = testdata['attr']
-        cate = testdata['cate']
 
-        attr_pred, cate_pred = model(imgs, attr, cate, landmarks, return_loss=False)
+        attr_pred = model(imgs, attr, landmark=landmark, return_loss=False)
         attr_calculator.collect_result(attr_pred, attr)
-        cate_calculator.collect_result(cate_pred, cate)
 
         if batch_idx % cfg.print_interval == 0:
             attr_calculator.show_result(batch_idx)
-            cate_calculator.show_result()
 
     attr_calculator.show_result()
-    cate_calculator.show_result()

@@ -38,11 +38,13 @@ class RoIPredictor(BasePredictor):
         self.concat = builder.build_concat(concat)
         self.attr_predictor = builder.build_attr_predictor(attr_predictor)
 
-        self.loss_attr = builder.build_loss(loss_attr)
-        self.loss_cate = builder.build_loss(loss_cate)
+        if loss_attr is not None:
+           self.loss_attr = builder.build_loss(loss_attr)
+        if loss_cate is not None:
+           self.loss_cate = builder.build_loss(loss_cate)
 
 
-    def forward_train(self, x, attr, cate, landmark):
+    def forward_train(self, x, landmark, attr, cate=None):
         # 1. conv layers extract global features
         x = self.backbone(x)
 
@@ -56,11 +58,9 @@ class RoIPredictor(BasePredictor):
         # 4. concat
         feat = self.concat(global_x, local_x)
         
-        # 5. attribute prediction and category prediction
-        attr_pred, cate_pred = self.attr_predictor(feat)
-
+        # 5. attribute prediction
+        attr_pred = self.attr_predictor(feat)
         losses = dict()
-        losses['loss_cate'] = self.loss_cate(cate_pred, cate.view(-1))
         losses['loss_attr'] = self.loss_attr(attr_pred, attr)
 
         return losses
@@ -70,8 +70,8 @@ class RoIPredictor(BasePredictor):
         """Test single image"""
         x = x.unsqueeze(0)
         landmarks = landmarks.unsqueeze(0)
-        attr_pred, cate_pred = self.aug_test(x, landmark)
-        return attr_pred[0], cate_pred[0]
+        attr_pred = self.aug_test(x, landmark)
+        return attr_pred[0]
 
 
     def aug_test(self, x, landmark=None):
@@ -82,8 +82,8 @@ class RoIPredictor(BasePredictor):
         local_x = self.roi_pool(x, landmark)
 
         feat = self.concat(global_x, local_x)
-        attr_pred, cate_pred = self.attr_predictor(feat)
-        return attr_pred, cate_pred
+        attr_pred = self.attr_predictor(feat)
+        return attr_pred
 
    
     def init_weights(self, pretrained=None):
