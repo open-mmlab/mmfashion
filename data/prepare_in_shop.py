@@ -77,6 +77,9 @@ def split_ids():
     wf2 = open(os.path.join(PREFIX, 'query_id.txt'), 'w')
     wf3 = open(os.path.join(PREFIX, 'gallery_id.txt'), 'w')
     write_id(rf1, wf1)
+    write_id(rf2, wf2)
+    write_id(rf3, wf3)
+
 
 def split_bbox():
     name2bbox = {}

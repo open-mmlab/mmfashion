@@ -74,16 +74,15 @@ class RoIRetriever(BaseRetriever):
            neg_feat = self.extract_feat(neg, neg_lm)
            losses['loss_id'] = self.embed_extractor(anchor_feat, 
                                                     id,
-                                                    train=True,
+                                                    return_loss=True,
                                                     triplet=True,
                                                     pos=pos_feat, neg=neg_feat)
         
         else:
-           losses['loss_id'] = self.embed_extractor(anchor_feat, id, train=True)
+           losses['loss_id'] = self.embed_extractor(anchor_feat, id, return_loss=True)
 
         if self.attr_predictor is not None:
-           losses['loss_attr'] = self.attr_predictor(anchor_feat, attr)
-        
+           losses['loss_attr'] = self.attr_predictor(anchor_feat, attr, return_loss=True)
         return losses
 
 

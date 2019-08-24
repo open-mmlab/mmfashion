@@ -18,7 +18,7 @@ def parse_args():
     parser.add_argument(
         '--config',
         help='train config file path',
-        default='configs/retriever/roi_retriever_vgg_loss_id.py')
+        default='configs/retriever/roi_retriever_vgg.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument(
         '--checkpoint',

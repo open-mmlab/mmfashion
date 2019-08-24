@@ -106,11 +106,11 @@ log_config = dict(
 
 start_epoch = 0
 total_epochs = 100
-gpus = dict(train=[0,1], test=[0])
-work_dir = 'checkpoint/Retrieve/vgg'
+gpus = dict(train=[0,1,2], test=[0])
+work_dir = 'checkpoint/Retrieve/vgg/roi/no_attr'
 print_interval = 20  # interval to print information
 resume_from = None
-load_from = 'checkpoint/Retrieve/vgg/latest.pth'
+load_from = None 
 init_weights_from = 'checkpoint/vgg16.pth'
 workflow = [('train', 100)]
 dist_params = dict(backend='nccl')

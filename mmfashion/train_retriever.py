@@ -19,7 +19,7 @@ def parse_args():
     parser.add_argument(
         '--config',
         help='train config file path',
-        default='configs/retriever/roi_retriever_vgg_loss_id.py')
+        default='configs/retriever/roi_retriever_vgg.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument(
         '--resume_from', help='the checkpoint file to resume from')
@@ -68,6 +68,7 @@ def main():
 
     if cfg.init_weights_from is not None:
         model = init_weights_from(cfg.init_weights_from, model)
+        print('Initialize model weights from {}'.format(cfg.init_weights_from))
 
     # data loader
     dataset = build_dataset(cfg.data.train)

@@ -33,6 +33,7 @@ model = dict(
         outchannels=attribute_num,
         loss_attr=dict(
             type='BCEWithLogitsLoss',
+            ratio=1,
             weight=None,
             size_average=None,
             reduce=None,
@@ -96,7 +97,7 @@ log_config = dict(
 
 start_epoch = 0
 total_epochs = 80
-gpus = dict(train=[0, 1, 2, 3], test=[0, 1, 2, 3])
+gpus = dict(train=[0,1,2,3], test=[0, 1, 2, 3])
 work_dir = 'checkpoint/Predict/vgg/roi'
 print_interval = 20  # interval to print information
 save_interval = 5

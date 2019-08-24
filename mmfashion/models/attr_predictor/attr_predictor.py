@@ -10,6 +10,7 @@ class AttrPredictor(nn.Module):
                  inchannels, 
                  outchannels,
                  loss_attr=dict(type='BCEWithLogitsLoss',
+                                ratio=1,
                                 weight=None,
                                 size_average=None,
                                 reduce=None,

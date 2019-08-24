@@ -174,7 +174,7 @@ class InShopDataset(Dataset):
             'img': anchor_data['img'],
             'landmark': anchor_data['landmark'],
             'id': anchor_data['id'],
-            'attr': anchor_data['label'],
+            'attr': anchor_data['attr'],
             'pos': pos_data['img'],
             'neg': neg_data['img'],
             'pos_lm': pos_data['landmark'],

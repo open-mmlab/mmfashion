@@ -34,16 +34,17 @@ model = dict(
         loss_id = dict(type='CELoss', ratio=1),
         loss_triplet=dict(type='TripletLoss',
                           method='cosine')),
-    attr_predictor=dict(
-       type='AttrPredictor',
+    attr_predictor = dict(
+        type='AttrPredictor',
         inchannels=4096,
         outchannels=attribute_num,
         loss_attr=dict(
-            type='BCEWithLogitsLoss',
-            weight=None,
-            size_average=None,
-            reduce=None,
-            reduction='mean')),
+                 type='BCEWithLogitsLoss',
+                 ratio=1,
+                 weight=None,
+                 size_average=None,
+                 reduce=None,
+                 reduction='mean')),
     pretrained='checkpoint/vgg16.pth')
 
 pooling = 'RoI'
@@ -116,11 +117,11 @@ log_config = dict(
 
 start_epoch = 0
 total_epochs = 100
-gpus = dict(train=[0,1,2], test=[0])
-work_dir = 'checkpoint/Retrieve/vgg/with_attr/'
+gpus = dict(train=[0,1,2,3], test=[0])
+work_dir = 'checkpoint/Retrieve/vgg/roi/with_attr/'
 print_interval = 20  # interval to print information
 resume_from = None
-load_from ='checkpoint/Retrieve/vgg/roi/latest.pth'
+load_from =None #'checkpoint/Predict/vgg/roi/latest.pth'
 init_weights_from = 'checkpoint/Predict/vgg/roi/latest.pth'
 workflow = [('train', 100)]
 dist_params = dict(backend='nccl')

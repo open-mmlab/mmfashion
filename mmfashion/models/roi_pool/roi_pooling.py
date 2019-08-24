@@ -30,14 +30,14 @@ class RoIPooling(nn.Module):
         self.outchannels = outchannels
         self.num_lms = num_lms
         self.crop_size = crop_size
-        self.img_width = img_size[0]
-        self.img_height = img_size[1]
+        assert img_size[0] == img_size[1], 'img width should equal to img height'
+        self.img_size = img_size[0]
         self.roi_size = roi_size
 
-        self.a = 2*self.roi_size/float(self.crop_size) 
-        self.b = 2*self.roi_size/float(self.crop_size)
+        self.a = self.roi_size/float(self.crop_size) 
+        self.b = self.roi_size/float(self.crop_size)
 
-
+        
     def forward(self, features, landmarks):
         """batch-wise RoI pooling.
         Args:
@@ -45,6 +45,9 @@ class RoIPooling(nn.Module):
             landmarks(tensor): crop the region of interest based on the landmarks(bs, self.num_lms)
         """
         batch_size = features.size(0)
+
+        # transfer landmark coordinates from original image to feature map
+        landmarks = landmarks/self.img_size * self.crop_size
         landmarks = landmarks.view(batch_size, self.num_lms, 2)
 
         ab = [np.array([[self.a, 0], [0, self.b]]) for _ in range(batch_size)]
@@ -62,9 +65,10 @@ class RoIPooling(nn.Module):
 
             flowfield = nn.functional.affine_grid(theta, size)
             one_pooled = nn.functional.grid_sample(
-                features, flowfield, padding_mode='border')
+                features, flowfield.to(torch.float32), mode='bilinear', padding_mode='border')
             one_pooled = self.maxpool(one_pooled).view(batch_size,
                                                        self.inter_channels)
+          
             pooled.append(one_pooled)
         pooled = torch.stack(pooled, dim=1).view(batch_size, -1)
         pooled = self.linear(pooled)
