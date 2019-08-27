@@ -28,8 +28,10 @@ class EmbedExtractor(nn.Module):
        self.loss_id = build_loss(loss_id)
        if loss_triplet is not None:
           self.loss_triplet = build_loss(loss_triplet)
+       else:
+          self.loss_triplet = None
 
-
+ 
    def forward_train(self, x, id, triplet, pos, neg):
        embed = self.embed_linear(x)
        id_pred = self.id_linear(embed)
