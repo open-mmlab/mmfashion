@@ -3,7 +3,7 @@ import os
 # model settings
 arch = 'vgg'
 retrieve = True
-attr_num = 463 
+attribute_num = 463 
 id_num=7982
 img_size = (224, 224)
 model = dict(
@@ -21,7 +21,17 @@ model = dict(
         inter_channels=[256, id_num],
         loss_id = dict(type='CELoss', ratio=1),
         loss_triplet= None),
-    attr_predictor = None,
+    attr_predictor = dict(
+        type='AttrPredictor',
+        inchannels=4096,
+        outchannels=attribute_num,
+        loss_attr=dict(
+                 type='BCEWithLogitsLoss',
+                 ratio=1,
+                 weight=None,
+                 size_average=None,
+                 reduce=None,
+                 reduction='mean')),
     pretrained='checkpoint/vgg16.pth')
 
 pooling = 'Global'
@@ -32,7 +42,7 @@ data_root = '../data/In-shop'
 img_norm = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
 data = dict(
-    imgs_per_gpu=8,
+    imgs_per_gpu=16,
     workers_per_gpu=4,
     train=dict(
         type=dataset_type,
@@ -94,11 +104,11 @@ log_config = dict(
 start_epoch = 0
 total_epochs = 100
 gpus = dict(train=[0, 1, 2, 3], test=[0])
-work_dir = 'checkpoint/Retrieve/vgg/global'
+work_dir = 'checkpoint/Retrieve/vgg/global/with_attr/'
 print_interval = 20  # interval to print information
 resume_from = None
-load_from = None
-init_weights_from = 'checkpoint/vgg16.pth'
+load_from = 'checkpoint/Retrieve/vgg/global/latest.pth'
+init_weights_from = 'checkpoint/Predict/vgg/roi/latest.pth'
 workflow = [('train', 100)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
