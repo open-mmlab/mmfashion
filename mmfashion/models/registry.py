@@ -7,8 +7,14 @@ CONCATS = Registry('concat')  # concat local features and global features
 ATTRPREDICTOR = Registry('attr_predictor') # predict attributes
 EMBEDEXTRACTOR = Registry('embed_extractor') # extract embeddings
 
+LANDMARKFEATUREEXTRACTOR = Registry('landmark_feature_extractor')
+VISIBILITYCLASSIFIER = Registry('visibility_classifier')
+LANDMARKREGRESSION = Registry('landmark_regression')
+
 LOSSES = Registry('loss')  # loss function
 
 PREDICTOR = Registry('predictor')
 
 RETRIEVER = Registry('retriever')
+
+LANDMARKDETECTOR = Registry('landmark_detector')

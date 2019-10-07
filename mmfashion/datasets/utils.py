@@ -9,6 +9,7 @@ from torch.autograd import Variable
 
 from .In_shop import InShopDataset
 from .Attr_Pred import AttrDataset
+from .Landmark_Detect import LandmarkDetectDataset
 
 
 def to_tensor(data):
@@ -45,6 +46,12 @@ def get_dataset(data_cfg):
                               data_cfg.label_file,
                               data_cfg.cate_file, data_cfg.bbox_file,
                               data_cfg.landmark_file, data_cfg.img_size)
+    elif data_cfg['type'] == 'Landmark_Detect':
+        dataset = LandmarkDetectDataset(data_cfg.img_path,
+                                        data_cfg.img_file,
+                                        data_cfg.bbox_file,
+                                        data_cfg.landmark_file,
+                                        data_cfg.img_size)
     else:
         raise TypeError('type {} does not exist.'.format(data_cfg['type']))
 

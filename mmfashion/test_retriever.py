@@ -14,7 +14,7 @@ from models import build_retriever
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Train a Fashion Attribute Predictor')
+        description='Test a Fashion Attribute Predictor')
     parser.add_argument(
         '--config',
         help='train config file path',

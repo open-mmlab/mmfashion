@@ -122,7 +122,7 @@ work_dir = 'checkpoint/Retrieve/vgg/roi/with_attr/'
 print_interval = 20  # interval to print information
 resume_from = None
 load_from = None #'checkpoint/Retrieve/vgg/roi/latest.pth'
-init_weights_from = 'checkpoint/Predict/vgg/roi/latest.pth'
+init_weights_from = 'checkpoint/vgg16.pth'
 workflow = [('train', 100)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

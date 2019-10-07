@@ -1,0 +1,46 @@
+import logging
+from abc import ABCMeta, abstractmethod
+
+import mmcv
+import numpy as np
+import torch
+import torch.nn as nn
+
+
+class BaseLandmarkDetector(nn.Module):
+    __metaclass__ = ABCMeta
+
+    def __init__(self):
+        super(BaseLandmarkDetector, self).__init__()
+  
+    @abstractmethod
+    def simple_test(self, img, landmark):
+        pass
+
+    @abstractmethod
+    def aug_test(self, img, landmark):
+        pass
+
+
+    def forward_test(self, img):
+        num_augs = len(img)
+        if num_augs == 1:  # single image test
+            return self.simple_test(img[0])
+        else:
+            return self.aug_test(img)
+
+    @abstractmethod
+    def forward_train(self, img, vis, landmark, attr):
+        pass
+
+    def forward(self, img, landmark=None, vis=None, attr=None, return_loss=True):
+        if return_loss:
+           return self.forward_train(img, vis, landmark, attr)
+        else:
+           return self.forward_test(img)
+
+    def init_weights(self, pretrained=None):
+        if pretrained is not None:
+            logger = logging.getLogger()
+            logger.info('load model from: {}'.format(pretrained))
+                                                                    

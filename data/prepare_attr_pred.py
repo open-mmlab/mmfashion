@@ -174,8 +174,8 @@ if __name__ == '__main__':
     val_img = open(os.path.join(PREFIX, 'val.txt')).readlines()
 
     split_attribute(train_img, test_img, val_img)
-    #split_category(train_img, test_img, val_img)
-    #split_bbox(train_img, test_img, val_img)
-    #split_lms(train_img, test_img, val_img)
+    split_category(train_img, test_img, val_img)
+    split_bbox(train_img, test_img, val_img)
+    split_lms(train_img, test_img, val_img)
 
 

@@ -7,20 +7,23 @@ import torch.nn as nn
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
-from apis import (init_dist, get_root_logger, test_predictor)
-from datasets.utils import get_dataset
-from models import build_predictor
+from apis import (init_dist, get_root_logger, test_landmark_detector)
+from datasets import build_dataset
+from models import build_landmark_detector
 
-
-def parse_args():
+def parser_args():
     parser = argparse.ArgumentParser(
-        description='Train a Fashion Attribute Predictor')
+        description='Test a Fashion Landmark Detector')
     parser.add_argument(
         '--config',
         help='train config file path',
-        default='configs/predict/roi_predictor_vgg_attr.py')
+        default='configs/landmark_detect/landmark_detect_vgg.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
-    parser.add_argument('--checkpoint', help='checkpoint file', default='checkpoint/Predict/vgg/roi/latest.pth')
+    parser.add_argument(
+        '--checkpoint',
+        type=str,
+        default='checkpoint/LandmarkDetect/vgg/latest.pth',
+        help='the checkpoint file to resume from')
     parser.add_argument(
         '--validate',
         action='store_true',
@@ -40,38 +43,40 @@ def main():
     cfg = Config.fromfile(args.config)
     if args.work_dir is not None:
         cfg.work_dir = args.work_dir
-    if args.checkpoint is not None:
-        cfg.checkpoint = args.checkpoint
+
     # init distributed env first
     if args.launcher == 'none':
         distributed = False
     else:
         distributed = True
         init_dist(args.launcher, **cfg.dist_params)
+   
+    if args.checkpoint is not None:
+       cfg.load_from = args.checkpoint
 
     # init logger
     logger = get_root_logger(cfg.log_level)
     logger.info('Distributed training: {}'.format(distributed))
 
     # data loader
-    dataset = get_dataset(cfg.data.test)
+    test_dataset = build_dataset(cfg.data.test)
     print('dataset loaded')
 
     # build model and load checkpoint
-    model = build_predictor(cfg.model)
+    model = build_landmark_detector(cfg.model)
     print('model built')
-
-    checkpoint = load_checkpoint(model, cfg.checkpoint, map_location='cpu')
-
+ 
+    checkpoint = load_checkpoint(model, cfg.load_from, map_location='cpu')
+    print('load checkpoint from: {}'.format(cfg.load_from))
+    
     # test
-    test_predictor(
+    test_landmark_detector(
         model,
-        dataset,
+        test_dataset,
         cfg,
         distributed=distributed,
         validate=args.validate,
         logger=logger)
 
-
 if __name__ == '__main__':
-    main()
+   main()
