@@ -2,7 +2,7 @@
 
 ## Introduction
 
-`mmfashion` is an open source visual fashion analysis toolbox based on PyTorch.
+`mmfashion` is an open source visual fashion analysis toolbox based on PyTorch. It is a part of the [open-mmlab](https://github.com/open-mmlab) project developed by [Multimedia Lab, CUHK](http://mmlab.ie.cuhk.edu.hk/).
 
 
 ## Requirements
@@ -33,6 +33,8 @@
 1. [DeepFashion (Category and Attribute Prediction Benchmark)](http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion/AttributePrediction.html)
 
 2. [DeepFashion (In-Shop Clothes Retrieval Benchmark)](http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion/InShopRetrieval.html)
+
+2. [DeepFashion (Fashion Landmark Detection Benchmark)](http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion/LandmarkDetection.html)
 
 To use the DeepFashion dataset you need to first download it to 'data/' , then follow these steps to re-organize the dataset.
 
@@ -79,21 +81,28 @@ mmfashion
 
 ### Attribute Prediction
 
-|   Backbone  |      Pooling     |      Loss     | Top-5 Recall. | Top-5 Acc. |      Download      |
-| :---------: | :--------------: | :-----------: | :-----------: |:---------: | :----------------: |
-|    VGG-16   |  Global Pooling  | Cross-Entropy |               |            |     [model]()      |
-|    VGG-16   | Landmark Pooling | Cross-Entropy |     22.3      |   99.25    |     [model]()      |
-|  ResNet-50  |  Global Pooling  | Cross-Entropy |               |            |     [model]()      |
-|  ResNet-50  | Landmark Pooling | Cross-Entropy |               |            |     [model]()      |
+|   Backbone  |      Pooling     |      Loss     | Top-5 Recall | Top-5 Acc. |      Download      |
+| :---------: | :--------------: | :-----------: | :----------: | :--------: | :----------------: |
+|    VGG-16   |  Global Pooling  | Cross-Entropy |              |            |     [model]()      |
+|    VGG-16   | Landmark Pooling | Cross-Entropy |     22.3     |   99.25    |     [model]()      |
+|  ResNet-50  |  Global Pooling  | Cross-Entropy |              |            |     [model]()      |
+|  ResNet-50  | Landmark Pooling | Cross-Entropy |              |            |     [model]()      |
 
 ### In-Shop Clothes Retrieval
 
-|   Backbone  |      Pooling     |      Loss     |  Top-5 Acc. |      Download      |
-| :---------: | :--------------: | :-----------: | :---------: | :----------------: |
-|    VGG-16   |  Global Pooling  | Cross-Entropy |             |     [model]()      |
-|    VGG-16   | Landmark Pooling | Cross-Entropy |             |     [model]()      |
-|  ResNet-50  |  Global Pooling  | Cross-Entropy |             |     [model]()      |
-|  ResNet-50  | Landmark Pooling | Cross-Entropy |             |     [model]()      |
+|   Backbone  |      Pooling     |      Loss     | Top-5 Acc. |      Download      |
+| :---------: | :--------------: | :-----------: | :--------: | :----------------: |
+|    VGG-16   |  Global Pooling  | Cross-Entropy |            |     [model]()      |
+|    VGG-16   | Landmark Pooling | Cross-Entropy |            |     [model]()      |
+|  ResNet-50  |  Global Pooling  | Cross-Entropy |            |     [model]()      |
+|  ResNet-50  | Landmark Pooling | Cross-Entropy |            |     [model]()      |
+
+### Fashion Landmark Detection
+
+|   Backbone  | Normalized Error | % of Det. Landmarks |      Download      |
+| :---------: | :--------------: | :-----------------: | :----------------: |
+|    VGG-16   |                  |                     |     [model]()      |
+|  ResNet-50  |                  |                     |     [model]()      |
 
 
 ## Contributing
@@ -103,8 +112,7 @@ We appreciate all contributions to improve MMFashion. Please refer to [CONTRIBUT
 
 ## Team
 
-* Xin Liu ([veralauee](https://github.com/veralauee)) &nbsp;&nbsp;&nbsp; (main contributor for fashion attributes / retrieval / recommendation)
-* Sijie Yan ([yysijie](https://github.com/yysijie)) &nbsp;&nbsp;&nbsp; (main contributor for fashion landmarks / parsing)
+* Xin Liu ([veralauee](https://github.com/veralauee))
 * Jiancheng Li ([lijiancheng0614](https://github.com/lijiancheng0614))
 * Jiaqi Wang ([myownskyW7](https://github.com/myownskyW7))
 * Ziwei Liu ([liuziwei7](https://github.com/liuziwei7))
