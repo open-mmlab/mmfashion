@@ -33,7 +33,7 @@
 
 
 ## Get Started
-Please refer to [docs/GETTING_STARTED.md] for the basic usage of `MMFashion`.
+Please refer to [GETTING_STARTED.md](docs/GETTING_STARTED.md) for the basic usage of `MMFashion`.
 
 
 ## Dataset
@@ -116,6 +116,10 @@ mmfashion
 ## Contributing
 
 We appreciate all contributions to improve `MMFashion`. Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for the contributing guideline.
+
+
+## License
+This project is released under the [Apache 2.0 license](LICENSE).
 
 
 ## Team
