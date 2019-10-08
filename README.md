@@ -2,7 +2,7 @@
 
 ## Introduction
 
-`MMFashion` is an open source visual fashion analysis toolbox based on PyTorch. It is a part of the [open-mmlab](https://github.com/open-mmlab) project developed by [Multimedia Lab, CUHK](http://mmlab.ie.cuhk.edu.hk/).
+`MMFashion` is an open source visual fashion analysis toolbox based on [PyTorch](https://pytorch.org/). It is a part of the [open-mmlab](https://github.com/open-mmlab) project developed by [Multimedia Lab, CUHK](http://mmlab.ie.cuhk.edu.hk/).
 
 
 ## Updates
@@ -107,15 +107,15 @@ mmfashion
 
 ### Fashion Landmark Detection
 
-|   Backbone  | Normalized Error | % of Det. Landmarks |      Download      |
-| :---------: | :--------------: | :-----------------: | :----------------: |
-|    VGG-16   |                  |                     |     [model]()      |
-|  ResNet-50  |                  |                     |     [model]()      |
+|   Backbone  |   Loss  | Normalized Error | % of Det. Landmarks |      Download      |
+| :---------: | :-----: | :--------------: | :-----------------: | :----------------: |
+|    VGG-16   | L2 Loss |                  |                     |     [model]()      |
+|  ResNet-50  | L2 Loss |                  |                     |     [model]()      |
 
 
 ## Contributing
 
-We appreciate all contributions to improve `MMFashion`. Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for the contributing guideline.
+We appreciate all contributions to improve `MMFashion`. Please refer to [CONTRIBUTING.md](docs/CONTRIBUTING.md) for the contributing guideline.
 
 
 ## License
