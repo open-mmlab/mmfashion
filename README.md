@@ -1,8 +1,12 @@
-# mmfashion
+# MMFashion
 
 ## Introduction
 
-`mmfashion` is an open source visual fashion analysis toolbox based on PyTorch. It is a part of the [open-mmlab](https://github.com/open-mmlab) project developed by [Multimedia Lab, CUHK](http://mmlab.ie.cuhk.edu.hk/).
+`MMFashion` is an open source visual fashion analysis toolbox based on PyTorch. It is a part of the [open-mmlab](https://github.com/open-mmlab) project developed by [Multimedia Lab, CUHK](http://mmlab.ie.cuhk.edu.hk/).
+
+
+## Updates
+[2019-10-21] `MMFashion` v0.1 is released.
 
 
 ## Requirements
@@ -28,13 +32,17 @@
     ```
 
 
+## Get Started
+Please refer to [docs/GETTING_STARTED.md] for the basic usage of `MMFashion`.
+
+
 ## Dataset
 
-1. [DeepFashion (Category and Attribute Prediction Benchmark)](http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion/AttributePrediction.html)
+1. [DeepFashion - Category and Attribute Prediction Benchmark](http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion/AttributePrediction.html)
 
-2. [DeepFashion (In-Shop Clothes Retrieval Benchmark)](http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion/InShopRetrieval.html)
+2. [DeepFashion - In-Shop Clothes Retrieval Benchmark](http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion/InShopRetrieval.html)
 
-2. [DeepFashion (Fashion Landmark Detection Benchmark)](http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion/LandmarkDetection.html)
+2. [DeepFashion - Fashion Landmark Detection Benchmark](http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion/LandmarkDetection.html)
 
 To use the DeepFashion dataset you need to first download it to 'data/' , then follow these steps to re-organize the dataset.
 
@@ -107,7 +115,7 @@ mmfashion
 
 ## Contributing
 
-We appreciate all contributions to improve MMFashion. Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for the contributing guideline.
+We appreciate all contributions to improve `MMFashion`. Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for the contributing guideline.
 
 
 ## Team
