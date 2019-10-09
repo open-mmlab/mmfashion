@@ -13,9 +13,9 @@ data/In-shop
 data/Attr_Predict
 
 *.pyc
-*.png
-*.jpg
-*.jpeg
+# *.png
+# *.jpg
+# *.jpeg
 *.pth
 *.pth.tar
 *.txt
