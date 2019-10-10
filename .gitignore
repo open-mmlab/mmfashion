@@ -10,7 +10,9 @@ mmfashion/datasets/Attr_Predict/
 mmfashion/checkpoint
 mmfashion/utils/temp
 data/In-shop
+data/Landmark_Detect
 data/Attr_Predict
+data/gdrive-linux-64
 
 *.pyc
 # *.png

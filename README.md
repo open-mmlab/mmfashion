@@ -67,8 +67,10 @@ To use the DeepFashion dataset you need to first download it to 'data/' , then f
 cd data/
 mv Category\ and\ Attribute\ Prediction\ Benchmark Attr_Predict
 mv In-shop\ Clothes\ Retrieval\ Benchmark In-shop
+ mv Fashion\ Landmark\ Detection\ Benchmark/ Landmark_Detect
 python prepare_attr_pred.py
 python prepare_in_shop.py
+python prepare_landmark_detect.py
 
 ```
 

@@ -1,5 +1,9 @@
+import logging
+
 import torch
 import torch.nn as nn
+from mmcv.runner import load_checkpoint
+
 from ..registry import BACKBONES
 
 
@@ -176,23 +180,29 @@ class ResNet(nn.Module):
             stride=2,
             dilate=replace_stride_with_dilation[2])
 
-        for m in self.modules():
-            if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(
-                    m.weight, mode='fan_out', nonlinearity='relu')
-            elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
-                nn.init.constant_(m.weight, 1)
-                nn.init.constant_(m.bias, 0)
-
-        # Zero-initialize the last BN in each residual branch,
-        # so that the residual branch starts with zeros, and each residual block behaves like an identity.
-        # This improves the model by 0.2~0.3% according to https://arxiv.org/abs/1706.02677
-        if zero_init_residual:
+    def init_weights(self, pretrained=None):
+        print('pretrained model', pretrained)
+        if isinstance(pretrained, str):
+           logger = logging.getLogger()
+           load_checkpoint(self, pretrained)
+        elif pretrained is None:
             for m in self.modules():
-                if isinstance(m, Bottleneck):
-                    nn.init.constant_(m.bn3.weight, 0)
-                elif isinstance(m, BasicBlock):
-                    nn.init.constant_(m.bn2.weight, 0)
+                if isinstance(m, nn.Conv2d):
+                    nn.init.kaiming_normal_(
+                        m.weight, mode='fan_out', nonlinearity='relu')
+                elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
+                    nn.init.constant_(m.weight, 1)
+                    nn.init.constant_(m.bias, 0)
+
+            # Zero-initialize the last BN in each residual branch,
+            # so that the residual branch starts with zeros, and each residual block behaves like an identity.
+            # This improves the model by 0.2~0.3% according to https://arxiv.org/abs/1706.02677
+            if zero_init_residual:
+               for m in self.modules():
+                   if isinstance(m, Bottleneck):
+                           nn.init.constant_(m.bn3.weight, 0)
+                   elif isinstance(m, BasicBlock):
+                      nn.init.constant_(m.bn2.weight, 0)
 
     def _make_layer(self, block, planes, blocks, stride=1, dilate=False):
         norm_layer = self._norm_layer

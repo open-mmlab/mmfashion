@@ -104,10 +104,10 @@ def split_bbox(train_img, test_img, val_img):
 
 
 if __name__ == '__main__':
-   #split_img()
+   split_img()
    train_img = open(os.path.join(PREFIX, 'train.txt')).readlines()
    test_img = open(os.path.join(PREFIX, 'test.txt')).readlines()
    val_img = open(os.path.join(PREFIX, 'val.txt')).readlines()
 
    split_landmark(train_img, test_img, val_img)
-   #split_bbox(train_img, test_img, val_img)
+   split_bbox(train_img, test_img, val_img)

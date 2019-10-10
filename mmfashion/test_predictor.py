@@ -51,7 +51,7 @@ def main():
 
     # init logger
     logger = get_root_logger(cfg.log_level)
-    logger.info('Distributed training: {}'.format(distributed))
+    logger.info('Distributed test: {}'.format(distributed))
 
     # data loader
     dataset = get_dataset(cfg.data.test)
@@ -62,6 +62,7 @@ def main():
     print('model built')
 
     checkpoint = load_checkpoint(model, cfg.checkpoint, map_location='cpu')
+    print('load checkpoint from: {}'.format(cfg.load_from))
 
     # test
     test_predictor(

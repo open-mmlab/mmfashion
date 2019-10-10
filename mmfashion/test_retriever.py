@@ -57,7 +57,7 @@ def main():
 
     # init logger
     logger = get_root_logger(cfg.log_level)
-    logger.info('Distributed training: {}'.format(distributed))
+    logger.info('Distributed test: {}'.format(distributed))
 
     # data loader
     cfg.data.query.find_three = False

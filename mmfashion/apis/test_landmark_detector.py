@@ -16,6 +16,7 @@ from mmcv.runner import Runner, DistSamplerSeedHook, obj_from_dict
 from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 
 from .env import get_root_logger
+from core import NormalizedErrorEvaluator
 from datasets import build_dataloader
 
 
@@ -49,17 +50,21 @@ def _non_dist_test(model, dataset, cfg, validate=False):
     model = MMDataParallel(model, device_ids=cfg.gpus.test).cuda()
     model.eval()
 
+    evaluator = NormalizedErrorEvaluator(cfg.img_size, cfg.landmark_num)
+    error_list = []
+
     for batch_idx, testdata in enumerate(data_loader):
         img = testdata['img']
         landmark = testdata['landmark']
         vis = testdata['vis']
- 
-        pred_vis, pred_lm = model(img, landmark)
-        detection_error = calculate_normalized_error(pred_vis,
+        
+        pred_vis, pred_lm = model(img, landmark, return_loss=False)
+        detection_error = evaluator.compute_normalized_error(pred_vis,
                                                      pred_lm,
                                                      vis,
                                                      landmark)
         if batch_idx %20 == 0:
-           print('Batch idx {:d}, detection error = {:.2f}'.format(batch_idx, detection_error))
-    print('Fashion Landmark Detection Normalized Error: {.2f}'.
-              format(detection_error))
+           print('Batch idx {:d}, detection error = {:.4f}'.format(batch_idx, detection_error))
+           error_list.append(detection_error)
+    print('Fashion Landmark Detection Normalized Error: {:.4f}'.
+              format(sum(error_list)/len(error_list)))

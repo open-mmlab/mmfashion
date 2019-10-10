@@ -8,10 +8,10 @@ from mmcv import Config
 from mmcv.runner import load_checkpoint
 
 from apis import (init_dist, get_root_logger, test_landmark_detector)
-from datasets import build_dataset
+from datasets import get_dataset
 from models import build_landmark_detector
 
-def parser_args():
+def parse_args():
     parser = argparse.ArgumentParser(
         description='Test a Fashion Landmark Detector')
     parser.add_argument(
@@ -56,16 +56,16 @@ def main():
 
     # init logger
     logger = get_root_logger(cfg.log_level)
-    logger.info('Distributed training: {}'.format(distributed))
+    logger.info('Distributed test: {}'.format(distributed))
 
     # data loader
-    test_dataset = build_dataset(cfg.data.test)
+    test_dataset = get_dataset(cfg.data.test)
     print('dataset loaded')
 
     # build model and load checkpoint
     model = build_landmark_detector(cfg.model)
     print('model built')
- 
+    
     checkpoint = load_checkpoint(model, cfg.load_from, map_location='cpu')
     print('load checkpoint from: {}'.format(cfg.load_from))
     
