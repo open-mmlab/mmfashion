@@ -128,8 +128,8 @@ mmfashion
 
 |   Backbone  |   Loss  | Normalized Error | % of Det. Landmarks |      Download      |
 | :---------: | :-----: | :--------------: | :-----------------: | :----------------: |
-|    VGG-16   | L2 Loss |       0.845      |                     |     [model]()      |
-|  ResNet-50  | L2 Loss |                  |                     |     [model]()      |
+|    VGG-16   | L2 Loss |       0.0845     |                     |     [model]()      |
+|  ResNet-50  | L2 Loss |       0.0078     |                     |     [model]()      |
 
 
 ## Contributing

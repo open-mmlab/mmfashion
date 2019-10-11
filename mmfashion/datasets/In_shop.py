@@ -171,8 +171,8 @@ class InShopDataset(Dataset):
         neg_data = self.get_basic_item(neg_idx)
 
         # create label for triplet loss
-        triplet_pos_label = 1
-        triplet_neg_label = -1
+        triplet_pos_label = float(1)
+        triplet_neg_label = float(-1)
 
         data = {
             'img': anchor_data['img'],

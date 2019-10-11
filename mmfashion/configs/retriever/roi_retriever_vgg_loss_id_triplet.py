@@ -108,7 +108,7 @@ log_config = dict(
 
 start_epoch = 0
 total_epochs = 100
-gpus = dict(train=[4,5,6,7], test=[0])
+gpus = dict(train=[0,1,2,3], test=[0])
 work_dir = 'checkpoint/Retrieve/vgg/roi/triplet/'
 print_interval = 20  # interval to print information
 resume_from = None
