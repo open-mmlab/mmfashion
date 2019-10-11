@@ -11,6 +11,7 @@ mmfashion/checkpoint
 mmfashion/utils/temp
 data/In-shop
 data/Landmark_Detect
+data/DeepFashion
 data/Attr_Predict
 data/Consumer-to-shop\ Clothes\ Retrieval\ Benchmark/
 data/gdrive-linux-64
