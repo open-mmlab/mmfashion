@@ -7,10 +7,9 @@ import torch.nn as nn
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
-from mmfashion.apis import (init_dist, get_root_logger, test_predictor)
-from mmfashion.datasets.utils import get_dataset
-from mmfashion.models import build_predictor
-from mmfashion.utils import resume_from
+from apis import (init_dist, get_root_logger, test_predictor)
+from datasets.utils import get_dataset
+from models import build_predictor
 
 
 def parse_args():
@@ -19,21 +18,14 @@ def parse_args():
     parser.add_argument(
         '--config',
         help='train config file path',
-        default='configs/RoI_Predictor.py')
+        default='configs/predict/roi_predictor_vgg_attr.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
-    parser.add_argument(
-        '--resume_from', help='the checkpoint file to resume from')
+    parser.add_argument('--checkpoint', help='checkpoint file', default='checkpoint/Predict/vgg/roi/latest.pth')
     parser.add_argument(
         '--validate',
         action='store_true',
         help='whether to evaluate the checkpoint during training',
         default=True)
-    parser.add_argument(
-        '--gpus',
-        type=int,
-        default=4,
-        help='number of gpus to use'
-        '(only applicable to non-distributed training)')
     parser.add_argument(
         '--launcher',
         choices=['none', 'pytorch', 'mpi', 'slurm'],
@@ -48,10 +40,8 @@ def main():
     cfg = Config.fromfile(args.config)
     if args.work_dir is not None:
         cfg.work_dir = args.work_dir
-    if args.resume_from is not None:
-        cfg.resume_from = args.resume_from
-    cfg.gpus.test = args.gpus
-
+    if args.checkpoint is not None:
+        cfg.checkpoint = args.checkpoint
     # init distributed env first
     if args.launcher == 'none':
         distributed = False
@@ -61,21 +51,23 @@ def main():
 
     # init logger
     logger = get_root_logger(cfg.log_level)
-    logger.info('Distributed training: {}'.format(distributed))
+    logger.info('Distributed test: {}'.format(distributed))
 
     # data loader
-    data_loader = get_dataset(cfg.data.test)
+    dataset = get_dataset(cfg.data.test)
     print('dataset loaded')
 
     # build model and load checkpoint
     model = build_predictor(cfg.model)
     print('model built')
-    model = resume_from(cfg, model)
+
+    checkpoint = load_checkpoint(model, cfg.checkpoint, map_location='cpu')
+    print('load checkpoint from: {}'.format(cfg.load_from))
 
     # test
     test_predictor(
         model,
-        data_loader,
+        dataset,
         cfg,
         distributed=distributed,
         validate=args.validate,

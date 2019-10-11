@@ -47,8 +47,8 @@ dataset_type = 'Landmark_Detect'
 data_root = '../data/Landmark_Detect'
 img_norm = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 data = dict(
-    imgs_per_gpu=2,
-    workers_per_gpu=2,
+    imgs_per_gpu=16,
+    workers_per_gpu=4,
     train=dict(
         type=dataset_type,
         img_path=os.path.join(data_root, 'Img'),
