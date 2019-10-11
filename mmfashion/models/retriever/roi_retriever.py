@@ -62,7 +62,9 @@ class RoIRetriever(BaseRetriever):
                       neg=None,
                       anchor_lm=None,
                       pos_lm=None,
-                      neg_lm=None):
+                      neg_lm=None,
+                      triplet_pos_label=None,
+                      triplet_neg_label=None):
         
         losses = dict()
         
@@ -76,7 +78,10 @@ class RoIRetriever(BaseRetriever):
                                                     id,
                                                     return_loss=True,
                                                     triplet=True,
-                                                    pos=pos_feat, neg=neg_feat)
+                                                    pos=pos_feat, 
+                                                    neg=neg_feat,
+                                                    triplet_pos_label=triplet_pos_label,
+                                                    triplet_neg_label=triplet_neg_label)
         
         else:
            losses['loss_id'] = self.embed_extractor(anchor_feat, id, return_loss=True)

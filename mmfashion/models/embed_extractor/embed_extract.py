@@ -32,7 +32,7 @@ class EmbedExtractor(nn.Module):
           self.loss_triplet = None
 
  
-   def forward_train(self, x, id, triplet, pos, neg):
+   def forward_train(self, x, id, triplet, pos, neg, triplet_pos_label, triplet_neg_label):
        embed = self.embed_linear(x)
        id_pred = self.id_linear(embed)
 
@@ -40,7 +40,7 @@ class EmbedExtractor(nn.Module):
        if triplet:
           pos_embed = self.embed_linear(pos)
           neg_embed = self.embed_linear(neg)
-          loss_triplet = self.loss_triplet(embed, pos_embed, neg_embed)
+          loss_triplet = self.loss_triplet(embed, pos_embed, neg_embed, triplet_pos_label, triplet_neg_label)
           return loss_id+loss_triplet
        else:
           return loss_id
@@ -52,9 +52,17 @@ class EmbedExtractor(nn.Module):
        return embed
 
 
-   def forward(self, x, id, return_loss=False, triplet=False, pos=None, neg=None):
+   def forward(self, 
+               x, 
+               id, 
+               return_loss=False, 
+               triplet=False, 
+               pos=None, 
+               neg=None,
+               triplet_pos_label=None,
+               triplet_neg_label=None):
        if return_loss:
-          return self.forward_train(x, id, triplet, pos, neg)
+          return self.forward_train(x, id, triplet, pos, neg, triplet_pos_label, triplet_neg_label)
        else:
           return self.forward_test(x)          
 

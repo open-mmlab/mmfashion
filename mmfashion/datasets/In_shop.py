@@ -170,6 +170,10 @@ class InShopDataset(Dataset):
         neg_idx = neg_idxes[random.randint(0, len(neg_idxes) - 1)]
         neg_data = self.get_basic_item(neg_idx)
 
+        # create label for triplet loss
+        triplet_pos_label = 1
+        triplet_neg_label = -1
+
         data = {
             'img': anchor_data['img'],
             'landmark': anchor_data['landmark'],
@@ -178,7 +182,9 @@ class InShopDataset(Dataset):
             'pos': pos_data['img'],
             'neg': neg_data['img'],
             'pos_lm': pos_data['landmark'],
-            'neg_lm': neg_data['landmark']
+            'neg_lm': neg_data['landmark'],
+            'triplet_pos_label': triplet_pos_label,
+            'triplet_neg_label': triplet_neg_label
         }
         return data
 

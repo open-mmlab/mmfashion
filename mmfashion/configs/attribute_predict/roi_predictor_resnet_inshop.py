@@ -30,6 +30,7 @@ model = dict(
         retrieve=retrieve),
     loss=dict(
         type='BCEWithLogitsLoss',
+        ratio=1,
         weight=None,
         size_average=None,
         reduce=None,
