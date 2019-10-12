@@ -47,7 +47,7 @@ dataset_type = 'Landmark_Detect'
 data_root = '../data/Landmark_Detect'
 img_norm = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 data = dict(
-    imgs_per_gpu=64,
+    imgs_per_gpu=32,
     workers_per_gpu=4,
     train=dict(
         type=dataset_type,
@@ -92,7 +92,7 @@ log_config = dict(
 
 start_epoch = 0
 total_epochs = 50
-gpus = dict(train=[0,1,2,3], test=[0, 1, 2, 3])
+gpus = dict(train=[0,1,2,3], test=[0,1,])
 work_dir = 'checkpoint/LandmarkDetect/resnet'
 print_interval = 20  # interval to print information
 save_interval = 10
