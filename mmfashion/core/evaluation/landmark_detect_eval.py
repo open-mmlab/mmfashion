@@ -5,44 +5,53 @@ from scipy.spatial.distance import cdist as cdist
 
 
 class LandmarkDetectorEvaluator(object):
-     def __init__(self, img_size, landmark_num):
+     def __init__(self, 
+                  img_size, 
+                  landmark_num, 
+                  prob_threshold=0.6,
+                  dist_threshold=10):
          self.w = img_size[0]
          self.h = img_size[1]
          self.landmark_num = landmark_num
-     
-     def compute_distance(self, pred_lms, gt_lms, dist=10):
-         """ compute the percentage of detected landmarks
+         self.prob_threshold = prob_threshold
+         self.dist_threshold = dist_threshold
+
+
+     def compute_distance(self, pred_lms, gt_lms):
+         """ compute the percentage of detected landmarks,
+             if pixel distance <= dist_threshold, such landmark is detected
          Args:
              pred_lms(list): predicted landmarks [[pred_lm1_x, pred_lm1_y], [pred_lm2_x, pred_lm2_y], ...]
              gt_lms(list): ground truth landmarks [[gt_lm1_x, gt_lm1_y],[gt_lm2_x, gt_lm2_y], ...]
          """
-         detected = 0
-         total = pred_lms.shape[0] * pred_lms.shape[1]
-         print('total', total)
+         detected = 0 # the number of detected landmarks
+         valid = 0 # the number of valid/visible landmarks
+         total_lm_num = pred_lms.shape[0]*pred_lms.shape[1]
          norm_error_list = []
 
          for i, (pred_lms_per_image, gt_lms_per_image) in enumerate(zip(pred_lms, gt_lms)):
-
-             #print('pred_lms_per_image', pred_lms_per_image)
-             #print('gt_lms_per_image', gt_lms_per_image)
-
-             gt_lm_arr = np.array([gt_lms_per_image[0]/self.w, gt_lms_per_image[1]/self.h], dtype=np.float)
-             pred_lm_arr = np.array([pred_lms_per_image[0]/self.w, pred_lms_per_image[1]/self.h], dtype=np.float)
-                         
-             dist = norm(gt_lm_arr-pred_lm_arr)
-             norm_error_list.append(dist)
-
              for j, (pred_lm, gt_lm) in enumerate(zip(pred_lms_per_image, gt_lms_per_image)):
-
-                 # compute left normalized error and right normalized error
                  
-                 dist = norm(pred_lm - gt_lms[i][j])                 
-                 if dist<=10:
-                    detected += 1 
+                 # compute normalized error per landmark
+                 gt_lm_x = float(gt_lm[0])/self.w
+                 gt_lm_y = float(gt_lm[1])/self.h
+                 pred_lm_x = float(pred_lm[0])/self.w
+                 pred_lm_y = float(pred_lm[1])/self.h
+                 
+                 gt_lm_arr = np.array([gt_lm_x, gt_lm_y])
+                 pred_lm_arr = np.array([pred_lm_x, pred_lm_y])
+                 norm_error = norm(gt_lm_arr - pred_lm_arr)
+                 norm_error_list.append(norm_error)
 
-         avg_dist = sum(norm_error_list)/self.landmark_num
-         det_percent = 100*float(detected) / total
-         return avg_dist, det_percent
+                 # compute the pixel distance per landmark
+                 dist = norm(pred_lm - gt_lm)
+                 if dist<=self.dist_threshold:
+                    detected += 1 
+                 valid += 1
+
+         avg_norm_error = sum(norm_error_list)/len(norm_error_list)
+         det_percent = 100*float(detected) / valid
+         return avg_norm_error, det_percent
 
 
      def evaluate_landmark_detection(self, pred_vis, pred_lm, vis, landmark):
@@ -66,12 +75,14 @@ class LandmarkDetectorEvaluator(object):
          pred_lm_np = np.reshape(pred_lm_np.astype(np.float), (batch_size,self.landmark_num,2))
          landmark_np = np.reshape(landmark_np.astype(np.float), (batch_size,self.landmark_num,2))
 
-         # pred_vis_prob >= 0.5, view as True 
-         pred_vis = np.reshape(pred_vis, (batch_size, self.landmark_num, 1))         
+         # pred_vis_prob >= self.prob_threshold, view as True 
+         pred_vis_prob = np.reshape(pred_vis, (batch_size, self.landmark_num, 1))         
+         pred_vis_bool = pred_vis_prob>=self.prob_threshold
+         pred_vis = pred_vis_bool*1
+
          vis = np.reshape(vis, (batch_size, self.landmark_num, 1))
          
-         
-         normalized_error, det_percent = self.compute_distance(pred_vis*pred_lm_np, vis*landmark_np)
+         normalized_error, det_percent = self.compute_distance(vis*pred_lm_np, vis*landmark_np)
          return normalized_error, det_percent
  
 

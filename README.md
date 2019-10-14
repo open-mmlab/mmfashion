@@ -81,7 +81,7 @@ Please refer to [DATA_PREPARATION.md](docs/DATA_PREPARATION.md) for the dataset 
 
 |   Backbone  |   Loss  | Normalized Error | % of Det. Landmarks |      Download      |
 | :---------: | :-----: | :--------------: | :-----------------: | :----------------: |
-|    VGG-16   | L2 Loss |       0.0845     |                     |     [model]()      |
+|    VGG-16   | L2 Loss |       0.0813     |        55.38        |     [model]()      |
 |  ResNet-50  | L2 Loss |       0.0781     |                     |     [model]()      |
 
 
