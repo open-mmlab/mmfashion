@@ -1,6 +1,7 @@
 import numpy as np
 import scipy.io as sio
 from scipy.spatial.distance import cdist as cdist
+from scipy.spatial.distance import cosine as cosine
 
 
 class Evaluator(object):
@@ -21,9 +22,6 @@ class Evaluator(object):
 
         self.query_dict, self.query_id2idx = self.get_id_dict(query_dict_fn)
         self.gallery_dict, self.gallery_id2idx = self.get_id_dict(gallery_dict_fn)
-
-        #self.query_id2idx = self.inverse_dict(self.query_dict)
-        #self.gallery_id2idx = self.inverse_dict(self.gallery_dict)
 
 
     def load_dict(self, fn):
@@ -47,11 +45,14 @@ class Evaluator(object):
     def single_query(self, query_id, query_feat, gallery_embeds):
         query_dist = []
         for j, feat in enumerate(gallery_embeds):
-            adist = cdist(
-                    feat.reshape(1,-1), 
-                    query_feat.reshape(1,-1), 
-                    'euclidean')
-            query_dist.append(adist[0][0])
+            #adist = cdist(
+            #        feat.reshape(1,-1), 
+            #        query_feat.reshape(1,-1), 
+            #        'euclidean')
+            cosine_dist = cosine(
+                      feat.reshape(1,-1),
+                      query_feat.reshape(1,-1))
+            query_dist.append(cosine_dist)
         query_dist = np.array(query_dist)
 
         order = np.argsort(query_dist)

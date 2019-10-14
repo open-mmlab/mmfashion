@@ -45,7 +45,9 @@ class GlobalRetriever(BaseRetriever):
                       neg=None,
                       anchor_lm=None,
                       pos_lm=None,
-                      neg_lm=None):
+                      neg_lm=None,
+                      triplet_pos_label=None,
+                      triplet_neg_label=None):
  
         losses = dict()
 
