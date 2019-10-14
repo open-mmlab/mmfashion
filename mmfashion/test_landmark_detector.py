@@ -17,7 +17,7 @@ def parse_args():
     parser.add_argument(
         '--config',
         help='train config file path',
-        default='configs/landmark_detect/landmark_detect_vgg.py')
+        default='configs/landmark_detect/landmark_detect_resnet.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument(
         '--checkpoint',
