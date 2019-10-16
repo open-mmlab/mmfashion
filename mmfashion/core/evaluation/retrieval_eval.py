@@ -9,8 +9,8 @@ class Evaluator(object):
     def __init__(self, query_dict_fn, gallery_dict_fn, topks=[3, 5]):
         """ create the empty array to count
         Args:
-        query_dict_fn : the index of query_embeds to id of query_embeds
-        tops_type : default retrieve top3, top5, top10, top20
+        query_dict_fn : the mapping of the index to the id of each query_embed
+        tops_type : default retrieve top3, top5
         """
 
         self.topks = topks
@@ -45,10 +45,6 @@ class Evaluator(object):
     def single_query(self, query_id, query_feat, gallery_embeds):
         query_dist = []
         for j, feat in enumerate(gallery_embeds):
-            #adist = cdist(
-            #        feat.reshape(1,-1), 
-            #        query_feat.reshape(1,-1), 
-            #        'euclidean')
             cosine_dist = cosine(
                       feat.reshape(1,-1),
                       query_feat.reshape(1,-1))
@@ -66,8 +62,8 @@ class Evaluator(object):
                 retrieved_id = self.gallery_dict[idx]
                 if query_id == retrieved_id:
                     tp += 1
-            single_recall[k] = float(tp) / min(relevant_num,k)
-
+            
+            single_recall[k] = float(tp) / relevant_num
         return single_recall
 
 
@@ -108,15 +104,3 @@ class Evaluator(object):
         return idx2id, id2idx
 
 
-if __name__ == "__main__":
-   query_embeds = sio.loadmat('query_embeds.mat')['embeds']
-   print('query_embeds', query_embeds.shape)
-
-   gallery_embeds = sio.loadmat('gallery_embeds.mat')['embeds']
-   print('gallery_embeds', gallery_embeds.shape)
-
-   
-   query_dict_fn = '/home/zwliu/FashionComp/mmfashion-prerelease/data/In-shop/Anno/query_id.txt'
-   gallery_dict_fn = '/home/zwliu/FashionComp/mmfashion-prerelease/data/In-shop/Anno/gallery_id.txt'
-   e = Evaluator(query_dict_fn, gallery_dict_fn)
-   e.evaluate(query_embeds, gallery_embeds)

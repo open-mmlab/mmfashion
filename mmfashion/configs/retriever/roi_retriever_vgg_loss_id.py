@@ -109,7 +109,7 @@ log_config = dict(
 
 start_epoch = 0
 total_epochs = 100
-gpus = dict(train=[0,1,2], test=[0])
+gpus = dict(train=[0,1,2,3], test=[0])
 work_dir = 'checkpoint/Retrieve/vgg/roi/no_attr'
 print_interval = 20  # interval to print information
 resume_from = None

@@ -1,5 +1,5 @@
-from .attr_calculator import AttrCalculator
-from .cate_calculator import CateCalculator
+from .attr_predict_eval import AttrCalculator
+from .cate_predict_eval import CateCalculator
 from .retrieval_eval import Evaluator
 from .landmark_detect_eval import LandmarkDetectorEvaluator
  
