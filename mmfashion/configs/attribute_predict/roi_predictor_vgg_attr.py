@@ -55,8 +55,8 @@ data = dict(
         img_file=os.path.join(data_root, 'Anno/train.txt'),
         label_file=os.path.join(data_root, 'Anno/train_attr.txt'),
         cate_file=os.path.join(data_root, 'Anno/train_cate.txt'),
-        bbox_file=os.path.join(data_root, 'Anno/list_bbox_train.txt'),
-        landmark_file=os.path.join(data_root, 'Anno/list_landmarks_train.txt'),
+        bbox_file=os.path.join(data_root, 'Anno/train_bbox.txt'),
+        landmark_file=os.path.join(data_root, 'Anno/train_landmarks.txt'),
         img_size=img_size),
     test=dict(
         type=dataset_type,
@@ -64,8 +64,8 @@ data = dict(
         img_file=os.path.join(data_root, 'Anno/test.txt'),
         label_file=os.path.join(data_root, 'Anno/test_attr.txt'),
         cate_file=os.path.join(data_root, 'Anno/test_cate.txt'),
-        bbox_file=os.path.join(data_root, 'Anno/list_bbox_test.txt'),
-        landmark_file=os.path.join(data_root, 'Anno/list_landmarks_test.txt'),
+        bbox_file=os.path.join(data_root, 'Anno/test_bbox.txt'),
+        landmark_file=os.path.join(data_root, 'Anno/test_landmarks.txt'),
         img_size=img_size),
     val=dict(
         type=dataset_type,
@@ -73,8 +73,8 @@ data = dict(
         img_file=os.path.join(data_root, 'Anno/val.txt'),
         label_file=os.path.join(data_root, 'Anno/val_attr.txt'),
         cate_file=os.path.join(data_root, 'Anno/val_cate.txt'),
-        bbox_file=os.path.join(data_root, 'Anno/list_bbox_val.txt'),
-        landmark_file=os.path.join(data_root, 'Anno/list_landmarks_val.txt'),
+        bbox_file=os.path.join(data_root, 'Anno/val_bbox.txt'),
+        landmark_file=os.path.join(data_root, 'Anno/val_landmarks.txt'),
         img_size=img_size))
 
 # optimizer
@@ -101,10 +101,10 @@ gpus = dict(train=[0,1,2,3], test=[0, 1, 2, 3])
 work_dir = 'checkpoint/Predict/vgg/roi'
 print_interval = 20  # interval to print information
 save_interval = 5
-init_weights_from = 'checkpoint/Predict/vgg/global/latest.pth'
-load_from = 'checkpoint/Predict/vgg/global/latest.pth'
+init_weights_from = None#'checkpoint/Predict/vgg/roi/latest.pth'
+load_from = None#'checkpoint/Predict/vgg/roi/latest.pth'
 resume_from = None
-checkpoint =  'checkpoint/Predict/vgg/global/latest.pth'
+checkpoint =  'checkpoint/Predict/vgg/roi/latest.pth'
 workflow = [('train', total_epochs)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

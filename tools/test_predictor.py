@@ -18,9 +18,9 @@ def parse_args():
     parser.add_argument(
         '--config',
         help='train config file path',
-        default='configs/predict/roi_predictor_vgg_attr.py')
+        default='configs/attribute_predict/roi_predictor_vgg_attr.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
-    parser.add_argument('--checkpoint', help='checkpoint file', default='checkpoint/Predict/vgg/roi/latest.pth')
+    parser.add_argument('--checkpoint', help='checkpoint file', default='checkpoint/Predict/vgg/roi/model_best.pth')
     parser.add_argument(
         '--validate',
         action='store_true',
@@ -62,7 +62,7 @@ def main():
     print('model built')
 
     checkpoint = load_checkpoint(model, cfg.checkpoint, map_location='cpu')
-    print('load checkpoint from: {}'.format(cfg.load_from))
+    print('load checkpoint from: {}'.format(cfg.checkpoint))
 
     # test
     test_predictor(

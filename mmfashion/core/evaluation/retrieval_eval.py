@@ -6,7 +6,7 @@ from scipy.spatial.distance import cosine as cosine
 
 class Evaluator(object):
 
-    def __init__(self, query_dict_fn, gallery_dict_fn, topks=[3, 5]):
+    def __init__(self, query_dict_fn, gallery_dict_fn, topks=[3,5,10]):
         """ create the empty array to count
         Args:
         query_dict_fn : the mapping of the index to the id of each query_embed
