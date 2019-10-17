@@ -15,6 +15,7 @@ data/DeepFashion
 data/Attr_Predict
 data/Consumer-to-shop\ Clothes\ Retrieval\ Benchmark/
 data/gdrive-linux-64
+checkpoint/
 
 *.pyc
 # *.png

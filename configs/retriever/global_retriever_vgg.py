@@ -19,8 +19,11 @@ model = dict(
         type='EmbedExtractor',
         inchannels=4096,
         inter_channels=[256, id_num],
-        loss_id = dict(type='CELoss', ratio=1),
-        loss_triplet= None),
+        loss_id=dict(type='CELoss', 
+                     ratio=1),
+        loss_triplet=dict(type='TripletLoss',
+                          method='cosine',
+                          margin=0.)),
     attr_predictor = dict(
         type='AttrPredictor',
         inchannels=4096,

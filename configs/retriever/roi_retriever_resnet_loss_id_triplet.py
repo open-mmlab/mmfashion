@@ -43,7 +43,7 @@ pooling = 'RoI'
 
 # dataset settings
 dataset_type = 'InShopDataset'
-data_root = '../data/In-shop'
+data_root = 'data/In-shop'
 img_norm = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
 data = dict(
@@ -107,12 +107,12 @@ log_config = dict(
         dict(type='TextLoggerHook'),
     ])
 
-start_epoch = 0
-total_epochs = 100
+start_epoch = 101
+total_epochs = 180
 gpus = dict(train=[0,1,2,3], test=[0])
 work_dir = 'checkpoint/Retrieve/resnet/roi/no_attr/'
 print_interval = 20
-resume_from = None #'checkpoint/Predict/resnet/latest.pth'
+resume_from = 'checkpoint/Predict/resnet/roi/no_attr/latest.pth'
 load_from = None
 init_weights_from = 'checkpoint/resnet50.pth'
 workflow = [('train', 100)]

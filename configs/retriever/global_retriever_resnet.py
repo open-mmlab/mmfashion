@@ -3,7 +3,7 @@ import os
 # model settings
 arch = 'resnet'
 retrieve = True
-attr_num = 463 
+attribute_num = 463 
 id_num=7982
 img_size = (224, 224)
 model = dict(
@@ -15,38 +15,37 @@ model = dict(
         pool_plane=(2, 2),
         inter_channels= [2048, 4096],
         outchannels=4096),
-    concat=dict(
-        type='Concat',
-        inplanes=2*4096,
-        inter_plane=4096,
-        id_inter_plane=1024,
-        num_attr=attr_num,
-        num_cate=id_num,
-        retrieve=retrieve),
-    loss_attr=dict(
-        type='BCEWithLogitsLoss',
-        weight=None,
-        size_average=None,
-        reduce=None,
-        reduction='mean'),
-    loss_id= dict(
-        type='CELoss'),
-    loss_retrieve=dict(
-        type='TripletLoss', 
-        margin=1.0, 
-        use_sigmoid=True, 
-        size_average=True),
+    embed_extractor=dict(
+        type='EmbedExtractor',
+        inchannels=4096,
+        inter_channels=[256, id_num],
+        loss_id = dict(type='CELoss',
+                        ratio=1),
+        loss_triplet=dict(type='TripletLoss',
+                          method='cosine',
+                          margin=0.)),
+    attr_predictor = dict(
+        type='AttrPredictor',
+        inchannels=4096,
+        outchannels=attribute_num,
+        loss_attr=dict(
+                 type='BCEWithLogitsLoss',
+                 ratio=1,
+                 weight=None,
+                 size_average=None,
+                 reduce=None,
+                 reduction='mean')),
     pretrained='checkpoint/resnet50.pth')
 
 pooling = 'Global'
 
 # dataset settings
 dataset_type = 'InShopDataset'
-data_root = '../data/In-shop'
+data_root = 'data/In-shop'
 img_norm = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
 data = dict(
-    imgs_per_gpu=1,
+    imgs_per_gpu=16,
     workers_per_gpu=1,
     train=dict(
         type=dataset_type,
@@ -71,7 +70,7 @@ data = dict(
         img_size=(224,224),
         roi_plane_size=7,
         retrieve=retrieve,
-        find_three=True,
+        find_three=retrieve,
         idx2id=os.path.join(data_root, 'Anno/query_idx2id.txt')),
     gallery=dict(
         type=dataset_type,
@@ -84,7 +83,7 @@ data = dict(
         img_size=(224, 224),
         roi_plane_size=7,
         retrieve=retrieve,
-        find_three=True,
+        find_three=retrieve,
         idx2id=os.path.join(data_root, 'Anno/gallery_idx2id.txt')))
 
 # optimizer
@@ -108,11 +107,11 @@ log_config = dict(
 start_epoch = 0
 total_epochs = 100
 gpus = dict(train=[0, 1, 2, 3], test=[0])
-work_dir = 'checkpoint/Retrieve/vgg'
+work_dir = 'checkpoint/Retrieve/resnet/global'
 print_interval = 20  # interval to print information
 resume_from = None
 load_from = None
-init_weights_from = 'checkpoint/Predict/vgg/attr_pred/latest.pth'
+init_weights_from = 'checkpoint/resnet50.pth'
 workflow = [('train', 100)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

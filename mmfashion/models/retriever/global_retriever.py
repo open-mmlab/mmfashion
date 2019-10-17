@@ -61,7 +61,10 @@ class GlobalRetriever(BaseRetriever):
                                                     id,
                                                     return_loss=True,
                                                     triplet=True,
-                                                    pos=pos_feat, neg=neg_feat)
+                                                    pos=pos_feat, 
+                                                    neg=neg_feat,
+                                                    triplet_pos_label=triplet_pos_label,
+                                                    triplet_neg_label=triplet_neg_label)
 
         else:
            losses['loss_id'] = self.embed_extractor(anchor_feat, id, return_loss=True)

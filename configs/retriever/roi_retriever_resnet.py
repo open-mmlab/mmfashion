@@ -13,12 +13,12 @@ model = dict(
         type='GlobalPooling',
         inplanes=(7, 7),
         pool_plane=(2, 2),
-        inter_channels=[512, 4096],
+        inter_channels=[2048, 4096],
         outchannels=4096),
     roi_pool=dict(
         type='RoIPooling',
         pool_plane=(2, 2),
-        inter_channels=512,
+        inter_channels=2048,
         outchannels=4096,
         crop_size=7,
         img_size=img_size,
@@ -26,11 +26,12 @@ model = dict(
     concat=dict(
         type='Concat',
         inchannels=2*4096,
-        inter_channels=4096),
+        outchannels=4096),
     embed_extractor=dict(
         type='EmbedExtractor',
-        inchannels=[256, id_num],
-        loss_ids = dict(type='CELoss',
+        inchannels=4096,
+        inter_channels=[256, id_num],
+        loss_id = dict(type='CELoss',
                         ratio=1),
         loss_triplet=dict(type='TripletLoss',
                           method='cosine',
@@ -52,11 +53,11 @@ pooling = 'RoI'
 
 # dataset settings
 dataset_type = 'InShopDataset'
-data_root = '../data/In-shop'
+data_root = 'data/In-shop'
 img_norm = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
 data = dict(
-    imgs_per_gpu=8,
+    imgs_per_gpu=16,
     workers_per_gpu=4,
     train=dict(
         type=dataset_type,
@@ -118,12 +119,12 @@ log_config = dict(
 
 start_epoch = 0
 total_epochs = 100
-gpus = dict(train=[0], test=[0])
-work_dir = 'checkpoint/Retrieve/resnet'
+gpus = dict(train=[0,1,2,3], test=[0])
+work_dir = 'checkpoint/Retrieve/resnet/roi/with_attr'
 print_interval = 20
-resume_from = None #'checkpoint/Predict/resnet/latest.pth'
-load_from = None
-init_weights_from = 'checkpoint/Predict/resnet/attr_pred/latest.pth'
+resume_from = None 
+load_from = 'checkpoint/Retrieve/resnet/roi/no_attr/latest.pth'
+init_weights_from = 'checkpoint/Retrieve/resnet/roi/no_attr/latest.pth'
 workflow = [('train', 100)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
