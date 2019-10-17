@@ -7,9 +7,9 @@ import torch.nn as nn
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
-from apis import (init_dist, get_root_logger, test_landmark_detector)
-from datasets import get_dataset
-from models import build_landmark_detector
+from mmfashion.apis import (init_dist, get_root_logger, test_landmark_detector)
+from mmfashion.datasets import get_dataset
+from mmfashion.models import build_landmark_detector
 
 def parse_args():
     parser = argparse.ArgumentParser(

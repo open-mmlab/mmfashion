@@ -2,7 +2,7 @@ import copy
 
 from .dataset_wrappers import ConcatDataset
 from .registry import DATASETS
-from utils import build_from_cfg
+from ..utils import build_from_cfg
 
 
 def _concat_dataset(cfgs):

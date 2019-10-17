@@ -7,10 +7,10 @@ import torch.nn as nn
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
-from apis import (init_dist, get_root_logger, train_predictor)
-from datasets import get_dataset
-from models import build_predictor
-from utils import init_weights_from
+from mmfashion.apis import (init_dist, get_root_logger, train_predictor)
+from mmfashion.datasets import get_dataset
+from mmfashion.models import build_predictor
+from mmfashion.utils import init_weights_from
 
 
 def parse_args():

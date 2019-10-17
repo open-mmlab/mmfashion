@@ -7,9 +7,9 @@ import torch.nn as nn
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
-from apis import (init_dist, get_root_logger, test_predictor)
-from datasets.utils import get_dataset
-from models import build_predictor
+from mmfashion.apis import (init_dist, get_root_logger, test_predictor)
+from mmfashion.datasets.utils import get_dataset
+from mmfashion.models import build_predictor
 
 
 def parse_args():
@@ -20,7 +20,7 @@ def parse_args():
         help='train config file path',
         default='configs/attribute_predict/roi_predictor_vgg_attr.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
-    parser.add_argument('--checkpoint', help='checkpoint file', default='checkpoint/Predict/vgg/roi/model_best.pth')
+    parser.add_argument('--checkpoint', help='checkpoint file', default='checkpoint/Predict/vgg/roi/latest.pth')
     parser.add_argument(
         '--validate',
         action='store_true',

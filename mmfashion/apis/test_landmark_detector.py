@@ -16,8 +16,8 @@ from mmcv.runner import Runner, DistSamplerSeedHook, obj_from_dict
 from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
 
 from .env import get_root_logger
-from core import LandmarkDetectorEvaluator
-from datasets import build_dataloader
+from ..core import LandmarkDetectorEvaluator
+from ..datasets import build_dataloader
 
 
 def test_landmark_detector(model,

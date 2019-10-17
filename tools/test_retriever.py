@@ -7,9 +7,9 @@ import torch.nn as nn
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
-from apis import (init_dist, get_root_logger, test_retriever)
-from datasets import build_dataset
-from models import build_retriever
+from mmfashion.apis import (init_dist, get_root_logger, test_retriever)
+from mmfashion.datasets import build_dataset
+from mmfashion.models import build_retriever
 
 
 def parse_args():
