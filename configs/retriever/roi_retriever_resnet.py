@@ -123,7 +123,7 @@ gpus = dict(train=[0,1,2,3], test=[0])
 work_dir = 'checkpoint/Retrieve/resnet/roi/with_attr'
 print_interval = 20
 resume_from = None 
-load_from = 'checkpoint/Retrieve/resnet/roi/no_attr/latest.pth'
+load_from = None
 init_weights_from = 'checkpoint/Retrieve/resnet/roi/no_attr/latest.pth'
 workflow = [('train', 100)]
 dist_params = dict(backend='nccl')

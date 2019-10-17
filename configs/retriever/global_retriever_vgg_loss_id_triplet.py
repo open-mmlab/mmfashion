@@ -3,7 +3,7 @@ import os
 # model settings
 arch = 'vgg'
 retrieve = True
-attribute_num = 463 
+attr_num = 463 
 id_num=7982
 img_size = (224, 224)
 model = dict(
@@ -19,22 +19,12 @@ model = dict(
         type='EmbedExtractor',
         inchannels=4096,
         inter_channels=[256, id_num],
-        loss_id=dict(type='CELoss', 
-                     ratio=1),
-        loss_triplet=dict(type='TripletLoss',
-                          method='cosine',
-                          margin=0.)),
-    attr_predictor = dict(
-        type='AttrPredictor',
-        inchannels=4096,
-        outchannels=attribute_num,
-        loss_attr=dict(
-                 type='BCEWithLogitsLoss',
-                 ratio=1,
-                 weight=None,
-                 size_average=None,
-                 reduce=None,
-                 reduction='mean')),
+        loss_id = dict(type='CELoss', 
+                       ratio=1),
+        loss_triplet= dict(type='TripletLoss',
+                           method='cosine',
+                           margin=0.)),
+    attr_predictor = None,
     pretrained='checkpoint/vgg16.pth')
 
 pooling = 'Global'
@@ -107,7 +97,7 @@ log_config = dict(
 start_epoch = 0
 total_epochs = 100
 gpus = dict(train=[0, 1, 2, 3], test=[0])
-work_dir = 'checkpoint/Retrieve/vgg/global/with_attr/'
+work_dir = 'checkpoint/Retrieve/vgg/global/no_attr_no_triplet'
 print_interval = 20  # interval to print information
 resume_from = None
 load_from = None
