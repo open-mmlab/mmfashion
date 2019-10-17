@@ -111,7 +111,7 @@ print_interval = 20  # interval to print information
 save_interval = 5
 init_weights_from = 'checkpoint/vgg16.pth'
 resume_from = None
-checkpoint = 'checkpoint/Retrieve/vgg/latest.pth'
+load_from = 'checkpoint/Retrieve/vgg/latest.pth'
 workflow = [('train', 40)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

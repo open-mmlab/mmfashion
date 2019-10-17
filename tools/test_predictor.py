@@ -41,7 +41,7 @@ def main():
     if args.work_dir is not None:
         cfg.work_dir = args.work_dir
     if args.checkpoint is not None:
-        cfg.checkpoint = args.checkpoint
+        cfg.load_from = args.checkpoint
     # init distributed env first
     if args.launcher == 'none':
         distributed = False
@@ -61,8 +61,8 @@ def main():
     model = build_predictor(cfg.model)
     print('model built')
 
-    checkpoint = load_checkpoint(model, cfg.checkpoint, map_location='cpu')
-    print('load checkpoint from: {}'.format(cfg.checkpoint))
+    checkpoint = load_checkpoint(model, cfg.load_from, map_location='cpu')
+    print('load checkpoint from: {}'.format(cfg.load_from))
 
     # test
     test_predictor(

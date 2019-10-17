@@ -90,7 +90,7 @@ print_interval = 20  # interval to print information
 save_interval = 5
 init_weights_from = 'checkpoint/vgg16.pth'
 resume_from = None
-checkpoint = None
+load_from = None
 workflow = [('train', total_epochs)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

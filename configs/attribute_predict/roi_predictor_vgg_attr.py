@@ -104,7 +104,6 @@ save_interval = 5
 init_weights_from = None#'checkpoint/Predict/vgg/roi/latest.pth'
 load_from = None#'checkpoint/Predict/vgg/roi/latest.pth'
 resume_from = None
-checkpoint =  'checkpoint/Predict/vgg/roi/latest.pth'
 workflow = [('train', total_epochs)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

@@ -91,7 +91,7 @@ print_interval = 20  # interval to print information
 save_interval = 5
 init_weights_from = 'checkpoint/resnet50.pth'
 resume_from = None
-checkpoint = None 
+load_from = None 
 workflow = [('train', 40)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
