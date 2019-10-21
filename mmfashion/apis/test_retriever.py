@@ -75,12 +75,8 @@ def _non_dist_test(model, query_set, gallery_set, cfg, validate=False):
     gallery_embeds = _process_embeds(gallery_set, model, cfg)
 
     query_embeds_np = np.array(query_embeds)
-    print('query_embeds', query_embeds_np.shape)
-    sio.savemat('query_embeds.mat', {'embeds': query_embeds_np})
 
     gallery_embeds_np = np.array(gallery_embeds)
-    print('gallery_embeds', gallery_embeds_np.shape)
-    sio.savemat('gallery_embeds.mat', {'embeds': gallery_embeds_np})
 
     e = Evaluator(cfg.data.query.id_file, cfg.data.gallery.id_file)
     e.evaluate(query_embeds_np, gallery_embeds_np)

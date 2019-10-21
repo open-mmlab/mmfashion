@@ -86,6 +86,7 @@ class AttrDataset(Dataset):
             self.landmarks = None
 
     def get_basic_item(self, idx):
+        imgname = self.img_list[idx]
         img = Image.open(os.path.join(self.img_path, self.img_list[idx])).convert('RGB')
 
         width, height = img.size
@@ -120,7 +121,10 @@ class AttrDataset(Dataset):
                 l_y = float(l_y) / bbox_h * self.img_size[1]
                 landmark.append(l_y)
         landmark = torch.from_numpy(np.array(landmark)).float()
-        data = {'img': img, 'attr': label, 'cate':cate, 'landmark': landmark}
+        data = {'img': img, 
+                'attr': label, 
+                'cate':cate, 
+                'landmark': landmark}
         return data
 
     def __getitem__(self, idx):

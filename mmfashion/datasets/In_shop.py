@@ -137,7 +137,10 @@ class InShopDataset(Dataset):
 
         landmark = torch.from_numpy(np.array(landmark)).float()
         img = self.transform(img)
-        data = {'img': img, 'landmark': landmark, 'id': img_id, 'attr': label}
+        data = {'img': img, 
+                'landmark': landmark,
+                'id': img_id,
+                'attr': label}
         return data
 
 

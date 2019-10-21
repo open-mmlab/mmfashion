@@ -7,12 +7,19 @@ import torch
 
 class AttrCalculator(object):
 
-    def __init__(self, cfg, tops_type=[3, 5, 10]):
+    def __init__(self, 
+                 cfg, 
+                 tops_type=[3, 5, 10], 
+                 show_attr_name=False,
+                 attr_name_file='data/Attr_Predict/Anno/list_attr_cloth.txt'):
         """ create the empty array to count
         true positive(tp), true negative(tn), false positive(fp) and false negative(fn);
         Args:
-        class_num : number of classes in the dataset
-        tops_type : default calculate top3, top5 and top10
+        cfg(config): testing config
+        class_num(int) : number of classes in the dataset
+        tops_type(list of int) : default calculate top3, top5 and top10
+        show_attr_name(bool) : print predicted attribute name, for demo usage
+        attr_name_file(str) : file of attribute name, used for mapping attribute index to attribute names  
         """
         self.collector = dict()
         self.total = 0  # the number of total predictions
@@ -34,7 +41,16 @@ class AttrCalculator(object):
         """ topn recall rate """
         self.recall = dict()
         self.topn = 50
+        
+        self.show_attr_name = show_attr_name
+        if self.show_attr_name:
+           # map the index of attribute to attribute name
+           self.attr_dict = {}
+           attr_names = open(attr_name_file).readlines()
+           for i, attr_name in enumerate(attr_names[2:]):
+               self.attr_dict[i] = attr_name.split()[0]
 
+        
     def get_dict(self, fn):
         rf = open(fn).readlines()
         dic = dict()
@@ -59,8 +75,13 @@ class AttrCalculator(object):
                 else:
                     top['tn'][i] += 1
 
+    def index_to_attribute_name(self, index):
+        for pred_i in index:
+            pred_attr_name = self.attr_dict[pred_i]
+            print(pred_attr_name)
 
-    def collect_result(self, pred, target):
+    
+    def collect_result(self, pred, target, imgname):
         if isinstance(pred, torch.Tensor):
             data = pred.data.cpu().numpy()
         elif isinstance(pred, np.ndarray):
@@ -72,7 +93,7 @@ class AttrCalculator(object):
             self.total += 1
             indexes = np.argsort(data[i])[::-1]
             idx3, idx5, idx10 = indexes[:3], indexes[:5], indexes[:10]
-
+            
             self.collect(idx3, target[i], self.collector['top3'])
             self.collect(idx5, target[i], self.collector['top5'])
             self.collect(idx10, target[i], self.collector['top10'])

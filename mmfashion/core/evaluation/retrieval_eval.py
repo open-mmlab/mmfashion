@@ -6,11 +6,19 @@ from scipy.spatial.distance import cosine as cosine
 
 class Evaluator(object):
 
-    def __init__(self, query_dict_fn, gallery_dict_fn, topks=[3,5,10]):
+    def __init__(self, 
+                 query_dict_fn, 
+                 gallery_dict_fn, 
+                 topks=[3,5,10],
+                 demo=False,
+                 query_img_name_file='data/In-shop/Anno/query_img.txt',
+                 gallery_img_name_file='data/In-shop/Anno/gallery_img.txt'):
         """ create the empty array to count
         Args:
-        query_dict_fn : the mapping of the index to the id of each query_embed
-        tops_type : default retrieve top3, top5
+        query_dict_fn(dict) : the mapping of the index to the id of each query_embed
+        gallery_dict_fn(dict): the mapping of the index to the id of each gallery_embed
+        tops_type(int) : default retrieve top3, top5
+        demo(bool) : whether to show the retrieved image name or not
         """
 
         self.topks = topks
@@ -22,6 +30,18 @@ class Evaluator(object):
 
         self.query_dict, self.query_id2idx = self.get_id_dict(query_dict_fn)
         self.gallery_dict, self.gallery_id2idx = self.get_id_dict(gallery_dict_fn)
+
+        self.demo = demo
+        if demo:
+           self.query_idx_to_imgname = {}
+           query_img_names = open(query_img_name_file).readlines()
+           for i, imgname in enumerate(query_img_names):
+               self.query_idx_to_imgname[i] = imgname.strip('\n')
+           
+           self.gallery_idx_to_imgname = {}
+           gallery_img_names = open(gallery_img_name_file).readlines()
+           for i, imgname in enumerate(gallery_img_names):
+               self.gallery_idx_to_imgname[i] = imgname.strip('\n')
 
 
     def load_dict(self, fn):
@@ -42,7 +62,7 @@ class Evaluator(object):
         return id2idx
 
 
-    def single_query(self, query_id, query_feat, gallery_embeds):
+    def single_query(self, query_id, query_feat, gallery_embeds, query_idx):
         query_dist = []
         for j, feat in enumerate(gallery_embeds):
             cosine_dist = cosine(
@@ -62,7 +82,7 @@ class Evaluator(object):
                 retrieved_id = self.gallery_dict[idx]
                 if query_id == retrieved_id:
                     tp += 1
-            
+                        
             single_recall[k] = float(tp) / relevant_num
         return single_recall
 
@@ -79,7 +99,8 @@ class Evaluator(object):
             query_id = self.query_dict[i]
             single_recall = self.single_query(query_id, 
                                               query_feat,
-                                              gallery_embeds)
+                                              gallery_embeds,
+                                              i)
             
             for k in self.topks:
                 self.recall[k].append(single_recall[k])

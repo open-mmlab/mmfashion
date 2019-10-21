@@ -56,9 +56,10 @@ def _non_dist_test(model, dataset, cfg, validate=False):
         imgs = testdata['img']
         landmark = testdata['landmark']
         attr = testdata['attr']
-
-        attr_pred = model(imgs, attr, landmark=landmark, return_loss=False)
-        attr_calculator.collect_result(attr_pred, attr)
+       
+        attr_pred = model(imgs, attr,landmark=landmark, return_loss=False)
+        
+        attr_calculator.collect_result(attr_pred, attr, imgname)
 
         if batch_idx % cfg.print_interval == 0:
             attr_calculator.show_result(batch_idx)
