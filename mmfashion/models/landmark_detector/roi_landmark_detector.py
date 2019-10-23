@@ -52,9 +52,12 @@ class RoILandmarkDetector(BaseLandmarkDetector):
 
         losses = dict()
         # predict landmark visibility
-        losses['loss_vis'] = self.visibility_classifier(landmark_feat, vis)
+        losses['loss_vis'], pred_vis = self.visibility_classifier(landmark_feat, vis)
         # predict landmark coordinates
-        losses['loss_regress'] = self.landmark_regression(landmark_feat, vis, landmark_for_regression)   
+        losses['loss_regress'] = self.landmark_regression(landmark_feat,
+                                                          pred_vis,
+                                                          vis,
+                                                          landmark_for_regression)   
         return losses
    
 

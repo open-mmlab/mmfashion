@@ -27,20 +27,24 @@ class VisibilityClassifier(nn.Module):
 
    def forward_train(self, x, vis):
        losses_vis = []
+       vis_pred_list = []
        for i in range(self.landmark_num):
            lm_feat = x[:, i, :] # landmark feature (bs, 256)
            vis_pred = F.sigmoid(self.linear(lm_feat)) # landmark visibility (bs, 2)
            lm_vis = vis[:, i].unsqueeze(1)
+           vis_pred_list.append(lm_vis)
            
            loss_vis = self.loss_vis(vis_pred, lm_vis)
            losses_vis.append(loss_vis)
        
        losses_vis_tensor = torch.stack(losses_vis).transpose(1,0)[:,:,0]
+       vis_pred_list = torch.stack(vis_pred_list).transpose(1,0)[:,:,0]
+
        # calculate mean value
        losses_vis_tensor_mean_per_lm = torch.mean(losses_vis_tensor, dim=1, keepdim=True)
        losses_vis_tensor_mean_per_batch = torch.mean(losses_vis_tensor_mean_per_lm)
-       #losses_vis_tensor_mean = torch.mean(losses_vis_tensor, dim=1, keepdim=True)
-       return losses_vis_tensor_mean_per_batch
+       
+       return losses_vis_tensor_mean_per_batch, vis_pred_list
 
 
    def forward_test(self, x):
