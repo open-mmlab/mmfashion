@@ -1,7 +1,7 @@
 # MMFashion
 
 <p align="center">
-<img src='./misc/logo_mmfashion.png' width=320>
+    <img src='./misc/logo_mmfashion.png' width=320>
 </p>
 
 
@@ -10,12 +10,14 @@
 `MMFashion` is an open source visual fashion analysis toolbox based on [PyTorch](https://pytorch.org/). It is a part of the [open-mmlab](https://github.com/open-mmlab) project developed by [Multimedia Lab, CUHK](http://mmlab.ie.cuhk.edu.hk/).
 
 <p align="left">
-<img src='./misc/demo_attribute.gif' width=240>
+    <img src='./misc/demo_attribute.gif' height=240>
+    <img src='./misc/demo_retrieval.gif' height=240>
+    <img src='./misc/demo_landmark.gif' height=240>
 </p>
 
 
 ## Updates
-[2019-10-21] `MMFashion` v0.1 is released.
+[2019-10-28] `MMFashion` v0.1 is released.
 
 
 ## Features
