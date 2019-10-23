@@ -41,6 +41,7 @@ class LandmarkDetectDataset(Dataset):
                  bbox_file,
                  landmark_file,
                  img_size,
+                 roi_plane_size=7,
                  attr_file=None):
         self.img_path = img_path
         normalize = transforms.Normalize(
@@ -57,6 +58,8 @@ class LandmarkDetectDataset(Dataset):
         self.img_list = [x.strip() for x in fp]
 
         self.img_size = img_size
+        self.roi_plane_size = roi_plane_size
+
         # load bbox
         if bbox_file:
             self.with_bbox = True
@@ -94,7 +97,8 @@ class LandmarkDetectDataset(Dataset):
         img.thumbnail(self.img_size, Image.ANTIALIAS)
         img = self.transform(img)
         
-        landmark, vis = [], []
+        landmark_for_regression, vis = [], []
+        landmark_for_roi_pool = []
         origin_landmark = self.landmarks[idx]
         
         # compute the shiftness
@@ -104,13 +108,21 @@ class LandmarkDetectDataset(Dataset):
             else:
                if i%3==1: # x
                   l_x = max(0, l-x1)
-                  l_x = float(l_x) / bbox_w * self.img_size[0]
-                  landmark.append(l_x)
+                  l_x_for_regression = float(l_x) / bbox_w * width
+                  landmark_for_regression.append(l_x_for_regression)
+
+                  l_x_for_roi_pool = float(l_x) / width * self.roi_plane_size
+                  landmark_for_roi_pool.append(l_x_for_roi_pool)
                else: # y
                   l_y = max(0, l-y1)
-                  l_y = float(l_y) / bbox_h * self.img_size[1]
-                  landmark.append(l_y)
-        landmark = torch.from_numpy(np.array(landmark)).float()
+                  l_y_for_regression = float(l_y) / bbox_h * height
+                  landmark_for_regression.append(l_y_for_regression)
+ 
+                  l_y_for_roi_pool = float(l_y) / height * self.roi_plane_size
+                  landmark_for_roi_pool.append(l_y_for_roi_pool)
+
+        landmark_for_regression = torch.from_numpy(np.array(landmark_for_regression)).float()
+        landmark_for_roi_pool = torch.from_numpy(np.array(landmark_for_roi_pool)).float()
         vis = torch.from_numpy(np.array(vis)).float()
         
         # load attribute
@@ -120,8 +132,9 @@ class LandmarkDetectDataset(Dataset):
            attr = None
 
         data = {'img': img,
-                'landmark': landmark,
-                 'vis': vis}
+                'vis': vis,
+                'landmark_for_regression': landmark_for_regression,
+                'landmark_for_roi_pool':landmark_for_roi_pool}
         return data
 
     def __getitem__(self, idx):

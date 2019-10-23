@@ -30,12 +30,27 @@ class BaseLandmarkDetector(nn.Module):
             return self.aug_test(img)
 
     @abstractmethod
-    def forward_train(self, img, vis, landmark, attr):
+    def forward_train(self, 
+                      img,
+                      vis, 
+                      landmark_for_regreesion, 
+                      landmark_for_roi_pool, 
+                      attr):
         pass
 
-    def forward(self, img, landmark=None, vis=None, attr=None, return_loss=True):
+    def forward(self,
+                img,
+                vis=None, 
+                landmark_for_regression=None, 
+                landmark_for_roi_pool=None,
+                attr=None, 
+                return_loss=True):
         if return_loss:
-           return self.forward_train(img, vis, landmark, attr)
+           return self.forward_train(img, 
+                                     vis, 
+                                     landmark_for_regression, 
+                                     landmark_for_roi_pool,
+                                     attr)
         else:
            return self.forward_test(img)
 

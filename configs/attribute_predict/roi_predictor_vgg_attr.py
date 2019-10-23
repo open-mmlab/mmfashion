@@ -101,8 +101,8 @@ gpus = dict(train=[0,1,2,3], test=[0, 1, 2, 3])
 work_dir = 'checkpoint/Predict/vgg/roi'
 print_interval = 20  # interval to print information
 save_interval = 5
-init_weights_from = None#'checkpoint/Predict/vgg/roi/latest.pth'
-load_from = None#'checkpoint/Predict/vgg/roi/latest.pth'
+init_weights_from = None
+load_from = None
 resume_from = None
 workflow = [('train', total_epochs)]
 dist_params = dict(backend='nccl')

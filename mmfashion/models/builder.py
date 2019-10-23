@@ -5,7 +5,8 @@ from .registry import (BACKBONES, GLOBALPOOLING, ROIPOOLING, CONCATS,
                        EMBEDEXTRACTOR, ATTRPREDICTOR,
                        PREDICTOR, RETRIEVER, 
                        LANDMARKFEATUREEXTRACTOR, VISIBILITYCLASSIFIER,
-                       LANDMARKREGRESSION, LANDMARKDETECTOR, LOSSES)
+                       LANDMARKREGRESSION, LANDMARKDETECTOR,
+                       LOSSES)
 
 
 def _build_module(cfg, registry, default_args):

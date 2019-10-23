@@ -81,7 +81,7 @@ class AttrCalculator(object):
             print(pred_attr_name)
 
     
-    def collect_result(self, pred, target, imgname):
+    def collect_result(self, pred, target):
         if isinstance(pred, torch.Tensor):
             data = pred.data.cpu().numpy()
         elif isinstance(pred, np.ndarray):

@@ -9,10 +9,7 @@ class Evaluator(object):
     def __init__(self, 
                  query_dict_fn, 
                  gallery_dict_fn, 
-                 topks=[3,5,10],
-                 demo=False,
-                 query_img_name_file='data/In-shop/Anno/query_img.txt',
-                 gallery_img_name_file='data/In-shop/Anno/gallery_img.txt'):
+                 topks=[3,5,10]):
         """ create the empty array to count
         Args:
         query_dict_fn(dict) : the mapping of the index to the id of each query_embed
@@ -30,18 +27,6 @@ class Evaluator(object):
 
         self.query_dict, self.query_id2idx = self.get_id_dict(query_dict_fn)
         self.gallery_dict, self.gallery_id2idx = self.get_id_dict(gallery_dict_fn)
-
-        self.demo = demo
-        if demo:
-           self.query_idx_to_imgname = {}
-           query_img_names = open(query_img_name_file).readlines()
-           for i, imgname in enumerate(query_img_names):
-               self.query_idx_to_imgname[i] = imgname.strip('\n')
-           
-           self.gallery_idx_to_imgname = {}
-           gallery_img_names = open(gallery_img_name_file).readlines()
-           for i, imgname in enumerate(gallery_img_names):
-               self.gallery_idx_to_imgname[i] = imgname.strip('\n')
 
 
     def load_dict(self, fn):
