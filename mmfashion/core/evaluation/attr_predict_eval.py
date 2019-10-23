@@ -11,13 +11,13 @@ class AttrCalculator(object):
                  cfg, 
                  tops_type=[3, 5, 10], 
                  show_attr_name=False,
-                 attr_name_file='data/Attr_Predict/Anno/list_attr_cloth.txt'):
+                 attr_name_file=None):
         """ create the empty array to count
         true positive(tp), true negative(tn), false positive(fp) and false negative(fn);
         Args:
         cfg(config): testing config
         class_num(int) : number of classes in the dataset
-        tops_type(list of int) : default calculate top3, top5 and top10
+        tops_type(list of int) : default calculate top3, top5 and top10 accuracy
         show_attr_name(bool) : print predicted attribute name, for demo usage
         attr_name_file(str) : file of attribute name, used for mapping attribute index to attribute names  
         """
@@ -44,6 +44,7 @@ class AttrCalculator(object):
         
         self.show_attr_name = show_attr_name
         if self.show_attr_name:
+           assert attr_name_file is not None
            # map the index of attribute to attribute name
            self.attr_dict = {}
            attr_names = open(attr_name_file).readlines()
@@ -152,12 +153,6 @@ class AttrCalculator(object):
             print('Batch[%d]' % batch_idx)
         else:
             print('Total')
-
-        #self.compute_precision()
-        #print('-------------- Attribute Prediction -------------')
-        #print('[Precision] top3 = %.2f, top5 = %.2f, top10 = %.2f' %
-        #      (self.precision['top3'], self.precision['top5'],
-        #       self.precision['top10']))
 
         self.compute_recall()
         print('[Recall] top3 = %.2f, top5 = %.2f, top10 = %.2f' %
