@@ -48,13 +48,13 @@ class VisibilityClassifier(nn.Module):
 
 
    def forward_test(self, x):
-       vis_preds = []
+       vis_pred_list = []
        for i in range(self.landmark_num):
            lm_feat = x[:, i, :] 
            vis_pred = F.sigmoid(self.linear(lm_feat)) # landmark visibility (bs, 2)
-           vis_preds.append(vis_pred)
-       vis_preds = torch.stack(vis_preds).transpose(1,0)[:,:,0]
-       return vis_preds
+           vis_pred_list.append(vis_pred)
+       vis_pred_list = torch.stack(vis_pred_list).transpose(1,0)[:,:,0]
+       return vis_pred_list
 
 
    def forward(self, x, vis=None, return_loss=True):

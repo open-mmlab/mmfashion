@@ -27,7 +27,7 @@ class LandmarkRegression(nn.Module):
         landmark = landmark.view(-1, self.landmark_num,2)
         vis = vis.view(-1, self.landmark_num, 1)
          
-        loss_regress = self.loss_regress(pred_vis*pred_lm, vis*landmark)
+        loss_regress = self.loss_regress(vis*pred_lm, vis*landmark)
         
         loss_regress_mean = torch.mean(loss_regress)
         return loss_regress
@@ -36,7 +36,12 @@ class LandmarkRegression(nn.Module):
         pred_lm = self.linear(x)
         return pred_lm
 
-    def forward(self, x, pred_vis, vis, landmark=None, return_loss=True):
+    def forward(self,
+                x, 
+                pred_vis=None,
+                vis=None,
+                landmark=None, 
+                return_loss=True):
         if return_loss:
            return self.forward_train(x, pred_vis, vis, landmark)
         else:

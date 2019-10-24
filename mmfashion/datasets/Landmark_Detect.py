@@ -80,8 +80,9 @@ class LandmarkDetectDataset(Dataset):
 
     def get_basic_item(self, idx):
         img = Image.open(os.path.join(self.img_path, self.img_list[idx])).convert('RGB')
-
         width, height = img.size
+        
+        # first crop image
         if self.with_bbox:
             bbox_cor = self.bboxes[idx]
             x1 = max(0, int(bbox_cor[0]) - 10)
@@ -93,7 +94,8 @@ class LandmarkDetectDataset(Dataset):
             img = img.crop(box=(x1, y1, x2, y2))
         else:
             bbox_w, bbox_h = self.img_size[0], self.img_size[1]
-
+        
+        # then resize image
         img.thumbnail(self.img_size, Image.ANTIALIAS)
         img = self.transform(img)
         
@@ -101,21 +103,21 @@ class LandmarkDetectDataset(Dataset):
         landmark_for_roi_pool = []
         origin_landmark = self.landmarks[idx]
         
-        # compute the shiftness
+        # compute the shifted landmarks
         for i, l in enumerate(origin_landmark):
             if i%3 == 0: # visibility
                vis.append(l)
             else:
                if i%3==1: # x
                   l_x = max(0, l-x1)
-                  l_x_for_regression = float(l_x) / bbox_w * width
+                  l_x_for_regression = float(l_x) / bbox_w * self.img_size[0]
                   landmark_for_regression.append(l_x_for_regression)
 
                   l_x_for_roi_pool = float(l_x) / width * self.roi_plane_size
                   landmark_for_roi_pool.append(l_x_for_roi_pool)
                else: # y
                   l_y = max(0, l-y1)
-                  l_y_for_regression = float(l_y) / bbox_h * height
+                  l_y_for_regression = float(l_y) / bbox_h * self.img_size[1]
                   landmark_for_regression.append(l_y_for_regression)
  
                   l_y_for_roi_pool = float(l_y) / height * self.roi_plane_size
@@ -130,7 +132,7 @@ class LandmarkDetectDataset(Dataset):
            attr = self.attributes[idx]
         else:
            attr = None
-
+        
         data = {'img': img,
                 'vis': vis,
                 'landmark_for_regression': landmark_for_regression,

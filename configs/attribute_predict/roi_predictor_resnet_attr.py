@@ -47,7 +47,7 @@ dataset_type = 'Attr_Pred'
 data_root = 'data/Attr_Predict'
 img_norm = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 data = dict(
-    imgs_per_gpu=16,
+    imgs_per_gpu=32,
     workers_per_gpu=4,
     train=dict(
         type=dataset_type,

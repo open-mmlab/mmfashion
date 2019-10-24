@@ -75,7 +75,7 @@ class RoILandmarkDetector(BaseLandmarkDetector):
         feat = self.global_pool(x)
         landmark_feat = self.landmark_feature_extractor(feat)
         pred_vis = self.visibility_classifier(landmark_feat,return_loss=False)
-        pred_lm = self.landmark_regression(landmark_feat, pred_vis,return_loss=False)
+        pred_lm = self.landmark_regression(landmark_feat, return_loss=False)
         return pred_vis, pred_lm
 
     def init_weights(self, pretrained=None):

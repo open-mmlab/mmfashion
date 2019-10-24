@@ -55,10 +55,10 @@ def _non_dist_test(model, dataset, cfg, validate=False):
 
     for batch_idx, testdata in enumerate(data_loader):
         img = testdata['img']
-        landmark = testdata['landmark']
+        landmark = testdata['landmark_for_regression']
         vis = testdata['vis']
         
-        pred_vis, pred_lm = model(img, landmark, return_loss=False)
+        pred_vis, pred_lm = model(img, return_loss=False)
         det_error, det_lm_percent = evaluator.evaluate_landmark_detection(pred_vis,
                                                                           pred_lm,
                                                                           vis,

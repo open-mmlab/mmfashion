@@ -6,9 +6,9 @@ More models with different backbones will be added to the model zoo.
 
 |   Backbone  |      Pooling     |      Loss     | Top-5 Recall | Top-5 Acc. |      Download      |
 | :---------: | :--------------: | :-----------: | :----------: | :--------: | :----------------: |
-|    VGG-16   |  Global Pooling  | Cross-Entropy |              |            |     [model]()      |
-|    VGG-16   | Landmark Pooling | Cross-Entropy |     22.3     |   99.25    |     [model]()      |
-|  ResNet-50  |  Global Pooling  | Cross-Entropy |              |            |     [model]()      |
+|    VGG-16   |  Global Pooling  | Cross-Entropy |     13.70    |   99.81    |     [model]()      |
+|    VGG-16   | Landmark Pooling | Cross-Entropy |     22.31    |   99.25    |     [model]()      |
+|  ResNet-50  |  Global Pooling  | Cross-Entropy |     23.52    |   99.29    |     [model]()      |
 |  ResNet-50  | Landmark Pooling | Cross-Entropy |              |            |     [model]()      |
 
 ## In-Shop Clothes Retrieval
@@ -16,9 +16,9 @@ More models with different backbones will be added to the model zoo.
 |   Backbone  |      Pooling     |      Loss     | Top-5 Acc. |      Download      |
 | :---------: | :--------------: | :-----------: | :--------: | :----------------: |
 |    VGG-16   |  Global Pooling  | Cross-Entropy |   38.76    |     [model]()      |
-|    VGG-16   | Landmark Pooling | Cross-Entropy |            |     [model]()      |
-|  ResNet-50  |  Global Pooling  | Cross-Entropy |            |     [model]()      |
-|  ResNet-50  | Landmark Pooling | Cross-Entropy |            |     [model]()      |
+|    VGG-16   | Landmark Pooling | Cross-Entropy |   46.29    |     [model]()      |
+|  ResNet-50  |  Global Pooling  | Cross-Entropy |   37.61    |     [model]()      |
+|  ResNet-50  | Landmark Pooling | Cross-Entropy |   48.82    |     [model]()      |
 
 ## Fashion Landmark Detection
 
