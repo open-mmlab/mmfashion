@@ -25,6 +25,8 @@ model = dict(
     pretrained='checkpoint/vgg16.pth')
 
 pooling = 'Global'
+# extract_feature or not
+extract_feature = False
 
 # dataset settings
 dataset_type = 'InShopDataset'

@@ -51,6 +51,9 @@ model = dict(
 
 pooling = 'RoI'
 
+# extract_feature or not
+extract_feature = False
+
 # dataset settings
 dataset_type = 'InShopDataset'
 data_root = 'data/In-shop'

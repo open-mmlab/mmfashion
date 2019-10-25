@@ -9,13 +9,14 @@ class Evaluator(object):
     def __init__(self, 
                  query_dict_fn, 
                  gallery_dict_fn, 
-                 topks=[3,5,10]):
+                 topks=[3,5,10],
+                 extract_feature=False):
         """ create the empty array to count
         Args:
         query_dict_fn(dict) : the mapping of the index to the id of each query_embed
         gallery_dict_fn(dict): the mapping of the index to the id of each gallery_embed
         tops_type(int) : default retrieve top3, top5
-        demo(bool) : whether to show the retrieved image name or not
+        extract_feature(bool) : whether to save extracted garment feature or not
         """
 
         self.topks = topks
@@ -27,7 +28,8 @@ class Evaluator(object):
 
         self.query_dict, self.query_id2idx = self.get_id_dict(query_dict_fn)
         self.gallery_dict, self.gallery_id2idx = self.get_id_dict(gallery_dict_fn)
-
+        
+        self.extract_feature = extract_feature
 
     def load_dict(self, fn):
         dic = dict()
@@ -80,6 +82,12 @@ class Evaluator(object):
 
 
     def evaluate(self, query_embeds, gallery_embeds):
+        if self.extract_feature:
+           sio.savemat('query_embeds.mat', {'embeds': query_embeds})
+           sio.savemat('gallery_embeds.mat', {'embeds': gallery_embeds})
+           print('saved query embeds shape', query_embeds.shape)
+           print('saved gallery embeds shape', gallery_embeds.shape)
+
         for i, query_feat in enumerate(query_embeds):
             query_id = self.query_dict[i]
             single_recall = self.single_query(query_id, 

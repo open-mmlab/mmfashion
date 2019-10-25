@@ -51,6 +51,9 @@ model = dict(
 
 pooling = 'RoI'
 
+# extract feature or nor
+extract_feature = True
+
 # dataset settings
 dataset_type = 'InShopDataset'
 data_root = 'data/In-shop'
@@ -117,14 +120,14 @@ log_config = dict(
         dict(type='TextLoggerHook'),
     ])
 
-start_epoch = 101
+start_epoch = 0
 total_epochs = 150
 gpus = dict(train=[0,1,2,3], test=[0])
 work_dir = 'checkpoint/Retrieve/resnet/roi/with_attr'
 print_interval = 20
 resume_from = None 
 load_from = 'checkpoint/Retrieve/resnet/roi/with_attr/latest.pth'
-init_weights_from = 'checkpoint/Retrieve/resnet/roi/no_attr/latest.pth'
+init_weights_from ='checkpoint/resnet50.pth'
 workflow = [('train', 100)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
