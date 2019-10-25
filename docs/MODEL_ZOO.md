@@ -9,7 +9,7 @@ More models with different backbones will be added to the model zoo.
 |    VGG-16   |  Global Pooling  | Cross-Entropy |     13.70    |   99.81    |     [model]()      |
 |    VGG-16   | Landmark Pooling | Cross-Entropy |     22.31    |   99.25    |     [model]()      |
 |  ResNet-50  |  Global Pooling  | Cross-Entropy |     23.52    |   99.29    |     [model]()      |
-|  ResNet-50  | Landmark Pooling | Cross-Entropy |              |            |     [model]()      |
+|  ResNet-50  | Landmark Pooling | Cross-Entropy |     30.84    |   99.30    |     [model]()      |
 
 ## In-Shop Clothes Retrieval
 
