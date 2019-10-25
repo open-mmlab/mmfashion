@@ -1,5 +1,4 @@
 from .base import BaseLandmarkDetector
-from .global_landmark_detector import GlobalLandmarkDetector
-from .roi_landmark_detector import RoILandmarkDetector
+from .landmark_detector import LandmarkDetector
 
-__all__ = ['BaseLandmarkDetector', 'GlobalLandmarkDetector', 'RoILandmarkDetector']
+__all__ = ['BaseLandmarkDetector', 'LandmarkDetector']

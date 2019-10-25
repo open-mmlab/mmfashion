@@ -1,18 +1,18 @@
 import os
 
 #model setting
-arch = 'vgg'
+arch = 'resnet'
 landmark_num = 8
 img_size = (224, 224)
 
 model = dict(
-      type='GlobalLandmarkDetector',
-      backbone=dict(type='Vgg'),
-      global_pool=dict(
-             type='GlobalPooling',
+      type = 'LandmarkDetector',
+      backbone = dict(type='ResNet'),
+      global_pool = dict(
+             type = 'GlobalPooling',
              inplanes=(7,7),
              pool_plane=(2,2),
-             inter_channels=[512, 4096],
+             inter_channels=[2048, 4096],
              outchannels=4096),
       landmark_feature_extractor=dict(
              type='LandmarkFeatureExtractor',
@@ -40,11 +40,11 @@ model = dict(
                      type='MSELoss',
                      ratio=1,
                      reduction='none')),
-      pretrained='checkpoint/vgg16.pth')  
+      pretrained='checkpoint/resnet50.pth')  
 
 # dataset settings
 dataset_type = 'Landmark_Detect'
-data_root = 'data/Landmark_Detect'
+data_root = '../data/Landmark_Detect'
 img_norm = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 data = dict(
     imgs_per_gpu=32,
@@ -90,13 +90,13 @@ log_config = dict(
     ])
 
 
-start_epoch = 101
-total_epochs = 150
-gpus = dict(train=[0,1,2,3], test=[0, 1, 2, 3])
-work_dir = 'checkpoint/LandmarkDetect/vgg/global'
+start_epoch = 0
+total_epochs = 50
+gpus = dict(train=[0,1,2,3], test=[0,1,])
+work_dir = 'checkpoint/LandmarkDetect/resnet'
 print_interval = 20  # interval to print information
 save_interval = 10
-init_weights_from = 'checkpoint/vgg16.pth'
+init_weights_from = 'checkpoint/resnet50.pth'
 load_from = None
 resume_from = None
 checkpoint =  None

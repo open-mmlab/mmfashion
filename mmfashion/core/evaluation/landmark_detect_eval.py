@@ -31,7 +31,6 @@ class LandmarkDetectorEvaluator(object):
 
          for i, (pred_lms_per_image, gt_lms_per_image) in enumerate(zip(pred_lms, gt_lms)):
              for j, (pred_lm, gt_lm) in enumerate(zip(pred_lms_per_image, gt_lms_per_image)):
-                 
                  # compute normalized error per landmark
                  gt_lm_x = float(gt_lm[0])/self.w
                  gt_lm_y = float(gt_lm[1])/self.h
@@ -48,9 +47,9 @@ class LandmarkDetectorEvaluator(object):
                  dist = norm_dist(pred_lm - gt_lm)
                  if dist<=self.dist_threshold:
                     detected += 1 
-                  
+         
          avg_norm_error = sum(norm_error_list)/len(norm_error_list)
-         det_percent = 100*float(detected) / total_lm_num 
+         det_percent = 100*float(detected) / total_lm_num
          return avg_norm_error, det_percent
 
 
@@ -83,7 +82,7 @@ class LandmarkDetectorEvaluator(object):
          vis = np.reshape(vis, (batch_size, self.landmark_num, 1))
          pred_vis = np.reshape(pred_vis, (batch_size, self.landmark_num, 1))
 
-         normalized_error, det_percent = self.compute_distance(pred_vis*pred_lm_np, vis*landmark_np)
+         normalized_error, det_percent = self.compute_distance(vis*pred_lm_np, vis*landmark_np)
          return normalized_error, det_percent
  
 
