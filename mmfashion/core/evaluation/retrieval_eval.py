@@ -82,12 +82,6 @@ class Evaluator(object):
 
 
     def evaluate(self, query_embeds, gallery_embeds):
-        if self.extract_feature:
-           sio.savemat('query_embeds.mat', {'embeds': query_embeds})
-           sio.savemat('gallery_embeds.mat', {'embeds': gallery_embeds})
-           print('saved query embeds shape', query_embeds.shape)
-           print('saved gallery embeds shape', gallery_embeds.shape)
-
         for i, query_feat in enumerate(query_embeds):
             query_id = self.query_dict[i]
             single_recall = self.single_query(query_id, 
