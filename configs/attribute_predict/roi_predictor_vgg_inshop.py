@@ -6,7 +6,7 @@ retrieve = False
 attribute_num = 463
 id_num = 7982
 img_size = (224, 224)
-retrieve=False
+retrieve = False
 model = dict(
     type='RoIPredictor',
     backbone=dict(type='Vgg'),
@@ -24,10 +24,7 @@ model = dict(
         crop_size=7,
         img_size=img_size,
         num_lms=8),
-    concat=dict(
-        type='Concat',
-        inchannels=2 * 4096,
-        outchannels=4096),
+    concat=dict(type='Concat', inchannels=2 * 4096, outchannels=4096),
     attr_predictor=dict(
         type='AttrPredictor',
         inchannels=4096,
@@ -50,7 +47,7 @@ img_norm = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 data = dict(
     imgs_per_gpu=8,
     workers_per_gpu=2,
-        train=dict(
+    train=dict(
         type=dataset_type,
         img_path=os.path.join(data_root, 'Img'),
         img_file=os.path.join(data_root, 'Anno/train.txt'),

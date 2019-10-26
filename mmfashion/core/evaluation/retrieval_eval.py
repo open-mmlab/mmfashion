@@ -6,10 +6,10 @@ from scipy.spatial.distance import cosine as cosine
 
 class Evaluator(object):
 
-    def __init__(self, 
-                 query_dict_fn, 
-                 gallery_dict_fn, 
-                 topks=[3,5,10],
+    def __init__(self,
+                 query_dict_fn,
+                 gallery_dict_fn,
+                 topks=[3, 5, 10],
                  extract_feature=False):
         """ create the empty array to count
         Args:
@@ -27,8 +27,9 @@ class Evaluator(object):
             self.recall[k] = []
 
         self.query_dict, self.query_id2idx = self.get_id_dict(query_dict_fn)
-        self.gallery_dict, self.gallery_id2idx = self.get_id_dict(gallery_dict_fn)
-        
+        self.gallery_dict, self.gallery_id2idx = self.get_id_dict(
+            gallery_dict_fn)
+
         self.extract_feature = extract_feature
 
     def load_dict(self, fn):
@@ -48,13 +49,11 @@ class Evaluator(object):
                 id2idx[v].append(k)
         return id2idx
 
-
     def single_query(self, query_id, query_feat, gallery_embeds, query_idx):
         query_dist = []
         for j, feat in enumerate(gallery_embeds):
             cosine_dist = cosine(
-                      feat.reshape(1,-1),
-                      query_feat.reshape(1,-1))
+                feat.reshape(1, -1), query_feat.reshape(1, -1))
             query_dist.append(cosine_dist)
         query_dist = np.array(query_dist)
 
@@ -69,10 +68,9 @@ class Evaluator(object):
                 retrieved_id = self.gallery_dict[idx]
                 if query_id == retrieved_id:
                     tp += 1
-                        
+
             single_recall[k] = float(tp) / relevant_num
         return single_recall
-
 
     def show_results(self):
         print('--------------- Retrieval Evaluation ------------')
@@ -80,35 +78,29 @@ class Evaluator(object):
             recall = 100 * float(sum(self.recall[k])) / len(self.recall[k])
             print('Recall@%d = %.2f' % (k, recall))
 
-
     def evaluate(self, query_embeds, gallery_embeds):
         for i, query_feat in enumerate(query_embeds):
             query_id = self.query_dict[i]
-            single_recall = self.single_query(query_id, 
-                                              query_feat,
-                                              gallery_embeds,
-                                              i)
-            
+            single_recall = self.single_query(query_id, query_feat,
+                                              gallery_embeds, i)
+
             for k in self.topks:
                 self.recall[k].append(single_recall[k])
             self.show_results()
-            
+
         self.show_results()
 
-
-    def get_id_dict(self,id_file):
+    def get_id_dict(self, id_file):
         ids = []
         id_fn = open(id_file).readlines()
         id2idx, idx2id = {}, {}
         for idx, line in enumerate(id_fn):
-           img_id = int(line.strip('\n'))
-           ids.append(img_id)
-           idx2id[idx] = img_id
-           
-           if img_id not in id2idx:
-              id2idx[img_id] = [idx]
-           else:
-              id2idx[img_id].append(idx)
+            img_id = int(line.strip('\n'))
+            ids.append(img_id)
+            idx2id[idx] = img_id
+
+            if img_id not in id2idx:
+                id2idx[img_id] = [idx]
+            else:
+                id2idx[img_id].append(idx)
         return idx2id, id2idx
-
-

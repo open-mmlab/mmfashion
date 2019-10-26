@@ -77,7 +77,8 @@ def _non_dist_test(model, query_set, gallery_set, cfg, validate=False):
     query_embeds_np = np.array(query_embeds)
     gallery_embeds_np = np.array(gallery_embeds)
 
-    e = Evaluator(cfg.data.query.id_file, 
-                  cfg.data.gallery.id_file, 
-                  extract_feature=cfg.extract_feature)
+    e = Evaluator(
+        cfg.data.query.id_file,
+        cfg.data.gallery.id_file,
+        extract_feature=cfg.extract_feature)
     e.evaluate(query_embeds_np, gallery_embeds_np)

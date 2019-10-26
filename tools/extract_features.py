@@ -73,9 +73,7 @@ def _process_embeds(dataset, model, cfg):
     return embeds
 
 
-def extract_features(image_set,
-                     cfg,
-                     save_feature_dir):
+def extract_features(image_set, cfg, save_feature_dir):
 
     model = build_retriever(cfg.model)
     print('model built')
@@ -83,9 +81,9 @@ def extract_features(image_set,
     model.eval()
 
     embeds = _process_embeds(image_set, model, cfg)
-    
+
     if not os.path.exists(save_feature_dir):
-       os.makedirs(save_feature_dir)
+        os.makedirs(save_feature_dir)
     save_path = os.path.join(save_feature_dir, 'extracted_features.mat')
 
     sio.savemat(save_path, {'embeds': embeds})
@@ -95,21 +93,21 @@ def extract_features(image_set,
 def main():
     args = parse_args()
     cfg = Config.fromfile(args.config)
-    
-    if args.data_type=='train':
-       image_set = build_dataset(cfg.data.train)
-    elif args.data_type=='query':
-       image_set = build_dataset(cfg.data.query)
-    elif args.data_type=='gallery':
-       image_set = build_dataset(cfg.data.gallery)
+
+    if args.data_type == 'train':
+        image_set = build_dataset(cfg.data.train)
+    elif args.data_type == 'query':
+        image_set = build_dataset(cfg.data.query)
+    elif args.data_type == 'gallery':
+        image_set = build_dataset(cfg.data.gallery)
     else:
-       raise TypeError('So far only support train/query/gallery dataset')
-    
+        raise TypeError('So far only support train/query/gallery dataset')
+
     if args.checkpoint is not None:
-       cfg.load_from = args.checkpoint
-    
+        cfg.load_from = args.checkpoint
+
     extract_features(image_set, cfg, args.save_dir)
 
 
 if __name__ == '__main__':
-   main()    
+    main()

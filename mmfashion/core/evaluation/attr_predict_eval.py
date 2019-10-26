@@ -7,9 +7,9 @@ import torch
 
 class AttrCalculator(object):
 
-    def __init__(self, 
-                 cfg, 
-                 tops_type=[3, 5, 10], 
+    def __init__(self,
+                 cfg,
+                 tops_type=[3, 5, 10],
                  show_attr_name=False,
                  attr_name_file=None):
         """ create the empty array to count
@@ -19,7 +19,7 @@ class AttrCalculator(object):
         class_num(int) : number of classes in the dataset
         tops_type(list of int) : default calculate top3, top5 and top10 accuracy
         show_attr_name(bool) : print predicted attribute name, for demo usage
-        attr_name_file(str) : file of attribute name, used for mapping attribute index to attribute names  
+        attr_name_file(str) : file of attribute name, used for mapping attribute index to attribute names
         """
         self.collector = dict()
         self.total = 0  # the number of total predictions
@@ -41,17 +41,16 @@ class AttrCalculator(object):
         """ topn recall rate """
         self.recall = dict()
         self.topn = 50
-        
+
         self.show_attr_name = show_attr_name
         if self.show_attr_name:
-           assert attr_name_file is not None
-           # map the index of attribute to attribute name
-           self.attr_dict = {}
-           attr_names = open(attr_name_file).readlines()
-           for i, attr_name in enumerate(attr_names[2:]):
-               self.attr_dict[i] = attr_name.split()[0]
+            assert attr_name_file is not None
+            # map the index of attribute to attribute name
+            self.attr_dict = {}
+            attr_names = open(attr_name_file).readlines()
+            for i, attr_name in enumerate(attr_names[2:]):
+                self.attr_dict[i] = attr_name.split()[0]
 
-        
     def get_dict(self, fn):
         rf = open(fn).readlines()
         dic = dict()
@@ -81,7 +80,6 @@ class AttrCalculator(object):
             pred_attr_name = self.attr_dict[pred_i]
             print(pred_attr_name)
 
-    
     def collect_result(self, pred, target):
         if isinstance(pred, torch.Tensor):
             data = pred.data.cpu().numpy()
@@ -94,11 +92,10 @@ class AttrCalculator(object):
             self.total += 1
             indexes = np.argsort(data[i])[::-1]
             idx3, idx5, idx10 = indexes[:3], indexes[:5], indexes[:10]
-            
+
             self.collect(idx3, target[i], self.collector['top3'])
             self.collect(idx5, target[i], self.collector['top5'])
             self.collect(idx10, target[i], self.collector['top10'])
-
 
     def compute_one_recall(self, tp, fn):
         empty = 0
@@ -110,12 +107,13 @@ class AttrCalculator(object):
             else:
                 recall[i] = float(tp[i]) / float(tp[i] + fn[i])
         sorted_recall = sorted(recall)[::-1]
-        return 100 * sum(sorted_recall[:self.topn]) / min(self.topn, len(sorted_recall)-empty)
+        return 100 * sum(sorted_recall[:self.topn]) / min(
+            self.topn,
+            len(sorted_recall) - empty)
 
     def compute_recall(self):
         for key, top in self.collector.items():
             self.recall[key] = self.compute_one_recall(top['tp'], top['fn'])
-
 
     def compute_one_precision(self, tp, fp, pos):
         empty = 0
@@ -127,13 +125,14 @@ class AttrCalculator(object):
             else:
                 precision[i] = float(tp[i]) / float(pos[i])
         sorted_precision = sorted(precision)[::-1]
-        return 100 * sum(sorted_precision[:self.topn]) / min(self.topn, len(sorted_precision)-empty)
+        return 100 * sum(sorted_precision[:self.topn]) / min(
+            self.topn,
+            len(sorted_precision) - empty)
 
     def compute_precision(self):
         for key, top in self.collector.items():
             self.precision[key] = self.compute_one_precision(
                 top['tp'], top['fp'], top['pos'])
-
 
     def compute_one_accuracy(self, tp, tn):
         empty = 0
@@ -156,8 +155,7 @@ class AttrCalculator(object):
 
         self.compute_recall()
         print('[Recall] top3 = %.2f, top5 = %.2f, top10 = %.2f' %
-              (self.recall['top3'], self.recall['top5'],
-               self.recall['top10']))
+              (self.recall['top3'], self.recall['top5'], self.recall['top10']))
 
         self.compute_accuracy()
         print('[Accuracy] top3 = %.2f, top5 = %.2f, top10 = %.2f' %

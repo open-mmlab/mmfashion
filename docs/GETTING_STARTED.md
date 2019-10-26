@@ -65,12 +65,12 @@ python tools/train_predictor.py \
 
 ```shell
 python tools/train_retriever.py \
-    --config configs/retriever/roi_retriever_vgg.py 
+    --config configs/retriever/roi_retriever_vgg.py
 ```
 
 3. Train a landmark detector.
 
 ```shell
 python tools/train_landmark_detector.py \
-    --config configs/landmark_detect/landmark_detect_vgg.py 
+    --config configs/landmark_detect/landmark_detect_vgg.py
 ```

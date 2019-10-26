@@ -53,7 +53,7 @@ def main():
         init_dist(args.launcher, **cfg.dist_params)
 
     if args.checkpoint is not None:
-       cfg.load_from = args.checkpoint
+        cfg.load_from = args.checkpoint
 
     # init logger
     logger = get_root_logger(cfg.log_level)

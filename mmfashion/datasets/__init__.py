@@ -7,7 +7,7 @@ from .builder import build_dataset
 from .dataset_wrappers import ConcatDataset
 
 __all__ = [
-    'InShopDataset', 'AttrDataset', 'LandmarkDetectDataset', 'to_tensor','get_dataset', 'GroupSampler',
-    'DistributedGroupSampler', 'build_dataloader', 'build_dataset',
-    'ConcatDataset'
+    'InShopDataset', 'AttrDataset', 'LandmarkDetectDataset', 'to_tensor',
+    'get_dataset', 'GroupSampler', 'DistributedGroupSampler',
+    'build_dataloader', 'build_dataset', 'ConcatDataset'
 ]

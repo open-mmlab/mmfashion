@@ -16,9 +16,7 @@ model = dict(
         inter_channels=[2048, 4096],
         outchannels=4096),
     attr_predictor=dict(
-        type='AttrPredictor',
-        inchannels=4096,
-        outchannels=attribute_num),
+        type='AttrPredictor', inchannels=4096, outchannels=attribute_num),
     loss_attr=dict(
         type='BCEWithLogitsLoss',
         ratio=1,
@@ -85,13 +83,13 @@ log_config = dict(
 
 start_epoch = 0
 total_epochs = 40
-gpus = dict(train=[0,1], test=[0,1])
+gpus = dict(train=[0, 1], test=[0, 1])
 work_dir = 'checkpoint/Predict/resnet/global'
 print_interval = 20  # interval to print information
 save_interval = 5
 init_weights_from = 'checkpoint/resnet50.pth'
 resume_from = None
-load_from = None 
+load_from = None
 workflow = [('train', 40)]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'

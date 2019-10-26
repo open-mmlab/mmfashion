@@ -87,7 +87,7 @@ def split_bbox(train_img, test_img, val_img):
                 wf.write('%s ' % str(b))
             wf.write('\n')
         wf.close()
-    
+
     write_bbox(train_img, wf1)
     write_bbox(test_img, wf2)
     write_bbox(val_img, wf3)
@@ -120,7 +120,8 @@ def split_category(train_img, test_img, val_img):
             imgname = line.strip('\n').split()[0]
             cate_id = int(img2cate[imgname])
             #cate_ids.append(cate_id)
-            wf.write('%d\n'%cate_id)
+            wf.write('%d\n' % cate_id)
+
     write_cate(train_img, wf1)
     write_cate(test_img, wf2)
     write_cate(val_img, wf3)
@@ -177,5 +178,3 @@ if __name__ == '__main__':
     split_category(train_img, test_img, val_img)
     split_bbox(train_img, test_img, val_img)
     split_lms(train_img, test_img, val_img)
-
-

@@ -31,6 +31,7 @@ import numpy as np
 from .loader import GroupSampler, DistributedGroupSampler, DistributedSampler
 from .registry import DATASETS
 
+
 @DATASETS.register_module
 class LandmarkDetectDataset(Dataset):
     CLASSES = None
@@ -70,18 +71,18 @@ class LandmarkDetectDataset(Dataset):
 
         # load landmarks and visibility
         self.landmarks = np.loadtxt(landmark_file, dtype=np.float)
-        
+
         # load attributes
         if attr_file is not None:
-           self.attributes = np.loadtxt(attr_file, dtype=np.float)
+            self.attributes = np.loadtxt(attr_file, dtype=np.float)
         else:
-           self.attributes = None
-
+            self.attributes = None
 
     def get_basic_item(self, idx):
-        img = Image.open(os.path.join(self.img_path, self.img_list[idx])).convert('RGB')
+        img = Image.open(os.path.join(self.img_path,
+                                      self.img_list[idx])).convert('RGB')
         width, height = img.size
-        
+
         # first crop image
         if self.with_bbox:
             bbox_cor = self.bboxes[idx]
@@ -94,49 +95,54 @@ class LandmarkDetectDataset(Dataset):
             img = img.crop(box=(x1, y1, x2, y2))
         else:
             bbox_w, bbox_h = self.img_size[0], self.img_size[1]
-        
+
         # then resize image
         img.thumbnail(self.img_size, Image.ANTIALIAS)
         img = self.transform(img)
-        
+
         landmark_for_regression, vis = [], []
         landmark_for_roi_pool = []
         origin_landmark = self.landmarks[idx]
-        
+
         # compute the shifted landmarks
         for i, l in enumerate(origin_landmark):
-            if i%3 == 0: # visibility
-               vis.append(l)
+            if i % 3 == 0:  # visibility
+                vis.append(l)
             else:
-               if i%3==1: # x
-                  l_x = max(0, l-x1)
-                  l_x_for_regression = float(l_x) / bbox_w * self.img_size[0]
-                  landmark_for_regression.append(l_x_for_regression)
+                if i % 3 == 1:  # x
+                    l_x = max(0, l - x1)
+                    l_x_for_regression = float(l_x) / bbox_w * self.img_size[0]
+                    landmark_for_regression.append(l_x_for_regression)
 
-                  l_x_for_roi_pool = float(l_x) / width * self.roi_plane_size
-                  landmark_for_roi_pool.append(l_x_for_roi_pool)
-               else: # y
-                  l_y = max(0, l-y1)
-                  l_y_for_regression = float(l_y) / bbox_h * self.img_size[1]
-                  landmark_for_regression.append(l_y_for_regression)
- 
-                  l_y_for_roi_pool = float(l_y) / height * self.roi_plane_size
-                  landmark_for_roi_pool.append(l_y_for_roi_pool)
+                    l_x_for_roi_pool = float(l_x) / width * self.roi_plane_size
+                    landmark_for_roi_pool.append(l_x_for_roi_pool)
+                else:  # y
+                    l_y = max(0, l - y1)
+                    l_y_for_regression = float(l_y) / bbox_h * self.img_size[1]
+                    landmark_for_regression.append(l_y_for_regression)
 
-        landmark_for_regression = torch.from_numpy(np.array(landmark_for_regression)).float()
-        landmark_for_roi_pool = torch.from_numpy(np.array(landmark_for_roi_pool)).float()
+                    l_y_for_roi_pool = float(
+                        l_y) / height * self.roi_plane_size
+                    landmark_for_roi_pool.append(l_y_for_roi_pool)
+
+        landmark_for_regression = torch.from_numpy(
+            np.array(landmark_for_regression)).float()
+        landmark_for_roi_pool = torch.from_numpy(
+            np.array(landmark_for_roi_pool)).float()
         vis = torch.from_numpy(np.array(vis)).float()
-        
+
         # load attribute
         if self.attributes is not None:
-           attr = self.attributes[idx]
+            attr = self.attributes[idx]
         else:
-           attr = None
-        
-        data = {'img': img,
-                'vis': vis,
-                'landmark_for_regression': landmark_for_regression,
-                'landmark_for_roi_pool':landmark_for_roi_pool}
+            attr = None
+
+        data = {
+            'img': img,
+            'vis': vis,
+            'landmark_for_regression': landmark_for_regression,
+            'landmark_for_roi_pool': landmark_for_roi_pool
+        }
         return data
 
     def __getitem__(self, idx):

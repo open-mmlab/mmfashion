@@ -48,7 +48,7 @@ class InShopDataset(Dataset):
                  find_three=False,
                  idx2id=None):
         self.img_path = img_path
-        
+
         normalize = transforms.Normalize(
             mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
         self.transform = transforms.Compose([
@@ -81,7 +81,7 @@ class InShopDataset(Dataset):
         self.labels = np.loadtxt(label_file, dtype=np.float32)
 
         self.img_size = img_size
-        self.roi_plane_size = roi_plane_size 
+        self.roi_plane_size = roi_plane_size
 
         # load bbox
         if bbox_file:
@@ -99,12 +99,11 @@ class InShopDataset(Dataset):
 
         self.find_three = find_three
 
-
     def get_basic_item(self, idx):
         img = Image.open(os.path.join(self.img_path, self.img_list[idx]))
         img_id = self.ids[idx]
         width, height = img.size
-        
+
         if self.with_bbox:
             bbox_cor = self.bboxes[idx]
             x1 = max(0, int(bbox_cor[0]) - 20)
@@ -137,12 +136,8 @@ class InShopDataset(Dataset):
 
         landmark = torch.from_numpy(np.array(landmark)).float()
         img = self.transform(img)
-        data = {'img': img, 
-                'landmark': landmark,
-                'id': img_id,
-                'attr': label}
+        data = {'img': img, 'landmark': landmark, 'id': img_id, 'attr': label}
         return data
-
 
     def get_three_items(self, idx):
         """return anchor, positive and negative
@@ -156,18 +151,18 @@ class InShopDataset(Dataset):
         if len(pos_idxes) == 1:  # just one item
             pos_data = anchor_data
         else:
-            random_pos_idx = pos_idxes[random.randint(0, len(pos_idxes)-1)]
+            random_pos_idx = pos_idxes[random.randint(0, len(pos_idxes) - 1)]
             while random_pos_idx == idx:
                 random_pos_idx = pos_idxes[random.randint(
                     0,
-                    len(pos_idxes)-1)]
+                    len(pos_idxes) - 1)]
             pos_data = self.get_basic_item(random_pos_idx)
 
         # get negative example
         id_len = len(self.ids)
-        random_id = self.ids[random.randint(0, id_len-1)]
+        random_id = self.ids[random.randint(0, id_len - 1)]
         while random_id == anchor_id:
-            random_id = self.ids[random.randint(0, id_len-1)]
+            random_id = self.ids[random.randint(0, id_len - 1)]
         neg_id = random_id
         neg_idxes = self.id2idx[neg_id]
         neg_idx = neg_idxes[random.randint(0, len(neg_idxes) - 1)]

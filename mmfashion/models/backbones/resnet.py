@@ -183,8 +183,8 @@ class ResNet(nn.Module):
     def init_weights(self, pretrained=None):
         print('pretrained model', pretrained)
         if isinstance(pretrained, str):
-           logger = logging.getLogger()
-           load_checkpoint(self, pretrained)
+            logger = logging.getLogger()
+            load_checkpoint(self, pretrained)
         elif pretrained is None:
             for m in self.modules():
                 if isinstance(m, nn.Conv2d):
@@ -198,11 +198,11 @@ class ResNet(nn.Module):
             # so that the residual branch starts with zeros, and each residual block behaves like an identity.
             # This improves the model by 0.2~0.3% according to https://arxiv.org/abs/1706.02677
             if zero_init_residual:
-               for m in self.modules():
-                   if isinstance(m, Bottleneck):
-                           nn.init.constant_(m.bn3.weight, 0)
-                   elif isinstance(m, BasicBlock):
-                      nn.init.constant_(m.bn2.weight, 0)
+                for m in self.modules():
+                    if isinstance(m, Bottleneck):
+                        nn.init.constant_(m.bn3.weight, 0)
+                    elif isinstance(m, BasicBlock):
+                        nn.init.constant_(m.bn2.weight, 0)
 
     def _make_layer(self, block, planes, blocks, stride=1, dilate=False):
         norm_layer = self._norm_layer

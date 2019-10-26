@@ -22,22 +22,21 @@ class RoIPooling(nn.Module):
         super(RoIPooling, self).__init__()
         self.maxpool = nn.MaxPool2d(pool_plane)
         self.linear = nn.Sequential(
-                      nn.Linear(num_lms * inter_channels, outchannels),
-                      nn.ReLU(True),
-                      nn.Dropout())
+            nn.Linear(num_lms * inter_channels, outchannels), nn.ReLU(True),
+            nn.Dropout())
 
         self.inter_channels = inter_channels
         self.outchannels = outchannels
         self.num_lms = num_lms
         self.crop_size = crop_size
-        assert img_size[0] == img_size[1], 'img width should equal to img height'
+        assert img_size[0] == img_size[
+            1], 'img width should equal to img height'
         self.img_size = img_size[0]
         self.roi_size = roi_size
 
-        self.a = self.roi_size/float(self.crop_size) 
-        self.b = self.roi_size/float(self.crop_size)
+        self.a = self.roi_size / float(self.crop_size)
+        self.b = self.roi_size / float(self.crop_size)
 
-        
     def forward(self, features, landmarks):
         """batch-wise RoI pooling.
         Args:
@@ -47,7 +46,7 @@ class RoIPooling(nn.Module):
         batch_size = features.size(0)
 
         # transfer landmark coordinates from original image to feature map
-        landmarks = landmarks/self.img_size * self.crop_size
+        landmarks = landmarks / self.img_size * self.crop_size
         landmarks = landmarks.view(batch_size, self.num_lms, 2)
 
         ab = [np.array([[self.a, 0], [0, self.b]]) for _ in range(batch_size)]
@@ -55,7 +54,7 @@ class RoIPooling(nn.Module):
         ab = torch.from_numpy(ab).float().cuda()
         size = torch.Size((batch_size, features.size(1), self.roi_size,
                            self.roi_size))
-        
+
         pooled = []
         for l in range(self.num_lms):
             tx = -1 + 2 * landmarks[:, l, 0] / float(self.crop_size)
@@ -65,10 +64,13 @@ class RoIPooling(nn.Module):
 
             flowfield = nn.functional.affine_grid(theta, size)
             one_pooled = nn.functional.grid_sample(
-                features, flowfield.to(torch.float32), mode='bilinear', padding_mode='border')
+                features,
+                flowfield.to(torch.float32),
+                mode='bilinear',
+                padding_mode='border')
             one_pooled = self.maxpool(one_pooled).view(batch_size,
                                                        self.inter_channels)
-          
+
             pooled.append(one_pooled)
         pooled = torch.stack(pooled, dim=1).view(batch_size, -1)
         pooled = self.linear(pooled)

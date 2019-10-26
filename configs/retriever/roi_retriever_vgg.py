@@ -3,7 +3,7 @@ import os
 # model settings
 arch = 'vgg'
 retrieve = True
-attribute_num = 463 
+attribute_num = 463
 id_num = 7982
 img_size = (224, 224)
 model = dict(
@@ -13,7 +13,7 @@ model = dict(
         type='GlobalPooling',
         inplanes=(7, 7),
         pool_plane=(2, 2),
-        inter_channels=[512, 4096] ,
+        inter_channels=[512, 4096],
         outchannels=4096),
     roi_pool=dict(
         type='RoIPooling',
@@ -23,30 +23,24 @@ model = dict(
         crop_size=7,
         img_size=img_size,
         num_lms=8),
-    concat=dict(
-        type='Concat',
-        inchannels = 2*4096,
-        outchannels = 4096),
+    concat=dict(type='Concat', inchannels=2 * 4096, outchannels=4096),
     embed_extractor=dict(
         type='EmbedExtractor',
         inchannels=4096,
         inter_channels=[256, id_num],
-        loss_id = dict(type='CELoss', 
-                       ratio=1),
-        loss_triplet=dict(type='TripletLoss',
-                          method='cosine',
-                          margin=0.)),
-    attr_predictor = dict(
+        loss_id=dict(type='CELoss', ratio=1),
+        loss_triplet=dict(type='TripletLoss', method='cosine', margin=0.)),
+    attr_predictor=dict(
         type='AttrPredictor',
         inchannels=4096,
         outchannels=attribute_num,
         loss_attr=dict(
-                 type='BCEWithLogitsLoss',
-                 ratio=1,
-                 weight=None,
-                 size_average=None,
-                 reduce=None,
-                 reduction='mean')),
+            type='BCEWithLogitsLoss',
+            ratio=1,
+            weight=None,
+            size_average=None,
+            reduce=None,
+            reduction='mean')),
     pretrained='checkpoint/vgg16.pth')
 
 pooling = 'RoI'
@@ -115,18 +109,17 @@ lr_config = dict(
 
 checkpoint_config = dict(interval=5)
 log_config = dict(
-    interval=10, 
-    hooks=[
+    interval=10, hooks=[
         dict(type='TextLoggerHook'),
     ])
 
 start_epoch = 151
 total_epochs = 200
-gpus = dict(train=[0,1,2,3], test=[0])
+gpus = dict(train=[0, 1, 2, 3], test=[0])
 work_dir = 'checkpoint/Retrieve/vgg/roi/with_attr/'
 print_interval = 20  # interval to print information
 resume_from = 'checkpoint/Retrieve/vgg/roi/with_attr/latest.pth'
-load_from = None# 'checkpoint/Retrieve/vgg/roi/with_attr/latest.pth'
+load_from = None  # 'checkpoint/Retrieve/vgg/roi/with_attr/latest.pth'
 init_weights_from = 'checkpoint/vgg16.pth'
 workflow = [('train', 100)]
 dist_params = dict(backend='nccl')

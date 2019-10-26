@@ -3,6 +3,7 @@ import numpy as np
 
 PREFIX = 'Landmark_Detect/Anno'
 
+
 def split_img():
     rf = open('Landmark_Detect/Eval//list_eval_partition.txt').readlines()
     wf1 = open(os.path.join(PREFIX, 'train.txt'), 'w')
@@ -36,19 +37,19 @@ def split_landmark(train_img, test_img, val_img):
             aline = line.strip('\n').split()
             imgname = aline[0]
             landmarks = aline[3:]
-            new_lm = [] # create new landmark container
+            new_lm = []  # create new landmark container
             for lm_i, lm in enumerate(landmarks):
-                if lm_i%3 == 0:
-                   if int(lm) == 0: # visible
-                      new_lm.append(1)
-                   else: # invisible or truncated off
-                      new_lm.append(0)
+                if lm_i % 3 == 0:
+                    if int(lm) == 0:  # visible
+                        new_lm.append(1)
+                    else:  # invisible or truncated off
+                        new_lm.append(0)
                 else:
-                      new_lm.append(int(lm))
+                    new_lm.append(int(lm))
 
             if len(landmarks) < 24:
-               for k in range(24-len(landmarks)):
-                   new_lm.append(0)
+                for k in range(24 - len(landmarks)):
+                    new_lm.append(0)
 
             d[imgname] = new_lm
         return d
@@ -60,7 +61,7 @@ def split_landmark(train_img, test_img, val_img):
             imgname = line.strip('\n')
             landmark = landmarks[imgname]
             for lm in landmark:
-                wf.write('%d'%int(lm))
+                wf.write('%d' % int(lm))
                 wf.write(' ')
             wf.write('\n')
         wf.close()
@@ -86,7 +87,7 @@ def split_bbox(train_img, test_img, val_img):
             for bi, b in enumerate(bbox):
                 d[imgname].append(int(b))
         return d
-    
+
     bboxes = sort_bbox()
 
     def write_bbox(imgs, wf):
@@ -104,10 +105,10 @@ def split_bbox(train_img, test_img, val_img):
 
 
 if __name__ == '__main__':
-   split_img()
-   train_img = open(os.path.join(PREFIX, 'train.txt')).readlines()
-   test_img = open(os.path.join(PREFIX, 'test.txt')).readlines()
-   val_img = open(os.path.join(PREFIX, 'val.txt')).readlines()
+    split_img()
+    train_img = open(os.path.join(PREFIX, 'train.txt')).readlines()
+    test_img = open(os.path.join(PREFIX, 'test.txt')).readlines()
+    val_img = open(os.path.join(PREFIX, 'val.txt')).readlines()
 
-   split_landmark(train_img, test_img, val_img)
-   split_bbox(train_img, test_img, val_img)
+    split_landmark(train_img, test_img, val_img)
+    split_bbox(train_img, test_img, val_img)

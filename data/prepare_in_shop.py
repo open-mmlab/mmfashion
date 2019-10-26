@@ -65,9 +65,9 @@ def split_ids():
 
     def write_id(rf, wf):
         for i, line in enumerate(rf):
-             id = line.strip('\n').split('/')[3]
-             label = id2label[id]
-             wf.write('%s\n'%str(label))
+            id = line.strip('\n').split('/')[3]
+            label = id2label[id]
+            wf.write('%s\n' % str(label))
         wf.close()
 
     rf1 = open(os.path.join(PREFIX, 'train_img.txt')).readlines()
@@ -150,4 +150,3 @@ if __name__ == '__main__':
     split_bbox()
     split_lms()
     split_ids()
-                                                   

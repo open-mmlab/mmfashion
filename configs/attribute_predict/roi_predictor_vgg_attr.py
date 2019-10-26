@@ -2,8 +2,8 @@ import os
 
 # model settings
 arch = 'vgg'
-attribute_num = 1000 # num of attributes
-category_num = 48 # num of categories
+attribute_num = 1000  # num of attributes
+category_num = 48  # num of categories
 img_size = (224, 224)
 
 model = dict(
@@ -23,10 +23,7 @@ model = dict(
         crop_size=7,
         img_size=img_size,
         num_lms=8),
-    concat=dict(
-        type='Concat',
-        inchannels=2 * 4096,
-        outchannels=4096),
+    concat=dict(type='Concat', inchannels=2 * 4096, outchannels=4096),
     attr_predictor=dict(
         type='AttrPredictor',
         inchannels=4096,
@@ -97,7 +94,7 @@ log_config = dict(
 
 start_epoch = 0
 total_epochs = 80
-gpus = dict(train=[0,1,2,3], test=[0, 1, 2, 3])
+gpus = dict(train=[0, 1, 2, 3], test=[0, 1, 2, 3])
 work_dir = 'checkpoint/Predict/vgg/roi'
 print_interval = 20  # interval to print information
 save_interval = 5
