@@ -24,5 +24,5 @@ More models with different backbones will be added to the model zoo.
 
 |   Backbone  |   Loss  | Normalized Error | % of Det. Landmarks |      Download      |
 | :---------: | :-----: | :--------------: | :-----------------: | :----------------: |
-|    VGG-16   | L2 Loss |       0.0813     |        55.38        |     [model](https://drive.google.com/open?id=1LWhPnkT9AbbldvteFn8u_s21PCQ-h00h)      |
+|    VGG-16   | L2 Loss |       0.0813     |        55.35        |     [model](https://drive.google.com/open?id=1LWhPnkT9AbbldvteFn8u_s21PCQ-h00h)      |
 |  ResNet-50  | L2 Loss |       0.0758     |        56.32        |     [model](https://drive.google.com/open?id=1VGbOgkqBOgs2MaZ6qvLplopqqt7vKAM1)      |
