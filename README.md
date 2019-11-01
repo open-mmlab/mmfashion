@@ -16,7 +16,7 @@
 
 
 ## Updates
-[2019-10-28] `MMFashion` v0.1 is released.
+[2019-11-01] `MMFashion` v0.1 is released.
 
 
 ## Features
