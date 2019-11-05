@@ -71,6 +71,13 @@ Please refer to [MODEL_ZOO.md](docs/MODEL_ZOO.md) for a comprehensive set of pre
 We appreciate all contributions to improve `MMFashion`. Please refer to [CONTRIBUTING.md](docs/CONTRIBUTING.md) for the contributing guideline.
 
 
+## Related Tools
+
+- [fashion-detection](https://github.com/liuziwei7/fashion-detection)
+- [fashion-landmarks](https://github.com/liuziwei7/fashion-landmarks)
+- [fashion-cut](https://github.com/liuziwei7/fashion-cut)
+
+
 ## License
 This project is released under the [Apache 2.0 license](LICENSE).
 
