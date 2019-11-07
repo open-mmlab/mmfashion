@@ -20,7 +20,10 @@ def parse_args():
         help='test config file path',
         default='configs/attribute_predict/roi_predictor_vgg_attr.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
-    parser.add_argument('--checkpoint', help='checkpoint file', default='checkpoint/Predict/vgg/roi/latest.pth')
+    parser.add_argument(
+        '--checkpoint',
+        help='checkpoint file',
+        default='checkpoint/Predict/vgg/roi/latest.pth')
     parser.add_argument(
         '--validate',
         action='store_true',

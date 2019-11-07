@@ -7,7 +7,8 @@ import torch.nn as nn
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
-from mmfashion.apis import (init_dist, get_root_logger, train_landmark_detector)
+from mmfashion.apis import (init_dist, get_root_logger,
+                            train_landmark_detector)
 from mmfashion.datasets import get_dataset
 from mmfashion.models import build_landmark_detector
 from mmfashion.utils import init_weights_from
@@ -36,6 +37,7 @@ def parse_args():
         help='job launcher')
     args = parser.parse_args()
     return args
+
 
 def main():
     args = parse_args()
@@ -83,4 +85,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

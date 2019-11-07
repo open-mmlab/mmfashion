@@ -3,8 +3,8 @@ import os
 # model settings
 arch = 'vgg'
 retrieve = True
-attribute_num = 463 
-id_num=7982
+attribute_num = 463
+id_num = 7982
 img_size = (224, 224)
 model = dict(
     type='GlobalRetriever',
@@ -19,29 +19,29 @@ model = dict(
         type='EmbedExtractor',
         inchannels=4096,
         inter_channels=[256, id_num],
-        loss_id=dict(type='CELoss', 
-                     ratio=1),
-        loss_triplet=dict(type='TripletLoss',
-                          method='cosine',
-                          margin=0.)),
-    attr_predictor = dict(
+        loss_id=dict(type='CELoss', ratio=1),
+        loss_triplet=dict(type='TripletLoss', method='cosine', margin=0.)),
+    attr_predictor=dict(
         type='AttrPredictor',
         inchannels=4096,
         outchannels=attribute_num,
         loss_attr=dict(
-                 type='BCEWithLogitsLoss',
-                 ratio=1,
-                 weight=None,
-                 size_average=None,
-                 reduce=None,
-                 reduction='mean')),
+            type='BCEWithLogitsLoss',
+            ratio=1,
+            weight=None,
+            size_average=None,
+            reduce=None,
+            reduction='mean')),
     pretrained='checkpoint/vgg16.pth')
 
 pooling = 'Global'
 
+# extract_feature or not
+extract_feature = False
+
 # dataset settings
 dataset_type = 'InShopDataset'
-data_root = '../data/In-shop'
+data_root = 'data/In-shop'
 img_norm = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
 data = dict(

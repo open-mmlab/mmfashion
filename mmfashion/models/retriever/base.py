@@ -34,17 +34,8 @@ class BaseRetriever(nn.Module):
             return self.aug_test(imgs, landmarks)
 
     @abstractmethod
-    def forward_train(self, 
-                      img, 
-                      id, 
-                      attr, 
-                      pos, 
-                      neg, 
-                      anchor_lm, 
-                      pos_lm,
-                      neg_lm,
-                      triplet_pos_label,
-                      triplet_neg_label):
+    def forward_train(self, img, id, attr, pos, neg, anchor_lm, pos_lm, neg_lm,
+                      triplet_pos_label, triplet_neg_label):
         pass
 
     def forward(self,
@@ -61,7 +52,8 @@ class BaseRetriever(nn.Module):
                 return_loss=True):
         if return_loss:
             return self.forward_train(img, id, attr, pos, neg, landmark,
-                                      pos_lm, neg_lm, triplet_pos_label, triplet_neg_label)
+                                      pos_lm, neg_lm, triplet_pos_label,
+                                      triplet_neg_label)
         else:
             return self.forward_test(img, landmark)
 

@@ -1,33 +1,22 @@
 import numpy as np
-from numpy.linalg import norm as norm
+from numpy.linalg import norm as norm_dist
 import scipy.io as sip
 from scipy.spatial.distance import cdist as cdist
 
 
 class LandmarkDetectorEvaluator(object):
-     def __init__(self, 
-                  img_size, 
-                  landmark_num, 
-                  prob_threshold=0.6,
-                  dist_threshold=10,
-                  demo=True,
-                  img_name_file='data/Landmark_Detect/Anno/test.txt',
-                  landmark_file='data/Landmark_Detect/Anno/test_landmarks.txt'):
-         self.w = img_size[0]
-         self.h = img_size[1]
-         self.landmark_num = landmark_num
-         self.prob_threshold = prob_threshold
-         self.dist_threshold = dist_threshold
+    def __init__(self,
+                 img_size,
+                 landmark_num,
+                 prob_threshold=0.3,
+                 dist_threshold=10):
+        self.w = img_size[0]
+        self.h = img_size[1]
+        self.landmark_num = landmark_num
+        self.prob_threshold = prob_threshold
+        self.dist_threshold = dist_threshold
 
-         self.demo = demo
-         if demo:
-            self.img_idx_to_name = {}
-            img_names = open(img_name_file).readlines()
-            for i, img_name in enumerate(img_names):
-                self.img_idx_to_name[i] = img_name.strip('\n')
-
-
-     def compute_distance(self, pred_lms, gt_lms):
+    def compute_distance(self, pred_lms, gt_lms):
          """ compute the percentage of detected landmarks,
              if pixel distance <= dist_threshold, such landmark is detected
          Args:
@@ -69,8 +58,8 @@ class LandmarkDetectorEvaluator(object):
          det_percent = 100*float(detected) / valid
          return avg_norm_error, det_percent
 
-
-     def evaluate_landmark_detection(self, pred_vis, pred_lm, vis, landmark):
+    
+    def evaluate_landmark_detection(self, pred_vis, pred_lm, vis, landmark):
          """ Evaluate landmark detection.
          Args:
              pred_vis (tensor): predicted landmark visibility
@@ -81,28 +70,32 @@ class LandmarkDetectorEvaluator(object):
          Returns:
              dist: average value of landmark detection normalized error per image
              detected_lm_percent: average value of detected landmarks per image
-         """
+        """
          batch_size = pred_lm.size(0)
          pred_lm_np = pred_lm.cpu().detach().numpy()
          landmark_np = landmark.cpu().detach().numpy()
          pred_vis = pred_vis.cpu().detach().numpy()
          vis = vis.cpu().detach().numpy()
 
-         pred_lm_np = np.reshape(pred_lm_np.astype(np.float), (batch_size,self.landmark_num,2))
-         landmark_np = np.reshape(landmark_np.astype(np.float), (batch_size,self.landmark_num,2))
+         pred_lm_np = np.reshape(
+            pred_lm_np.astype(np.float), (batch_size, self.landmark_num, 2))
+         landmark_np = np.reshape(
+            landmark_np.astype(np.float), (batch_size, self.landmark_num, 2))
 
-         # pred_vis_prob >= self.prob_threshold, view as True 
-         pred_vis_prob = np.reshape(pred_vis, (batch_size, self.landmark_num, 1))         
-         pred_vis_bool = pred_vis_prob>=self.prob_threshold
-         pred_vis = pred_vis_bool*1
+         # pred_vis_prob >= self.prob_threshold, view as True
+         pred_vis_prob = np.reshape(pred_vis,
+                                   (batch_size, self.landmark_num, 1))
+         pred_vis_bool = pred_vis_prob >= self.prob_threshold
+         pred_vis = pred_vis_bool * 1
 
          vis = np.reshape(vis, (batch_size, self.landmark_num, 1))
-         
-         normalized_error, det_percent = self.compute_distance(vis*pred_lm_np, vis*landmark_np)
-         return normalized_error, det_percent
- 
+         pred_vis = np.reshape(pred_vis, (batch_size, self.landmark_num, 1))
 
-     def compute_vis_prediction_accuracy(self, pred_vis, vis):
+         normalized_error, det_percent = self.compute_distance(
+            vis * pred_lm_np, vis * landmark_np)
+         return normalized_error, det_percent
+
+    def compute_vis_prediction_accuracy(self, pred_vis, vis):
          """ compute the percentage of detected landmarks
          Args:
              pred_vis(list): predicted landmark visibility [[lm1_pred, lm2_pred, ...], ...]
@@ -110,11 +103,11 @@ class LandmarkDetectorEvaluator(object):
          """
          batch_size = pred_vis.shape[0]
          correct = 0
-         total = pred_vis.shape[0]*pred_vis.shape[1]
-         
+         total = pred_vis.shape[0] * pred_vis.shape[1]
+
          for i, pred_row in enumerate(pred_vis):
              for j, per_pred in enumerate(pred_row):
-                 if per_pred>=0.5 and vis[i][j]>=0.5:
+                 if per_pred >= 0.5 and vis[i][j] >= 0.5:
                     correct += 1
-         acc = float(correct*100) / total
+         acc = float(correct * 100) / total
          return acc

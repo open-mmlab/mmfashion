@@ -54,7 +54,7 @@ def train_landmark_detector(model,
                             validate=False,
                             logger=None):
     if logger is None:
-       logger = get_root_logger(cfg.log_level)
+        logger = get_root_logger(cfg.log_level)
 
     # start training landmark detector
     if distributed:  # to do
@@ -96,4 +96,3 @@ def _non_dist_train(model, dataset, cfg, validate=False):
     elif cfg.load_from:
         runner.load_checkpoint(cfg.load_from)
     runner.run(data_loaders, cfg.workflow, cfg.total_epochs)
-

@@ -3,8 +3,8 @@ import os
 # model settings
 arch = 'resnet'
 retrieve = True
-attribute_num = 463 
-id_num=7982
+attribute_num = 463
+id_num = 7982
 img_size = (224, 224)
 model = dict(
     type='GlobalRetriever',
@@ -13,31 +13,31 @@ model = dict(
         type='GlobalPooling',
         inplanes=(7, 7),
         pool_plane=(2, 2),
-        inter_channels= [2048, 4096],
+        inter_channels=[2048, 4096],
         outchannels=4096),
     embed_extractor=dict(
         type='EmbedExtractor',
         inchannels=4096,
         inter_channels=[256, id_num],
-        loss_id = dict(type='CELoss',
-                        ratio=1),
-        loss_triplet=dict(type='TripletLoss',
-                          method='cosine',
-                          margin=0.)),
-    attr_predictor = dict(
+        loss_id=dict(type='CELoss', ratio=1),
+        loss_triplet=dict(type='TripletLoss', method='cosine', margin=0.)),
+    attr_predictor=dict(
         type='AttrPredictor',
         inchannels=4096,
         outchannels=attribute_num,
         loss_attr=dict(
-                 type='BCEWithLogitsLoss',
-                 ratio=1,
-                 weight=None,
-                 size_average=None,
-                 reduce=None,
-                 reduction='mean')),
+            type='BCEWithLogitsLoss',
+            ratio=1,
+            weight=None,
+            size_average=None,
+            reduce=None,
+            reduction='mean')),
     pretrained='checkpoint/resnet50.pth')
 
 pooling = 'Global'
+
+# extract_feature or not
+extract_feature = False
 
 # dataset settings
 dataset_type = 'InShopDataset'
@@ -67,7 +67,7 @@ data = dict(
         id_file=os.path.join(data_root, 'Anno/query_id.txt'),
         bbox_file=os.path.join(data_root, 'Anno/query_bbox.txt'),
         landmark_file=os.path.join(data_root, 'Anno/query_landmarks.txt'),
-        img_size=(224,224),
+        img_size=(224, 224),
         roi_plane_size=7,
         retrieve=retrieve,
         find_three=retrieve,

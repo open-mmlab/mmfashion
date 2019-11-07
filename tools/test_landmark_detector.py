@@ -11,6 +11,7 @@ from mmfashion.apis import (init_dist, get_root_logger, test_landmark_detector)
 from mmfashion.datasets import get_dataset
 from mmfashion.models import build_landmark_detector
 
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description='Test a Fashion Landmark Detector')
@@ -50,9 +51,9 @@ def main():
     else:
         distributed = True
         init_dist(args.launcher, **cfg.dist_params)
-   
+
     if args.checkpoint is not None:
-       cfg.load_from = args.checkpoint
+        cfg.load_from = args.checkpoint
 
     # init logger
     logger = get_root_logger(cfg.log_level)
@@ -65,10 +66,10 @@ def main():
     # build model and load checkpoint
     model = build_landmark_detector(cfg.model)
     print('model built')
-    
+
     checkpoint = load_checkpoint(model, cfg.load_from, map_location='cpu')
     print('load checkpoint from: {}'.format(cfg.load_from))
-    
+
     # test
     test_landmark_detector(
         model,
@@ -78,5 +79,6 @@ def main():
         validate=args.validate,
         logger=logger)
 
+
 if __name__ == '__main__':
-   main()
+    main()

@@ -23,21 +23,18 @@ model = dict(
         crop_size=7,
         img_size=img_size,
         num_lms=8),
-    concat=dict(
-        type='Concat',
-        inchannels=2 * 4096,
-        outchannels=4096),
+    concat=dict(type='Concat', inchannels=2 * 4096, outchannels=4096),
     attr_predictor=dict(
         type='AttrPredictor',
         inchannels=4096,
         outchannels=attribute_num,
         loss_attr=dict(
-             type='BCEWithLogitsLoss',
-             ratio=1,
-             weight=None,
-             size_average=None,
-             reduce=None,
-             reduction='mean')),
+            type='BCEWithLogitsLoss',
+            ratio=1,
+            weight=None,
+            size_average=None,
+            reduce=None,
+            reduction='mean')),
     pretrained='checkpoint/resnet50.pth')
 
 pooling = 'RoI'
@@ -47,7 +44,7 @@ dataset_type = 'Attr_Pred'
 data_root = 'data/Attr_Predict'
 img_norm = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 data = dict(
-    imgs_per_gpu=16,
+    imgs_per_gpu=32,
     workers_per_gpu=4,
     train=dict(
         type=dataset_type,
@@ -98,12 +95,12 @@ log_config = dict(
 
 start_epoch = 0
 total_epochs = 40
-gpus = dict(train=[0,1,2,3], test=[0,1])
+gpus = dict(train=[0, 1, 2, 3], test=[0, 1])
 work_dir = 'checkpoint/Predict/resnet/roi'
 print_interval = 20  # interval to print information
 save_interval = 5
-init_weights_from = 'checkpoint/Predict/resnet/global/model_best.pth'
-load_from = None 
+init_weights_from = None  #'checkpoint/Predict/resnet/global/model_best.pth'
+load_from = 'checkpoint/Predict/resnet/attr_pred/latest.pth'
 resume_from = None
 workflow = [('train', 40)]
 dist_params = dict(backend='nccl')

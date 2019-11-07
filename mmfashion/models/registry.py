@@ -4,8 +4,8 @@ BACKBONES = Registry('backbone')  # basic feature extractor
 GLOBALPOOLING = Registry('global_pool')  # global pooling
 ROIPOOLING = Registry('roi_pool')  # roi pooling
 CONCATS = Registry('concat')  # concat local features and global features
-ATTRPREDICTOR = Registry('attr_predictor') # predict attributes
-EMBEDEXTRACTOR = Registry('embed_extractor') # extract embeddings
+ATTRPREDICTOR = Registry('attr_predictor')  # predict attributes
+EMBEDEXTRACTOR = Registry('embed_extractor')  # extract embeddings
 
 LANDMARKFEATUREEXTRACTOR = Registry('landmark_feature_extractor')
 VISIBILITYCLASSIFIER = Registry('visibility_classifier')

@@ -13,9 +13,9 @@ class BCEWithLogitsLoss(nn.Module):
         self.weight = weight
         self.reduce = reduce
         self.reduction = reduction
-        
+
         self.ratio = ratio
 
     def forward(self, input, target):
-        return self.ratio*F.binary_cross_entropy_with_logits(
+        return self.ratio * F.binary_cross_entropy_with_logits(
             input, target, self.weight, reduction=self.reduction)

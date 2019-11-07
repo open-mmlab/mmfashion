@@ -62,7 +62,7 @@ class AttrDataset(Dataset):
 
         # read attribute labels and category annotations
         self.labels = np.loadtxt(label_file, dtype=np.float32)
-        
+
         # read categories
         self.categories = []
         catefn = open(cate_file).readlines()
@@ -86,7 +86,9 @@ class AttrDataset(Dataset):
             self.landmarks = None
 
     def get_basic_item(self, idx):
-        img = Image.open(os.path.join(self.img_path, self.img_list[idx])).convert('RGB')
+        imgname = self.img_list[idx]
+        img = Image.open(os.path.join(self.img_path,
+                                      self.img_list[idx])).convert('RGB')
 
         width, height = img.size
         if self.with_bbox:
@@ -105,22 +107,22 @@ class AttrDataset(Dataset):
         img = self.transform(img)
 
         label = torch.from_numpy(self.labels[idx])
-        cate = torch.LongTensor([int(self.categories[idx])-1])
+        cate = torch.LongTensor([int(self.categories[idx]) - 1])
 
         landmark = []
         # compute the shiftness
         origin_landmark = self.landmarks[idx]
         for i, l in enumerate(origin_landmark):
             if i % 2 == 0:  # x
-                l_x = max(0, l-x1)
+                l_x = max(0, l - x1)
                 l_x = float(l_x) / bbox_w * self.img_size[0]
                 landmark.append(l_x)
             else:  # y
-                l_y = max(0, l-y1)
+                l_y = max(0, l - y1)
                 l_y = float(l_y) / bbox_h * self.img_size[1]
                 landmark.append(l_y)
         landmark = torch.from_numpy(np.array(landmark)).float()
-        data = {'img': img, 'attr': label, 'cate':cate, 'landmark': landmark}
+        data = {'img': img, 'attr': label, 'cate': cate, 'landmark': landmark}
         return data
 
     def __getitem__(self, idx):

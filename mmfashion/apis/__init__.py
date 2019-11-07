@@ -9,6 +9,6 @@ from .utils import build_optimizer, build_criterion
 
 __all__ = [
     'init_dist', 'get_root_logger', 'train_predictor', 'test_predictor',
-    'train_retriever', 'test_retriever', 'train_landmark_detector', 'test_landmark_detector',
-    'build_optimizer', 'build_criterion'
+    'train_retriever', 'test_retriever', 'train_landmark_detector',
+    'test_landmark_detector', 'build_optimizer', 'build_criterion'
 ]

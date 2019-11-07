@@ -9,12 +9,12 @@ from ..registry import GLOBALPOOLING
 @GLOBALPOOLING.register_module
 class GlobalPooling(nn.Module):
 
-    def __init__(self, inplanes, pool_plane, inter_channels, outchannels ):
+    def __init__(self, inplanes, pool_plane, inter_channels, outchannels):
         super(GlobalPooling, self).__init__()
         self.avgpool = nn.AdaptiveAvgPool2d(inplanes)
 
-        inter_plane = inter_channels[0]*inplanes[0]*inplanes[1]
-       
+        inter_plane = inter_channels[0] * inplanes[0] * inplanes[1]
+
         self.global_layers = nn.Sequential(
             nn.Linear(inter_plane, inter_channels[1]),
             nn.ReLU(True),
@@ -32,11 +32,10 @@ class GlobalPooling(nn.Module):
 
     def init_weights(self):
         if isinstance(self.global_layers, nn.Sequential):
-           for m in self.global_layers:
-               if type(m) == nn.Linear:
-                  nn.init.xavier_uniform_(m.weight)
-                  if m.bias is not None:
-                     m.bias.data.fill_(0.01)
+            for m in self.global_layers:
+                if type(m) == nn.Linear:
+                    nn.init.xavier_uniform_(m.weight)
+                    if m.bias is not None:
+                        m.bias.data.fill_(0.01)
         else:
-           self.global_layers.init_weights()
-               
+            self.global_layers.init_weights()

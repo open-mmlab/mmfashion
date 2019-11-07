@@ -1,7 +1,7 @@
 # MMFashion
 
 <p align="center">
-<img src='./misc/logo_mmfashion.png' width=320>
+    <img src='./misc/logo_mmfashion.png' width=320>
 </p>
 
 
@@ -9,9 +9,14 @@
 
 `MMFashion` is an open source visual fashion analysis toolbox based on [PyTorch](https://pytorch.org/). It is a part of the [open-mmlab](https://github.com/open-mmlab) project developed by [Multimedia Lab, CUHK](http://mmlab.ie.cuhk.edu.hk/).
 
+<p align="left">
+    <img src='./misc/demo_attribute.gif' height=220>
+    <img src='./misc/demo_retrieval.gif' height=220>
+</p>
+
 
 ## Updates
-[2019-10-21] `MMFashion` v0.1 is released.
+[2019-11-01] `MMFashion` v0.1 is released.
 
 
 ## Features
@@ -58,36 +63,19 @@ Please refer to [DATA_PREPARATION.md](docs/DATA_PREPARATION.md) for the dataset 
 
 
 ## Model Zoo
-
-### Attribute Prediction
-
-|   Backbone  |      Pooling     |      Loss     | Top-5 Recall | Top-5 Acc. |      Download      |
-| :---------: | :--------------: | :-----------: | :----------: | :--------: | :----------------: |
-|    VGG-16   |  Global Pooling  | Cross-Entropy |              |            |     [model]()      |
-|    VGG-16   | Landmark Pooling | Cross-Entropy |     22.3     |   99.25    |     [model]()      |
-|  ResNet-50  |  Global Pooling  | Cross-Entropy |              |            |     [model]()      |
-|  ResNet-50  | Landmark Pooling | Cross-Entropy |              |            |     [model]()      |
-
-### In-Shop Clothes Retrieval
-
-|   Backbone  |      Pooling     |      Loss     | Top-5 Acc. |      Download      |
-| :---------: | :--------------: | :-----------: | :--------: | :----------------: |
-|    VGG-16   |  Global Pooling  | Cross-Entropy |   38.76    |     [model]()      |
-|    VGG-16   | Landmark Pooling | Cross-Entropy |            |     [model]()      |
-|  ResNet-50  |  Global Pooling  | Cross-Entropy |            |     [model]()      |
-|  ResNet-50  | Landmark Pooling | Cross-Entropy |            |     [model]()      |
-
-### Fashion Landmark Detection
-
-|   Backbone  |   Loss  | Normalized Error | % of Det. Landmarks |      Download      |
-| :---------: | :-----: | :--------------: | :-----------------: | :----------------: |
-|    VGG-16   | L2 Loss |       0.0813     |        55.38        |     [model]()      |
-|  ResNet-50  | L2 Loss |       0.0758     |        56.32        |     [model]()      |
+Please refer to [MODEL_ZOO.md](docs/MODEL_ZOO.md) for a comprehensive set of pre-trained models in `MMFashion`.
 
 
 ## Contributing
 
 We appreciate all contributions to improve `MMFashion`. Please refer to [CONTRIBUTING.md](docs/CONTRIBUTING.md) for the contributing guideline.
+
+
+## Related Tools
+
+- [fashion-detection](https://github.com/liuziwei7/fashion-detection)
+- [fashion-landmarks](https://github.com/liuziwei7/fashion-landmarks)
+- [fashion-cut](https://github.com/liuziwei7/fashion-cut)
 
 
 ## License

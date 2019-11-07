@@ -22,7 +22,7 @@ class CELoss(nn.Module):
         self.reduction = reduction
 
     def forward(self, input, target):
-        return self.ratio*F.cross_entropy(
+        return self.ratio * F.cross_entropy(
             input,
             target,
             weight=self.weight,
