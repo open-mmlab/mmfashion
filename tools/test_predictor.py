@@ -14,10 +14,10 @@ from mmfashion.models import build_predictor
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Train a Fashion Attribute Predictor')
+        description='Test a Fashion Attribute Predictor')
     parser.add_argument(
         '--config',
-        help='train config file path',
+        help='test config file path',
         default='configs/attribute_predict/roi_predictor_vgg_attr.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument('--checkpoint', help='checkpoint file', default='checkpoint/Predict/vgg/roi/latest.pth')

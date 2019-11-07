@@ -70,6 +70,7 @@ data = dict(
         label_file=os.path.join(data_root, 'Anno/test_labels.txt'),
         bbox_file=os.path.join(data_root, 'Anno/test_bbox.txt'),
         landmark_file=os.path.join(data_root, 'Anno/test_landmarks.txt'),
+        attr_cloth_file=os.path.join(data_root, 'Anno/list_attr_cloth.txt'),
         img_size=img_size,
         roi_plane_size=7,
         find_three=retrieve),

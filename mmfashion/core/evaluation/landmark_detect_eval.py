@@ -9,12 +9,22 @@ class LandmarkDetectorEvaluator(object):
                   img_size, 
                   landmark_num, 
                   prob_threshold=0.6,
-                  dist_threshold=10):
+                  dist_threshold=10,
+                  demo=True,
+                  img_name_file='data/Landmark_Detect/Anno/test.txt',
+                  landmark_file='data/Landmark_Detect/Anno/test_landmarks.txt'):
          self.w = img_size[0]
          self.h = img_size[1]
          self.landmark_num = landmark_num
          self.prob_threshold = prob_threshold
          self.dist_threshold = dist_threshold
+
+         self.demo = demo
+         if demo:
+            self.img_idx_to_name = {}
+            img_names = open(img_name_file).readlines()
+            for i, img_name in enumerate(img_names):
+                self.img_idx_to_name[i] = img_name.strip('\n')
 
 
      def compute_distance(self, pred_lms, gt_lms):
@@ -30,8 +40,13 @@ class LandmarkDetectorEvaluator(object):
          norm_error_list = []
 
          for i, (pred_lms_per_image, gt_lms_per_image) in enumerate(zip(pred_lms, gt_lms)):
+             if self.demo:
+                 print(self.img_idx_to_name[i])
+                 print('pred', pred_lms_per_image)
+                 print('gt', gt_lms_per_image)
+                 print('\n')
+
              for j, (pred_lm, gt_lm) in enumerate(zip(pred_lms_per_image, gt_lms_per_image)):
-                 
                  # compute normalized error per landmark
                  gt_lm_x = float(gt_lm[0])/self.w
                  gt_lm_y = float(gt_lm[1])/self.h
@@ -47,6 +62,7 @@ class LandmarkDetectorEvaluator(object):
                  dist = norm(pred_lm - gt_lm)
                  if dist<=self.dist_threshold:
                     detected += 1 
+
                  valid += 1
 
          avg_norm_error = sum(norm_error_list)/len(norm_error_list)
