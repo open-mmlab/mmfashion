@@ -8,7 +8,6 @@ import torch.nn as nn
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
-from mmfashion.apis import (init_dist, get_root_logger, test_predictor)
 from mmfashion.utils import img_to_tensor
 from mmfashion.models import build_predictor
 from mmfashion.core import AttrPredictor
@@ -52,6 +51,8 @@ def main():
     if args.use_cuda:
        model.cuda()
  
+    model.eval()
+
     # predict probabilities for each attribute
     attr_prob = model(img_tensor, attr=None, landmark=None, return_loss=False)
     attr_predictor = AttrPredictor(cfg.data.test)

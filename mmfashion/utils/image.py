@@ -21,7 +21,7 @@ def img_to_tensor(img, squeeze=False, cuda=False):
     Args:
     img(numpy arrary): cv2 read img, [H,W,C]
     """
-
+    
     img = (img.astype(np.float32))[:, :, ::-1] # bgr to rgb
     img_norm = np.clip(img/255., 0, 1)
     img_norm = img_norm.transpose(2,0,1) # [h,w,c] to [c,h,w]

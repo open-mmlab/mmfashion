@@ -29,7 +29,7 @@ class BaseRetriever(nn.Module):
     def forward_test(self, imgs, landmarks):
         num_augs = len(imgs)
         if num_augs == 1:  # single image test
-            return self.simple_test(imgs[0], landmarks[0])
+            return self.simple_test(imgs, landmarks)
         else:
             return self.aug_test(imgs, landmarks)
 

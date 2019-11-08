@@ -14,7 +14,7 @@ from mmfashion.models import build_retriever
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Test a Fashion Attribute Predictor')
+        description='Test a In-shop Fashion Retriever')
     parser.add_argument(
         '--config',
         help='train config file path',

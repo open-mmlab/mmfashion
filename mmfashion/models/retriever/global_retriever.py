@@ -77,7 +77,6 @@ class GlobalRetriever(BaseRetriever):
 
     def simple_test(self, x, landmarks=None):
         """Test single image"""
-        x = x.unsqueeze(0)
         feat = self.extract_feat(x)
         embed = self.embed_extractor.forward_test(feat)[0]
         return embed
