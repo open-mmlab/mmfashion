@@ -42,6 +42,7 @@ def split_bbox(train_set, test_set):
 
     wf_train = open(os.path.join(PREFIX, 'list_bbox_train.txt'), 'w')
     wf_test = open(os.path.join(PREFIX, 'list_bbox_test.txt'), 'w')
+    
     for i, img in enumerate(train_set):
         bbox = img2bbox[img]
         newline = img+' '+bbox[0]+' '+bbox[1]+' '+bbox[2]+' '+bbox[3]+'\n'
