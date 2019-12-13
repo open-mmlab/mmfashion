@@ -3,7 +3,7 @@
 import os
 import time
 import subprocess
-from setuptools import setup
+from setuptools import setup, find_packages
 
 MAJOR = 0
 MINOR = 1
@@ -123,4 +123,5 @@ if __name__ == '__main__':
         install_requires=[
             'mmcv', 'numpy', 'scikit-image', 'pandas', 'torch', 'torchvision'
         ],
+        packages=find_packages(),
         zip_safe=False)
