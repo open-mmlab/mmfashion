@@ -28,13 +28,19 @@ python tools/test_predictor.py \
     --checkpoint checkpoint/Predict/vgg/roi/latest.pth
 ```
 
-2. Test a in-shop clothes retriever.
+2. Test a in-shop / Consumer-to_shop clothes retriever.
 
 ```shell
 python tools/test_retriever.py \
-    --config configs/retriever/roi_retriever_vgg.py \
-    --checkpoint checkpoint/Retrieve/vgg/latest.pth
+    --config configs/retriever_in_shop/roi_retriever_vgg.py \
+    --checkpoint checkpoint/Retrieve_in_shop/vgg/latest.pth
 ```
+
+```shell
+python tools/test_retriever.py \
+    --config configs/retriever_consumer_to_shop/roi_retriever_vgg.py \
+    --checkpoint checkpoint/Retrieve_consumer_to_shop/vgg/latest.pth 
+ ```
 
 3. Test a landmark detector.
 
@@ -61,11 +67,16 @@ python tools/train_predictor.py \
     --config configs/attribute_predict/roi_predictor_vgg_attr.py
 ```
 
-2. Train a in-shop clothes retriever.
+2. Train a in-shop clothes / Consumer-to-shop retriever.
 
 ```shell
 python tools/train_retriever.py \
-    --config configs/retriever/roi_retriever_vgg.py
+    --config configs/retriever_in_shop/roi_retriever_vgg.py
+```
+
+```shell
+python tools/train_retriever.py \
+    --config configs/retriever_consumer_to_shop/roi_retriever_vgg.py
 ```
 
 3. Train a landmark detector.

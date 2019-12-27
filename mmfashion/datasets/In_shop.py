@@ -45,8 +45,7 @@ class InShopDataset(Dataset):
                  img_size,
                  roi_plane_size=7,
                  retrieve=False,
-                 find_three=False,
-                 idx2id=None):
+                 find_three=False):
         self.img_path = img_path
 
         normalize = transforms.Normalize(

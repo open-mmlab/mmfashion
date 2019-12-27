@@ -13,8 +13,10 @@ cd data/
 mv Category\ and\ Attribute\ Prediction\ Benchmark Attr_Predict
 mv In-shop\ Clothes\ Retrieval\ Benchmark In-shop
 mv Fashion\ Landmark\ Detection\ Benchmark/ Landmark_Detect
+mv  Consumer-to-shop\ Clothes\ Retrieval\ Benchmark Consumer_to_shop
 python prepare_attr_pred.py
 python prepare_in_shop.py
+python prepare_consumer_to_shop.py
 python prepare_landmark_detect.py
 ```
 

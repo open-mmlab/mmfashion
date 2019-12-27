@@ -80,7 +80,7 @@ def _non_dist_train(model, dataset, cfg, validate=False):
             dist=False)
     ]
     print('dataloader built')
-
+ 
     model = MMDataParallel(model, device_ids=cfg.gpus.train).cuda()
     print('model paralleled')
 

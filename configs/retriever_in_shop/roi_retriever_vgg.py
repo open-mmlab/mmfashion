@@ -109,11 +109,12 @@ lr_config = dict(
 
 checkpoint_config = dict(interval=5)
 log_config = dict(
-    interval=10, hooks=[
-        dict(type='TextLoggerHook'),
+    interval=10,
+    hooks=[
+        dict(type='TextLoggerHook')
     ])
 
-start_epoch = 151
+start_epoch = 0
 total_epochs = 200
 gpus = dict(train=[0, 1, 2, 3], test=[0])
 work_dir = 'checkpoint/Retrieve/vgg/roi/with_attr/'
