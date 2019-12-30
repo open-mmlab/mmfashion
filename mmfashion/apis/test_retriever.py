@@ -54,7 +54,6 @@ def _process_embeds(dataset, model, cfg):
         dist=False,
         shuffle=False)
 
-    total = 0
     embeds = []
     with torch.no_grad():
         for batch_idx, data in enumerate(data_loader):

@@ -80,7 +80,7 @@ data = dict(
         img_size=img_size,
         find_three=True
     ),
-    consumer=dict(
+    query=dict(
         type=dataset_type,
         img_path=os.path.join(data_root, 'Img'),
         img_file=os.path.join(data_root, 'Anno/consumer.txt'),
@@ -91,7 +91,7 @@ data = dict(
         img_size=img_size,
         find_three=True
     ),
-    shop=dict(
+    gallery=dict(
         type=dataset_type,
         img_path=os.path.join(data_root, 'Img'),
         img_file=os.path.join(data_root, 'Anno/shop.txt'),
@@ -129,7 +129,7 @@ log_config = dict(
 
 start_epoch = 0
 total_epochs = 100
-gpus = dict(train=[0],
+gpus = dict(train=[0,1,2],
             test=[0])
 work_dir = 'checkpoint/Retrieve_Consumer_to_Shop/vgg/roi'
 load_from = None
