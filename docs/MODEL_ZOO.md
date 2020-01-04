@@ -20,6 +20,11 @@ More models with different backbones will be added to the model zoo.
 |  ResNet-50  |  Global Pooling  | Cross-Entropy |   37.61    |     [model](https://drive.google.com/open?id=1UYaIaDhuCwMQiQIcOEzYlPh0M1RFfdw-)      |
 |  ResNet-50  | Landmark Pooling | Cross-Entropy |   48.82    |     [model](https://drive.google.com/open?id=1HZ13jijnjXxQ4nnsiss-UZ7bxHLN0kjw)      |
 
+## Consumer-to-Shop Clothes Retrieval
+|   Backbone  |      Pooling     |      Loss     | Top-5 Acc. |      Download      |
+| :---------: | :--------------: | :-----------: | :--------: | :----------------: |
+|    VGG-16   | Landmark Pooling | Cross-Entropy |   7.18     |     [model](https://drive.google.com/open?id=1I5_VBDKmjqNtG0-H0e9rvGXhhrz_-lDy)      |
+
 ## Fashion Landmark Detection
 
 |   Backbone  |   Loss  | Normalized Error | % of Det. Landmarks |      Download      |
