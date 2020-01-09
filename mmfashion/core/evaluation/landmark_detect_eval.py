@@ -9,12 +9,14 @@ class LandmarkDetectorEvaluator(object):
                  img_size,
                  landmark_num,
                  prob_threshold=0.3,
-                 dist_threshold=10):
+                 dist_threshold=10, 
+                 demo=False):
         self.w = img_size[0]
         self.h = img_size[1]
         self.landmark_num = landmark_num
         self.prob_threshold = prob_threshold
         self.dist_threshold = dist_threshold
+        self.demo = demo
 
     def compute_distance(self, pred_lms, gt_lms):
          """ compute the percentage of detected landmarks,
