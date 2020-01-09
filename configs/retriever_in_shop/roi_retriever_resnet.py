@@ -79,8 +79,7 @@ data = dict(
         img_size=img_size,
         roi_plane_size=7,
         retrieve=retrieve,
-        find_three=retrieve,
-        idx2id=os.path.join(data_root, 'Anno/query_idx2id.txt')),
+        find_three=retrieve),
     gallery=dict(
         type=dataset_type,
         img_path=os.path.join(data_root, 'Img'),
@@ -92,8 +91,7 @@ data = dict(
         img_size=img_size,
         roi_plane_size=7,
         retrieve=retrieve,
-        find_three=retrieve,
-        idx2id=os.path.join(data_root, 'Anno/gallery_idx2id.txt')))
+        find_three=retrieve))
 
 # optimizer
 optimizer = dict(type='SGD', lr=1e-3, momentum=0.9)
