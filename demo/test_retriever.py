@@ -26,7 +26,7 @@ def parse_args():
     parser.add_argument(
         '--config',
         help='train config file path',
-        default='configs/retriever/global_retriever_vgg_loss_id.py')
+        default='configs/retriever_in_shop/global_retriever_vgg_loss_id.py')
     parser.add_argument(
         '--checkpoint',
         type=str,
