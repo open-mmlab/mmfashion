@@ -2,9 +2,16 @@ import math
 import numpy as np
 
 import torch
-from torch.distributed import get_world_size, get_rank
 from torch.utils.data import Sampler
 from torch.utils.data.distributed import DistributedSampler as _DistributedSampler
+try:
+    from torch.distributed import get_world_size, get_rank
+
+    NO_DISTRIBUTED_SUPPORT = False
+except ImportError:
+    NO_DISTRIBUTED_SUPPORT = True
+    ONLY_ONE_PROCOCESS = 1
+    ONLY_ONE_REPLICA = 1
 
 
 class DistributedSampler(_DistributedSampler):
@@ -91,11 +98,17 @@ class DistributedGroupSampler(Sampler):
                  dataset,
                  samples_per_gpu=1,
                  num_replicas=None,
-                 rank=None):
-        if num_replicas is None:
-            num_replicas = get_world_size()
-        if rank is None:
-            rank = get_rank()
+                 rank=None,
+                 no_distributed_support=False):
+
+        if no_distributed_support:
+            num_replicas = ONLY_ONE_REPLICA
+            rank = ONLY_ONE_PROCOCESS
+        else:
+            if num_replicas is None:
+                num_replicas = get_world_size()
+            if rank is None:
+                rank = get_rank()
         self.dataset = dataset
         self.samples_per_gpu = samples_per_gpu
         self.num_replicas = num_replicas
