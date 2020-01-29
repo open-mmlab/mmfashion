@@ -106,11 +106,7 @@ lr_config = dict(
     step=[20, 40])
 
 checkpoint_config = dict(interval=5)
-log_config = dict(
-    interval=10,
-    hooks=[
-        dict(type='TextLoggerHook')
-    ])
+log_config = dict(interval=10, hooks=[dict(type='TextLoggerHook')])
 
 start_epoch = 0
 total_epochs = 200

@@ -39,7 +39,7 @@ python tools/test_retriever.py \
 ```shell
 python tools/test_retriever.py \
     --config configs/retriever_consumer_to_shop/roi_retriever_vgg.py \
-    --checkpoint checkpoint/Retrieve_consumer_to_shop/vgg/latest.pth 
+    --checkpoint checkpoint/Retrieve_consumer_to_shop/vgg/latest.pth
  ```
 
 3. Test a landmark detector.

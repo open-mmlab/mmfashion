@@ -9,7 +9,7 @@ from .dataset_wrappers import ConcatDataset
 
 __all__ = [
     'InShopDataset', 'AttrDataset', 'ConsumerToShopDataset',
-    'LandmarkDetectDataset', 'to_tensor',
-    'get_dataset', 'GroupSampler', 'DistributedGroupSampler',
-    'build_dataloader', 'build_dataset', 'ConcatDataset'
+    'LandmarkDetectDataset', 'to_tensor', 'get_dataset', 'GroupSampler',
+    'DistributedGroupSampler', 'build_dataloader', 'build_dataset',
+    'ConcatDataset'
 ]

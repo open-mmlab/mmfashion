@@ -47,10 +47,10 @@ def get_dataset(data_cfg):
             data_cfg.roi_plane_size, data_cfg.find_three)
 
     elif data_cfg['type'] == 'Attr_Pred':
-        dataset = AttrDataset(
-            data_cfg.img_path, data_cfg.img_file, data_cfg.label_file,
-            data_cfg.cate_file, data_cfg.bbox_file, data_cfg.landmark_file,
-            data_cfg.img_size)
+        dataset = AttrDataset(data_cfg.img_path, data_cfg.img_file,
+                              data_cfg.label_file, data_cfg.cate_file,
+                              data_cfg.bbox_file, data_cfg.landmark_file,
+                              data_cfg.img_size)
 
     elif data_cfg['type'] == 'Landmark_Detect':
         dataset = LandmarkDetectDataset(

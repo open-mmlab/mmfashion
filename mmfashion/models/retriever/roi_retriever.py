@@ -72,7 +72,7 @@ class RoIRetriever(BaseRetriever):
         if pos is not None:
             pos_feat = self.extract_feat(pos, pos_lm)
             neg_feat = self.extract_feat(neg, neg_lm)
-            
+
             losses['loss_id'] = self.embed_extractor(
                 anchor_feat,
                 id,

@@ -5,38 +5,31 @@ arch = 'vgg'
 retrieve = True
 attribute_num = 303
 id_num = 33881
-img_size = (224,224)
+img_size = (224, 224)
 model = dict(
     type='RoIRetriever',
     backbone=dict(type='Vgg'),
     global_pool=dict(
         type='GlobalPooling',
-        inplanes=(7,7),
-        pool_plane=(2,2),
-        inter_channels=[512,4096],
-        outchannels=4096
-    ),
+        inplanes=(7, 7),
+        pool_plane=(2, 2),
+        inter_channels=[512, 4096],
+        outchannels=4096),
     roi_pool=dict(
         type='RoIPooling',
-        pool_plane=(2,2),
+        pool_plane=(2, 2),
         inter_channels=512,
         outchannels=4096,
         crop_size=7,
         img_size=img_size,
-        num_lms=8
-    ),
-    concat=dict(
-        type='Concat',
-        inchannels=2*4096,
-        outchannels=4096
-    ),
+        num_lms=8),
+    concat=dict(type='Concat', inchannels=2 * 4096, outchannels=4096),
     embed_extractor=dict(
         type='EmbedExtractor',
         inchannels=4096,
         inter_channels=[256, id_num],
         loss_id=dict(type='CELoss', ratio=1),
-        loss_triplet=dict(type='TripletLoss', method='cosine', margin=0.)
-    ),
+        loss_triplet=dict(type='TripletLoss', method='cosine', margin=0.)),
     attr_predictor=dict(
         type='AttrPredictor',
         inchannels=4096,
@@ -47,11 +40,9 @@ model = dict(
             weight=None,
             size_average=None,
             reduce=None,
-            reduction='mean'
-        ),
+            reduction='mean'),
     ),
-    pretrained='checkpoint/vgg16.pth'
-)
+    pretrained='checkpoint/vgg16.pth')
 
 pooling = 'RoI'
 
@@ -61,10 +52,7 @@ extract_feature = False
 # dataset setting
 dataset_type = 'ConsumerToShopDataset'
 data_root = 'data/Consumer_to_shop'
-img_norm = dict(
-    mean=[0.485, 0.456, 0.406],
-    std=[0.229, 0.224, 0.225]
-)
+img_norm = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
 data = dict(
     imgs_per_gpu=8,
@@ -78,8 +66,7 @@ data = dict(
         bbox_file=os.path.join(data_root, 'Anno/list_bbox_train.txt'),
         landmark_file=os.path.join(data_root, 'Anno/list_landmarks_train.txt'),
         img_size=img_size,
-        find_three=True
-    ),
+        find_three=True),
     query=dict(
         type=dataset_type,
         img_path=os.path.join(data_root, 'Img'),
@@ -87,10 +74,10 @@ data = dict(
         id_file=os.path.join(data_root, 'Anno/consumer_id.txt'),
         label_file=os.path.join(data_root, 'Anno/list_attr_items.txt'),
         bbox_file=os.path.join(data_root, 'Anno/list_bbox_consumer.txt'),
-        landmark_file=os.path.join(data_root, 'Anno/list_landmarks_consumer.txt'),
+        landmark_file=os.path.join(data_root,
+                                   'Anno/list_landmarks_consumer.txt'),
         img_size=img_size,
-        find_three=True
-    ),
+        find_three=True),
     gallery=dict(
         type=dataset_type,
         img_path=os.path.join(data_root, 'Img'),
@@ -100,17 +87,11 @@ data = dict(
         bbox_file=os.path.join(data_root, 'Anno/list_bbox_shop.txt'),
         landmark_file=os.path.join(data_root, 'Anno/list_landmarks_shop.txt'),
         img_size=img_size,
-        find_three=True
-    )
-)
+        find_three=True))
 
 # optimizer
-optimizer = dict(
-    type='SGD',
-    lr=1e-3,
-    momentum=0.9
-)
-optimizer_config=dict()
+optimizer = dict(type='SGD', lr=1e-3, momentum=0.9)
+optimizer_config = dict()
 
 #learning policy
 lr_config = dict(
@@ -118,8 +99,7 @@ lr_config = dict(
     warmup='linear',
     warmup_iters=500,
     warmup_ratio=0.1,
-    step=[20,40]
-)
+    step=[20, 40])
 
 checkpoint_config = dict(interval=5)
 log_config = dict(
@@ -129,8 +109,7 @@ log_config = dict(
 
 start_epoch = 0
 total_epochs = 100
-gpus = dict(train=[0,1,2],
-            test=[0])
+gpus = dict(train=[0, 1, 2], test=[0])
 work_dir = 'checkpoint/Retrieve_Consumer_to_Shop/vgg/roi'
 load_from = None
 resume_from = None

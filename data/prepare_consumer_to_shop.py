@@ -2,11 +2,13 @@ import os
 
 PREFIX = 'Consumer_to_shop/Anno'
 
+
 def split_img():
     fn = open('Consumer_to_shop/Eval/list_eval_partition.txt').readlines()
 
     # train dataset
-    train_consumer2shop = open(os.path.join(PREFIX, 'train_consumer2shop.txt'), 'w')
+    train_consumer2shop = open(
+        os.path.join(PREFIX, 'train_consumer2shop.txt'), 'w')
     train_imgs = []
 
     # test dataset
@@ -18,17 +20,17 @@ def split_img():
         aline = line.strip('\n').split()
         consumer, shop, id, cate = aline[0], aline[1], aline[2], aline[3]
         if cate == 'train':
-           newline = consumer+' '+shop+'\n'
-           train_consumer2shop.write(newline)
-           train_imgs.append(consumer)
-           train_imgs.append(shop)
+            newline = consumer + ' ' + shop + '\n'
+            train_consumer2shop.write(newline)
+            train_imgs.append(consumer)
+            train_imgs.append(shop)
         else:
-           newline = consumer+'\n'
-           test_consumer.write(newline)
-           newline = shop+'\n'
-           test_shop.write(newline)
-           consumer_imgs.append(consumer)
-           shop_imgs.append(shop)
+            newline = consumer + '\n'
+            test_consumer.write(newline)
+            newline = shop + '\n'
+            test_shop.write(newline)
+            consumer_imgs.append(consumer)
+            shop_imgs.append(shop)
 
     train_consumer2shop.close()
     test_consumer.close()
@@ -50,17 +52,20 @@ def split_bbox(train_set, consumer_set, shop_set):
     wf_shop = open(os.path.join(PREFIX, 'list_bbox_shop.txt'), 'w')
     for i, img in enumerate(train_set):
         bbox = img2bbox[img]
-        newline = img + ' ' + bbox[0]+' '+bbox[1]+' '+bbox[2]+' '+bbox[3] +'\n'
+        newline = img + ' ' + bbox[0] + ' ' + bbox[1] + ' ' + bbox[
+            2] + ' ' + bbox[3] + '\n'
         wf_train.write(newline)
 
     for i, img in enumerate(consumer_set):
         bbox = img2bbox[img]
-        newline = img + ' ' + bbox[0]+' '+bbox[1]+' '+bbox[2]+' '+bbox[3] +'\n'
+        newline = img + ' ' + bbox[0] + ' ' + bbox[1] + ' ' + bbox[
+            2] + ' ' + bbox[3] + '\n'
         wf_consumer.write(newline)
 
     for i, img in enumerate(shop_set):
         bbox = img2bbox[img]
-        newline = img+' '+bbox[0]+' '+bbox[1]+' '+bbox[2]+' '+bbox[3]+'\n'
+        newline = img + ' ' + bbox[0] + ' ' + bbox[1] + ' ' + bbox[
+            2] + ' ' + bbox[3] + '\n'
         wf_shop.write(newline)
 
     wf_train.close()
@@ -90,7 +95,8 @@ def split_ids(train_set, consumer_set, shop_set):
 
 
 def split_lms(train_set, consumer_set, shop_set):
-    rf = open(os.path.join(PREFIX,'list_landmarks_consumer2shop.txt')).readlines()
+    rf = open(os.path.join(PREFIX,
+                           'list_landmarks_consumer2shop.txt')).readlines()
     img2landmarks = {}
     for i, line in enumerate(rf[2:]):
         aline = line.strip('\n').split()
@@ -99,7 +105,8 @@ def split_lms(train_set, consumer_set, shop_set):
         img2landmarks[img] = landmarks
 
     wf_train = open(os.path.join(PREFIX, 'list_landmarks_train.txt'), 'w')
-    wf_consumer = open(os.path.join(PREFIX, 'list_landmarks_consumer.txt'), 'w')
+    wf_consumer = open(
+        os.path.join(PREFIX, 'list_landmarks_consumer.txt'), 'w')
     wf_shop = open(os.path.join(PREFIX, 'list_landmarks_shop.txt'), 'w')
 
     def write_landmarks(img_set, wf):
@@ -107,15 +114,15 @@ def split_lms(train_set, consumer_set, shop_set):
             landmarks = img2landmarks[img]
             one_lms = []
             for j, lm in enumerate(landmarks):
-                if j%3==0: # visibility
-                   if lm=='0': #visible
-                      one_lms.append(landmarks[j+1])
-                      one_lms.append(landmarks[j+2])
-                   else: # invisible or truncated
-                      one_lms.append('000')
-                      one_lms.append('000')
+                if j % 3 == 0:  # visibility
+                    if lm == '0':  #visible
+                        one_lms.append(landmarks[j + 1])
+                        one_lms.append(landmarks[j + 2])
+                    else:  # invisible or truncated
+                        one_lms.append('000')
+                        one_lms.append('000')
 
-            while len(one_lms)<16: # 8 pairs
+            while len(one_lms) < 16:  # 8 pairs
                 one_lms.append('000')
 
             wf.write(img)
@@ -132,8 +139,7 @@ def split_lms(train_set, consumer_set, shop_set):
 
 
 if __name__ == '__main__':
-   train_imgs, consumer_imgs, shop_imgs = split_img()
-   split_bbox(train_imgs, consumer_imgs, shop_imgs)
-   split_ids(train_imgs, consumer_imgs, shop_imgs)
-   split_lms(train_imgs, consumer_imgs, shop_imgs)
-
+    train_imgs, consumer_imgs, shop_imgs = split_img()
+    split_bbox(train_imgs, consumer_imgs, shop_imgs)
+    split_ids(train_imgs, consumer_imgs, shop_imgs)
+    split_lms(train_imgs, consumer_imgs, shop_imgs)

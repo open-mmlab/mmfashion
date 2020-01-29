@@ -15,26 +15,23 @@ from mmfashion.core import AttrPredictor
 
 def parse_args():
     parser = argparse.ArgumentParser(
-         description='MMFashion Attribute Prediction Demo')
+        description='MMFashion Attribute Prediction Demo')
     parser.add_argument(
-         '--input',
-         type=str,
-         help='input image path',
-         default='demo/attr_pred_demo1.jpg')
+        '--input',
+        type=str,
+        help='input image path',
+        default='demo/attr_pred_demo1.jpg')
     parser.add_argument(
-         '--checkpoint',
-         type=str,
-         help='checkpoint file',
-         default='checkpoint/Predict/vgg/global/latest.pth')
+        '--checkpoint',
+        type=str,
+        help='checkpoint file',
+        default='checkpoint/Predict/vgg/global/latest.pth')
     parser.add_argument(
-         '--config',
-         help='test config file path',
-         default='configs/attribute_predict/global_predictor_vgg_attr.py')
+        '--config',
+        help='test config file path',
+        default='configs/attribute_predict/global_predictor_vgg_attr.py')
     parser.add_argument(
-         '--use_cuda',
-          type=bool,
-          default=True,
-          help='use gpu or not')
+        '--use_cuda', type=bool, default=True, help='use gpu or not')
     args = parser.parse_args()
     return args
 
@@ -42,15 +39,15 @@ def parse_args():
 def main():
     args = parse_args()
     cfg = Config.fromfile(args.config)
-    
+
     img = cv2.imread(args.input, -1)
     img_tensor = img_to_tensor(img, squeeze=True, cuda=args.use_cuda)
-    
+
     model = build_predictor(cfg.model)
     checkpoint = load_checkpoint(model, args.checkpoint, map_location='cpu')
     if args.use_cuda:
-       model.cuda()
- 
+        model.cuda()
+
     model.eval()
 
     # predict probabilities for each attribute
@@ -61,4 +58,4 @@ def main():
 
 
 if __name__ == '__main__':
-   main()
+    main()

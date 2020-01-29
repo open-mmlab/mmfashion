@@ -7,6 +7,5 @@ from .retrieval_demo import ClothesRetriever
 
 __all__ = [
     'AttrCalculator', 'CateCalculator', 'Evaluator',
-    'LandmarkDetectorEvaluator', 
-    'AttrPredictor', 'ClothesRetriever'
-] 
+    'LandmarkDetectorEvaluator', 'AttrPredictor', 'ClothesRetriever'
+]

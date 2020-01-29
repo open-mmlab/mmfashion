@@ -10,7 +10,8 @@ from torch.utils.data.distributed import DistributedSampler as _DistributedSampl
 class DistributedSampler(_DistributedSampler):
 
     def __init__(self, dataset, num_replicas=None, rank=None, shuffle=True):
-        super(DistributedGroupSampler).__init__(dataset, num_replicas=num_replicas, rank=rank)
+        super(DistributedGroupSampler).__init__(
+            dataset, num_replicas=num_replicas, rank=rank)
         self.shuffle = shuffle
 
     def __iter__(self):

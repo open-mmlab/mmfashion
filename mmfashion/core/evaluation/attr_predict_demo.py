@@ -14,17 +14,15 @@ class AttrPredictor(object):
         class_num : number of classes in the dataset
         tops_type : default calculate top3, top5 and top10
         """
-        
+
         attr_cloth_file = open(cfg.attr_cloth_file).readlines()
         self.attr_idx2name = {}
         for i, line in enumerate(attr_cloth_file[2:]):
             self.attr_idx2name[i] = line.strip('\n').split()[0]
 
-        
     def print_attr_name(self, pred_idx):
         for idx in pred_idx:
             print(self.attr_idx2name[idx])
-
 
     def show_prediction(self, pred):
         if isinstance(pred, torch.Tensor):
@@ -43,7 +41,5 @@ class AttrPredictor(object):
             print('[ Top5 Prediction ]')
             self.print_attr_name(idx5)
 
-            print('[ Top10 Prediction ]')                  
-            self.print_attr_name(idx10)                    
-    
-
+            print('[ Top10 Prediction ]')
+            self.print_attr_name(idx10)
