@@ -179,6 +179,7 @@ class ResNet(nn.Module):
             layers[3],
             stride=2,
             dilate=replace_stride_with_dilation[2])
+        self.zero_init_residual = zero_init_residual
 
     def init_weights(self, pretrained=None):
         print('pretrained model', pretrained)
@@ -197,7 +198,7 @@ class ResNet(nn.Module):
             # Zero-initialize the last BN in each residual branch,
             # so that the residual branch starts with zeros, and each residual block behaves like an identity.
             # This improves the model by 0.2~0.3% according to https://arxiv.org/abs/1706.02677
-            if zero_init_residual:
+            if self.zero_init_residual:
                 for m in self.modules():
                     if isinstance(m, Bottleneck):
                         nn.init.constant_(m.bn3.weight, 0)
