@@ -1,6 +1,4 @@
-import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 from ..builder import build_loss
 from ..registry import EMBEDEXTRACTOR

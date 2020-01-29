@@ -93,7 +93,7 @@ data = dict(
 optimizer = dict(type='SGD', lr=1e-3, momentum=0.9)
 optimizer_config = dict()
 
-#learning policy
+# learning policy
 lr_config = dict(
     policy='step',
     warmup='linear',

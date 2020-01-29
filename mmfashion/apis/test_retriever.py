@@ -1,22 +1,10 @@
 from __future__ import division
 
-import os
-import os.path as osp
-import re
-from collections import OrderedDict
-from scipy.spatial.distance import cdist
-import scipy.io as sio
 import numpy as np
 
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
-from torch.autograd import Variable
-import torchvision
 
-from mmcv.runner import Runner, DistSamplerSeedHook, obj_from_dict
-from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
+from mmcv.parallel import MMDataParallel
 
 from .env import get_root_logger
 from ..core import Evaluator
@@ -40,11 +28,6 @@ def test_retriever(model,
         _non_dist_test(model, query_set, gallery_set, cfg, validate=validate)
 
 
-def _dist_test(model, query_set, gallery_set, cfg, validate=False):
-    """ not implemented yet """
-    raise NotImplementedError
-
-
 def _process_embeds(dataset, model, cfg):
     data_loader = build_dataloader(
         dataset,
@@ -56,7 +39,7 @@ def _process_embeds(dataset, model, cfg):
 
     embeds = []
     with torch.no_grad():
-        for batch_idx, data in enumerate(data_loader):
+        for data in data_loader:
             embed = model(data['img'], data['landmark'], return_loss=False)
             embeds.append(embed)
 
@@ -81,3 +64,8 @@ def _non_dist_test(model, query_set, gallery_set, cfg, validate=False):
         cfg.data.gallery.id_file,
         extract_feature=cfg.extract_feature)
     e.evaluate(query_embeds_np, gallery_embeds_np)
+
+
+def _dist_test(model, query_set, gallery_set, cfg, validate=False):
+    """ not implemented yet """
+    raise NotImplementedError

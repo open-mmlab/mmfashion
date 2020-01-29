@@ -1,6 +1,6 @@
 import os
 
-#model setting
+# model setting
 arch = 'resnet'
 landmark_num = 8
 img_size = (224, 224)

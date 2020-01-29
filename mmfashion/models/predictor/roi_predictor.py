@@ -1,8 +1,3 @@
-import logging
-
-import torch
-import torch.nn as nn
-
 from .base import BasePredictor
 from .. import builder
 from ..registry import PREDICTOR
@@ -18,7 +13,7 @@ class RoIPredictor(BasePredictor):
                  attr_predictor,
                  roi_pool=None,
                  pretrained=None):
-        super(BasePredictor, self).__init__()
+        super(RoIPredictor, self).__init__()
 
         self.backbone = builder.build_backbone(backbone)
         self.global_pool = builder.build_global_pool(global_pool)
@@ -52,7 +47,7 @@ class RoIPredictor(BasePredictor):
     def simple_test(self, x, landmark=None):
         """Test single image"""
         x = x.unsqueeze(0)
-        landmarks = landmarks.unsqueeze(0)
+        landmark = landmark.unsqueeze(0)
         attr_pred = self.aug_test(x, landmark)
         return attr_pred[0]
 

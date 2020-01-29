@@ -1,6 +1,4 @@
 import numpy as np
-import operator
-from scipy.spatial.distance import cdist
 
 import torch
 
@@ -135,7 +133,6 @@ class AttrCalculator(object):
                 top['tp'], top['fp'], top['pos'])
 
     def compute_one_accuracy(self, tp, tn):
-        empty = 0
         accuracy = np.zeros(tp.shape)
         for i, num in enumerate(tp):
             accuracy[i] = float(tp[i] + tn[i]) / float(self.total)

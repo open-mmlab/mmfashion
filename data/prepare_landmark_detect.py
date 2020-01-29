@@ -1,5 +1,4 @@
 import os
-import numpy as np
 
 PREFIX = 'Landmark_Detect/Anno'
 

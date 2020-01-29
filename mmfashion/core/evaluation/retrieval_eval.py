@@ -1,6 +1,4 @@
 import numpy as np
-import scipy.io as sio
-from scipy.spatial.distance import cdist as cdist
 from scipy.spatial.distance import cosine as cosine
 
 

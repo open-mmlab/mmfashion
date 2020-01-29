@@ -1,9 +1,6 @@
 import logging
 from abc import ABCMeta, abstractmethod
 
-import mmcv
-import numpy as np
-import torch
 import torch.nn as nn
 
 

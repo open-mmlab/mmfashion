@@ -1,8 +1,3 @@
-import logging
-
-import torch
-import torch.nn as nn
-
 from .base import BaseRetriever
 from .. import builder
 from ..registry import RETRIEVER

@@ -1,9 +1,6 @@
 from __future__ import division
 import argparse
 
-import torch
-import torch.nn as nn
-
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
@@ -64,7 +61,7 @@ def main():
     model = build_predictor(cfg.model)
     print('model built')
 
-    checkpoint = load_checkpoint(model, cfg.load_from, map_location='cpu')
+    load_checkpoint(model, cfg.load_from, map_location='cpu')
     print('load checkpoint from: {}'.format(cfg.load_from))
 
     # test

@@ -1,13 +1,9 @@
 from __future__ import division
 import argparse
 
-import torch
-import torch.nn as nn
-
 from mmcv import Config
-from mmcv.runner import load_checkpoint
 
-from mmfashion.apis import (init_dist, get_root_logger, train_retriever)
+from mmfashion.apis import init_dist, get_root_logger, set_random_seed, train_retriever
 from mmfashion.datasets import build_dataset
 from mmfashion.models import build_retriever
 from mmfashion.utils import init_weights_from

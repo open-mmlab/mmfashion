@@ -1,22 +1,14 @@
 from __future__ import division
 
-import os
-import re
 from collections import OrderedDict
 
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
-from torch.autograd import Variable
-import torchvision
 
-from mmcv.runner import Runner, DistSamplerSeedHook, obj_from_dict, save_checkpoint, load_checkpoint
-from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
+from mmcv.runner import Runner
+from mmcv.parallel import MMDataParallel
 
 from .env import get_root_logger
 from .utils import build_optimizer
-from ..models import build_loss
 from ..datasets import build_dataloader
 
 

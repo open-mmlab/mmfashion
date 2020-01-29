@@ -1,7 +1,4 @@
 import numpy as np
-from numpy.linalg import norm as norm_dist
-import scipy.io as sip
-from scipy.spatial.distance import cdist as cdist
 
 
 class LandmarkDetectorEvaluator(object):
@@ -28,7 +25,6 @@ class LandmarkDetectorEvaluator(object):
          """
         detected = 0  # the number of detected landmarks
         valid = 0  # the number of valid/visible landmarks
-        total_lm_num = pred_lms.shape[0] * pred_lms.shape[1]
         norm_error_list = []
 
         for i, (pred_lms_per_image, gt_lms_per_image) in enumerate(
@@ -49,11 +45,11 @@ class LandmarkDetectorEvaluator(object):
 
                 gt_lm_arr = np.array([gt_lm_x, gt_lm_y])
                 pred_lm_arr = np.array([pred_lm_x, pred_lm_y])
-                norm_error = norm(gt_lm_arr - pred_lm_arr)
+                norm_error = np.linalg.norm(gt_lm_arr - pred_lm_arr)
                 norm_error_list.append(norm_error)
 
                 # compute the pixel distance per landmark
-                dist = norm(pred_lm - gt_lm)
+                dist = np.linalg.norm(pred_lm - gt_lm)
                 if dist <= self.dist_threshold:
                     detected += 1
 
@@ -105,7 +101,6 @@ class LandmarkDetectorEvaluator(object):
              pred_vis(list): predicted landmark visibility [[lm1_pred, lm2_pred, ...], ...]
              vis(list): ground truth landmark visibility [[lm1_gt, lm2_gt, ...], ...]
          """
-        batch_size = pred_vis.shape[0]
         correct = 0
         total = pred_vis.shape[0] * pred_vis.shape[1]
 

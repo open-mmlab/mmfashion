@@ -2,27 +2,15 @@ from __future__ import division
 
 import os
 import argparse
-import re
-from collections import OrderedDict
-from scipy.spatial.distance import cdist
 import scipy.io as sio
-import numpy as np
 
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
-from torch.autograd import Variable
-import torchvision
 
 from mmcv import Config
-from mmcv.runner import load_checkpoint
 
-from mmcv.runner import Runner, DistSamplerSeedHook, obj_from_dict
-from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
+from mmcv.parallel import MMDataParallel
 
 from mmfashion.models import build_retriever
-from mmfashion.apis.env import get_root_logger
 from mmfashion.datasets import build_dataset, build_dataloader
 
 
@@ -60,14 +48,11 @@ def _process_embeds(dataset, model, cfg):
         len(cfg.gpus.test),
         dist=False,
         shuffle=False)
-
-    total = 0
     embeds = []
     with torch.no_grad():
         for batch_idx, data in enumerate(data_loader):
             embed = model(data['img'], data['landmark'], return_loss=False)
             embeds.append(embed)
-
     embeds = torch.cat(embeds)
     embeds = embeds.data.cpu().numpy()
     return embeds

@@ -1,8 +1,3 @@
-import logging
-
-import torch
-import torch.nn as nn
-
 from .base import BasePredictor
 from .. import builder
 from ..registry import PREDICTOR
@@ -23,7 +18,7 @@ class GlobalPredictor(BasePredictor):
                      reduction='mean'),
                  roi_pool=None,
                  pretrained=None):
-        super(BasePredictor, self).__init__()
+        super(GlobalPredictor, self).__init__()
 
         self.backbone = builder.build_backbone(backbone)
         self.global_pool = builder.build_global_pool(global_pool)
@@ -67,7 +62,7 @@ class GlobalPredictor(BasePredictor):
         return attr_pred
 
     def init_weights(self, pretrained=None):
-        super(RoIPredictor, self).init_weights(pretrained)
+        super(GlobalPredictor, self).init_weights(pretrained)
         self.backbone.init_weights(pretrained=pretrained)
         self.global_pool.init_weights()
         self.attr_predictor.init_weights()

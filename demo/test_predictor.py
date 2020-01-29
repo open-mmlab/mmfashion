@@ -2,9 +2,6 @@ from __future__ import division
 import argparse
 import cv2
 
-import torch
-import torch.nn as nn
-
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
@@ -45,7 +42,7 @@ def main():
 
     cfg.model.pretrained = None
     model = build_predictor(cfg.model)
-    checkpoint = load_checkpoint(model, args.checkpoint, map_location='cpu')
+    load_checkpoint(model, args.checkpoint, map_location='cpu')
     if args.use_cuda:
         model.cuda()
 

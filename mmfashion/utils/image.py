@@ -1,20 +1,10 @@
 from __future__ import division
 
-import pandas as pd
-import csv
-import os
-import sys
-import torch
-import shutil
-import pickle
-
 import matplotlib
 import matplotlib.pyplot as plt
-from PIL import Image
 import numpy as np
 
 import torch
-import torchvision
 
 
 def img_to_tensor(img, squeeze=False, cuda=False):

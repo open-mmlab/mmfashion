@@ -1,11 +1,9 @@
 from __future__ import division
-import shutil
-import time
-import logging
 
+from collections.abc import Sequence
+import numpy as np
 import torch
-import torch.nn as nn
-from torch.autograd import Variable
+import mmcv
 
 from .In_shop import InShopDataset
 from .Attr_Pred import AttrDataset

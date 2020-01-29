@@ -1,7 +1,5 @@
 import numpy as np
-import scipy.io as sio
 import os
-from scipy.spatial.distance import cdist as cdist
 from scipy.spatial.distance import cosine as cosine
 import matplotlib.pyplot as plt
 

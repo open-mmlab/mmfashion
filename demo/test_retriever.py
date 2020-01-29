@@ -2,9 +2,7 @@ from __future__ import division
 import argparse
 
 import torch
-import torch.nn as nn
 import cv2
-import numpy as np
 
 from mmcv import Config
 from mmcv.runner import load_checkpoint
@@ -47,10 +45,9 @@ def _process_embeds(dataset, model, cfg, use_cuda=True):
         dist=False,
         shuffle=False)
 
-    total = 0
     embeds = []
     with torch.no_grad():
-        for batch_idx, data in enumerate(data_loader):
+        for data in data_loader:
             if use_cuda:
                 img = data['img'].cuda()
             embed = model(img, landmark=None, return_loss=False)
@@ -71,7 +68,7 @@ def main():
 
     cfg.model.pretrained = None
     model = build_retriever(cfg.model)
-    checkpoint = load_checkpoint(model, args.checkpoint, map_location='cpu')
+    load_checkpoint(model, args.checkpoint, map_location='cpu')
 
     if args.use_cuda:
         model.cuda()

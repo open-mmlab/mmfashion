@@ -7,7 +7,6 @@ import numpy as np
 import torch
 import torch.distributed as dist
 import torch.multiprocessing as mp
-from mmcv.runner import get_dist_info
 
 
 def init_dist(launcher, backend='nccl', **kwargs):
@@ -63,7 +62,7 @@ def get_root_logger(log_level=logging.INFO):
         logging.basicConfig(
             format='%(asctime)s - %(levelname)s - %(message)s',
             level=log_level)
-    #rank, _ = get_dist_info()
-    #if rank != 0:
-    #    logger.setLevel('ERROR')
+    # rank, _ = get_dist_info()
+    # if rank != 0:
+    #     logger.setLevel('ERROR')
     return logger

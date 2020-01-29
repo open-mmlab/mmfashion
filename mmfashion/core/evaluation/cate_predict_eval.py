@@ -1,6 +1,4 @@
 import numpy as np
-import operator
-from scipy.spatial.distance import cdist
 
 import torch
 

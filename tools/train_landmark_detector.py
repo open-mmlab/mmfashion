@@ -1,14 +1,10 @@
 from __future__ import division
 
 import argparse
-import torch
-import torch.nn as nn
 
 from mmcv import Config
-from mmcv.runner import load_checkpoint
 
-from mmfashion.apis import (init_dist, get_root_logger,
-                            train_landmark_detector)
+from mmfashion.apis import init_dist, get_root_logger, set_random_seed, train_landmark_detector
 from mmfashion.datasets import get_dataset
 from mmfashion.models import build_landmark_detector
 from mmfashion.utils import init_weights_from

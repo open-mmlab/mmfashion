@@ -1,6 +1,3 @@
-import logging
-
-import torch
 import torch.nn as nn
 
 from mmcv.runner import load_checkpoint
@@ -50,7 +47,6 @@ class Vgg(nn.Module):
     def init_weights(self, pretrained=None):
         print('pretrained model', pretrained)
         if isinstance(pretrained, str):
-            logger = logging.getLogger()
             load_checkpoint(self, pretrained)
         elif pretrained is None:
             for m in self.modules():

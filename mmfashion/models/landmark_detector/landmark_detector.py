@@ -1,7 +1,3 @@
-import logging
-import torch
-import torch.nn as nn
-
 from .base import BaseLandmarkDetector
 from .. import builder
 from ..registry import LANDMARKDETECTOR

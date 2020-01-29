@@ -1,7 +1,4 @@
-from functools import partial
-
 from torch.utils.data import DataLoader
-from .sampler import GroupSampler, DistributedGroupSampler, DistributedSampler
 
 
 def build_dataloader(dataset,

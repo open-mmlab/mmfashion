@@ -1,5 +1,3 @@
-import copy
-
 from .dataset_wrappers import ConcatDataset
 from .registry import DATASETS
 from ..utils import build_from_cfg

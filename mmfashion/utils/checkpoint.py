@@ -1,13 +1,8 @@
 from __future__ import division
 import os
-import os.path as osp
-import pkgutil
-import time
 from collections import OrderedDict
-from importlib import import_module
 
 import torch
-import torch.nn as nn
 
 
 def save_checkpoint(cfg, epoch, model, optimizer):

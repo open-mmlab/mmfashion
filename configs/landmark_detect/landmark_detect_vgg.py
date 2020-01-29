@@ -1,6 +1,6 @@
 import os
 
-#model setting
+# model setting
 arch = 'vgg'
 landmark_num = 8
 img_size = (224, 224)

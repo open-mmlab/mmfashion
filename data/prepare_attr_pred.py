@@ -1,5 +1,5 @@
 import os
-import numpy as np
+
 PREFIX = 'Attr_Predict/Anno'
 
 
@@ -115,11 +115,11 @@ def split_category(train_img, test_img, val_img):
     img2cate = gather_cate()
 
     def write_cate(imgs, wf):
-        #cate_ids = []
+        # cate_ids = []
         for i, line in enumerate(imgs):
             imgname = line.strip('\n').split()[0]
             cate_id = int(img2cate[imgname])
-            #cate_ids.append(cate_id)
+            # cate_ids.append(cate_id)
             wf.write('%d\n' % cate_id)
 
     write_cate(train_img, wf1)

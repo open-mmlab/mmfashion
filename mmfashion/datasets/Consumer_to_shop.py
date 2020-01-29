@@ -1,27 +1,14 @@
-from functools import partial
-
-import shutil
-import time
-import logging
-
 import torch
 import torch.optim
 import torch.utils.data
 from torch.utils.data.dataset import Dataset
 import torchvision.transforms as transforms
-from torch.utils.data import DataLoader
-
-from mmcv.runner import get_dist_info
-from mmcv.parallel import collate
 
 import os
-import sys
 import random
-from skimage import io
 from PIL import Image
 import numpy as np
 
-from .loader import GroupSampler, DistributedGroupSampler, DistributedSampler
 from .registry import DATASETS
 
 
