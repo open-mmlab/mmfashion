@@ -3,7 +3,7 @@ import os
 # model settings
 arch = 'resnet'
 retrieve = False
-class_num = 463
+attribute_num = 463
 img_size = (224, 224)
 model = dict(
     type='RoIPredictor',
@@ -55,8 +55,8 @@ data = dict(
         landmark_file=os.path.join(data_root, 'Anno/train_landmarks.txt'),
         img_size=img_size,
         retrieve=retrieve,
-        find_three=
-        retrieve  # if retrieve, then find three items: anchor, pos, neg
+        find_three=retrieve
+        # if retrieve, then find three items: anchor, pos, neg
     ),
     test=dict(
         type=dataset_type,

@@ -64,14 +64,10 @@ data = dict(
         cate_file=os.path.join(data_root, 'Anno/test_cate.txt'),
         bbox_file=os.path.join(data_root, 'Anno/test_bbox.txt'),
         landmark_file=os.path.join(data_root, 'Anno/test_landmarks.txt'),
-<<<<<<< HEAD
         attr_cloth_file=os.path.join(data_root, 'Anno/list_attr_cloth.txt'),
         img_size=img_size,
         roi_plane_size=7,
         find_three=retrieve),
-=======
-        img_size=img_size),
->>>>>>> 0288d70bcfae5a0694f48492e0fd1ffdcfa524c3
     val=dict(
         type=dataset_type,
         img_path=os.path.join(data_root, 'Img'),
