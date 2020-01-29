@@ -1,21 +1,21 @@
-from .backbones import *
-from .global_pool import *
-from .roi_pool import *
-from .concats import *
 from .attr_predictor import *
+from .backbones import *
+from .builder import (build_backbone, build_concat, build_global_pool,
+                      build_landmark_detector, build_loss, build_predictor,
+                      build_retriever, build_roi_pool)
+from .concats import *
 from .embed_extractor import *
-from .predictor import *
-from .retriever import *
+from .global_pool import *
+from .landmark_detector import *
 from .landmark_feature_extractor import *
 from .landmark_regression import *
-from .visibility_classifier import *
-from .landmark_detector import *
 from .losses import *
-from .registry import (BACKBONES, GLOBALPOOLING, ROIPOOLING, CONCATS,
-                       PREDICTOR, LANDMARKDETECTOR, LOSSES)
-from .builder import (build_backbone, build_global_pool, build_roi_pool,
-                      build_concat, build_predictor, build_retriever,
-                      build_landmark_detector, build_loss)
+from .predictor import *
+from .registry import (BACKBONES, CONCATS, GLOBALPOOLING, LANDMARKDETECTOR,
+                       LOSSES, PREDICTOR, ROIPOOLING)
+from .retriever import *
+from .roi_pool import *
+from .visibility_classifier import *
 
 __all__ = [
     'BACKBONES', 'GLOBALPOOLING', 'ROIPOOLING', 'CONCATS', 'LOSSES',

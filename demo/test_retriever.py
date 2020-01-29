@@ -1,16 +1,15 @@
 from __future__ import division
 import argparse
 
-import torch
 import cv2
-
+import torch
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
-from mmfashion.datasets import build_dataset, build_dataloader
+from mmfashion.core import ClothesRetriever
+from mmfashion.datasets import build_dataloader, build_dataset
 from mmfashion.models import build_retriever
 from mmfashion.utils import img_to_tensor
-from mmfashion.core import ClothesRetriever
 
 
 def parse_args():

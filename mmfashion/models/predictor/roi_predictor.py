@@ -1,6 +1,6 @@
-from .base import BasePredictor
 from .. import builder
 from ..registry import PREDICTOR
+from .base import BasePredictor
 
 
 @PREDICTOR.register_module

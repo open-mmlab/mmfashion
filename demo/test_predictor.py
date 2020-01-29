@@ -1,13 +1,13 @@
 from __future__ import division
 import argparse
-import cv2
 
+import cv2
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
-from mmfashion.utils import img_to_tensor
-from mmfashion.models import build_predictor
 from mmfashion.core import AttrPredictor
+from mmfashion.models import build_predictor
+from mmfashion.utils import img_to_tensor
 
 
 def parse_args():

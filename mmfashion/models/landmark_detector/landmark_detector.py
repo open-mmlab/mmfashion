@@ -1,6 +1,6 @@
-from .base import BaseLandmarkDetector
 from .. import builder
 from ..registry import LANDMARKDETECTOR
+from .base import BaseLandmarkDetector
 
 
 @LANDMARKDETECTOR.register_module

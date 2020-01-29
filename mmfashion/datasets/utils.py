@@ -1,14 +1,14 @@
 from __future__ import division
-
 from collections.abc import Sequence
+
+import mmcv
 import numpy as np
 import torch
-import mmcv
 
-from .In_shop import InShopDataset
 from .Attr_Pred import AttrDataset
-from .Landmark_Detect import LandmarkDetectDataset
 from .Consumer_to_shop import ConsumerToShopDataset
+from .In_shop import InShopDataset
+from .Landmark_Detect import LandmarkDetectDataset
 
 
 def to_tensor(data):

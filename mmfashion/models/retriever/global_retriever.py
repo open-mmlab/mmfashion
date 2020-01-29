@@ -1,6 +1,6 @@
-from .base import BaseRetriever
 from .. import builder
 from ..registry import RETRIEVER
+from .base import BaseRetriever
 
 
 @RETRIEVER.register_module

@@ -1,7 +1,8 @@
-import numpy as np
 import os
-from scipy.spatial.distance import cosine as cosine
+
 import matplotlib.pyplot as plt
+import numpy as np
+from scipy.spatial.distance import cosine as cosine
 
 
 class ClothesRetriever(object):

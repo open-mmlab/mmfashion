@@ -4,7 +4,7 @@ import argparse
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
-from mmfashion.apis import (init_dist, get_root_logger, test_landmark_detector)
+from mmfashion.apis import get_root_logger, init_dist, test_landmark_detector
 from mmfashion.datasets import get_dataset
 from mmfashion.models import build_landmark_detector
 

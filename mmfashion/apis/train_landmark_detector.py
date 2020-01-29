@@ -1,15 +1,13 @@
 from __future__ import division
-
 from collections import OrderedDict
 
 import torch
-
-from mmcv.runner import Runner
 from mmcv.parallel import MMDataParallel
+from mmcv.runner import Runner
 
+from ..datasets import build_dataloader
 from .env import get_root_logger
 from .utils import build_optimizer
-from ..datasets import build_dataloader
 
 
 def parse_losses(losses):

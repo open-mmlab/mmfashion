@@ -1,10 +1,10 @@
 import mmcv
 from torch import nn
 
-from .registry import (BACKBONES, GLOBALPOOLING, ROIPOOLING, CONCATS,
-                       EMBEDEXTRACTOR, ATTRPREDICTOR, PREDICTOR, RETRIEVER,
-                       LANDMARKFEATUREEXTRACTOR, VISIBILITYCLASSIFIER,
-                       LANDMARKREGRESSION, LANDMARKDETECTOR, LOSSES)
+from .registry import (ATTRPREDICTOR, BACKBONES, CONCATS, EMBEDEXTRACTOR,
+                       GLOBALPOOLING, LANDMARKDETECTOR,
+                       LANDMARKFEATUREEXTRACTOR, LANDMARKREGRESSION, LOSSES,
+                       PREDICTOR, RETRIEVER, ROIPOOLING, VISIBILITYCLASSIFIER)
 
 
 def _build_module(cfg, registry, default_args):

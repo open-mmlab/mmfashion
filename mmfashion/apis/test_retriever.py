@@ -1,14 +1,12 @@
 from __future__ import division
 
 import numpy as np
-
 import torch
-
 from mmcv.parallel import MMDataParallel
 
-from .env import get_root_logger
 from ..core import Evaluator
 from ..datasets import build_dataloader
+from .env import get_root_logger
 
 
 def test_retriever(model,

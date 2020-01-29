@@ -2,9 +2,9 @@ from __future__ import division
 
 from mmcv.parallel import MMDataParallel
 
-from .env import get_root_logger
 from ..core import AttrCalculator
 from ..datasets import build_dataloader
+from .env import get_root_logger
 
 
 def test_predictor(model,

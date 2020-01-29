@@ -3,7 +3,8 @@ import argparse
 
 from mmcv import Config
 
-from mmfashion.apis import init_dist, get_root_logger, set_random_seed, train_retriever
+from mmfashion.apis import (get_root_logger, init_dist, set_random_seed,
+                            train_retriever)
 from mmfashion.datasets import build_dataset
 from mmfashion.models import build_retriever
 from mmfashion.utils import init_weights_from

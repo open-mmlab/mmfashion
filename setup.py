@@ -1,9 +1,10 @@
 """Setup script.
 """
 import os
-import time
 import subprocess
-from setuptools import setup, find_packages
+import time
+
+from setuptools import find_packages, setup
 
 MAJOR = 0
 MINOR = 1

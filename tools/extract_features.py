@@ -1,17 +1,14 @@
 from __future__ import division
-
-import os
 import argparse
+import os
+
 import scipy.io as sio
-
 import torch
-
 from mmcv import Config
-
 from mmcv.parallel import MMDataParallel
 
+from mmfashion.datasets import build_dataloader, build_dataset
 from mmfashion.models import build_retriever
-from mmfashion.datasets import build_dataset, build_dataloader
 
 
 def parse_args():

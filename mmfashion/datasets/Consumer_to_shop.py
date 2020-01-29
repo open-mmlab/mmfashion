@@ -1,13 +1,13 @@
+import os
+import random
+
+import numpy as np
 import torch
 import torch.optim
 import torch.utils.data
-from torch.utils.data.dataset import Dataset
 import torchvision.transforms as transforms
-
-import os
-import random
 from PIL import Image
-import numpy as np
+from torch.utils.data.dataset import Dataset
 
 from .registry import DATASETS
 
