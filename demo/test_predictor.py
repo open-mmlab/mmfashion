@@ -43,6 +43,7 @@ def main():
     img = cv2.imread(args.input, -1)
     img_tensor = img_to_tensor(img, squeeze=True, cuda=args.use_cuda)
 
+    cfg.model.pretrained = None
     model = build_predictor(cfg.model)
     checkpoint = load_checkpoint(model, args.checkpoint, map_location='cpu')
     if args.use_cuda:

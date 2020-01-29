@@ -26,7 +26,7 @@ def parse_args():
     parser.add_argument(
         '--config',
         help='train config file path',
-        default='configs/retriever/global_retriever_vgg_loss_id.py')
+        default='configs/retriever_in_shop/global_retriever_vgg_loss_id.py')
     parser.add_argument(
         '--checkpoint',
         type=str,
@@ -69,6 +69,7 @@ def main():
     img = cv2.resize(img, (224, 224))
     img_tensor = img_to_tensor(img, squeeze=True, cuda=args.use_cuda)
 
+    cfg.model.pretrained = None
     model = build_retriever(cfg.model)
     checkpoint = load_checkpoint(model, args.checkpoint, map_location='cpu')
 

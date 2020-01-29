@@ -40,29 +40,25 @@
 
 ## Installation
 
-1. Install from pypi.
-
-    ```bash
-    pip install mmfashion
-    ```
-
-2. Install from source.
-
-    ```bash
-    git clone https://github.com/open-mmlab/mmfashion.git
-    python setup.py install
-    ```
+```sh
+git clone https://github.com/open-mmlab/mmfashion.git
+cd mmfashion
+python setup.py install
+```
 
 
 ## Get Started
+
 Please refer to [GETTING_STARTED.md](docs/GETTING_STARTED.md) for the basic usage of `MMFashion`.
 
 
 ## Data Preparation
+
 Please refer to [DATA_PREPARATION.md](docs/DATA_PREPARATION.md) for the dataset specifics of `MMFashion`.
 
 
 ## Model Zoo
+
 Please refer to [MODEL_ZOO.md](docs/MODEL_ZOO.md) for a comprehensive set of pre-trained models in `MMFashion`.
 
 
