@@ -56,7 +56,7 @@ class ConsumerToShopDataset(Dataset):
                 aline = line.strip('\n').split()
                 consumer, shop = aline[0], aline[1]
                 self.img_list.append(consumer)  # consumer
-                self.consumer2shop[consumer] = shop  #shop
+                self.consumer2shop[consumer] = shop  # shop
                 consumer_id = consumer.split(
                     '/'
                 )[3]  # e.g. 'id_00006282', not exactly same with self.ids[idx]

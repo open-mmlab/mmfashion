@@ -99,7 +99,7 @@ gpus = dict(train=[0, 1, 2, 3], test=[0, 1])
 work_dir = 'checkpoint/Predict/resnet/roi'
 print_interval = 20  # interval to print information
 save_interval = 5
-init_weights_from = None  #'checkpoint/Predict/resnet/global/model_best.pth'
+init_weights_from = None  # 'checkpoint/Predict/resnet/global/model_best.pth'
 load_from = 'checkpoint/Predict/resnet/attr_pred/latest.pth'
 resume_from = None
 workflow = [('train', 40)]

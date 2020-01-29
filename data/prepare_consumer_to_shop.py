@@ -115,7 +115,7 @@ def split_lms(train_set, consumer_set, shop_set):
             one_lms = []
             for j, lm in enumerate(landmarks):
                 if j % 3 == 0:  # visibility
-                    if lm == '0':  #visible
+                    if lm == '0':  # visible
                         one_lms.append(landmarks[j + 1])
                         one_lms.append(landmarks[j + 2])
                     else:  # invisible or truncated
