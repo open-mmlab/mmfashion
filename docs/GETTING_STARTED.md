@@ -89,14 +89,15 @@ python tools/train_*.py --config ${CONFIG_FILE}
 ```
 
 Examples:
-1. Train a attribute predictor.
+
+1. Train an attribute predictor.
 
 ```sh
 python tools/train_predictor.py \
     --config configs/attribute_predict/roi_predictor_vgg_attr.py
 ```
 
-2. Train a in-shop clothes / Consumer-to-shop retriever.
+2. Train an in-shop clothes / Consumer-to-shop retriever.
 
 ```sh
 python tools/train_retriever.py \
@@ -114,3 +115,10 @@ python tools/train_retriever.py \
 python tools/train_landmark_detector.py \
     --config configs/landmark_detect/landmark_detect_vgg.py
 ```
+
+
+## Use custom datasets
+
+The simplest way is to prepare your dataset to existing dataset formats (AttrDataset, InShopDataset, ConsumerToShopDataset or LandmarkDetectDataset).
+
+Please refer to [DATA_PREPARATION.md](DATA_PREPARATION.md) for the dataset specifics.
