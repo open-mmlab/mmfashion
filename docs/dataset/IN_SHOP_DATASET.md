@@ -1,20 +1,35 @@
 # InShopDataset
 
 - Annotations (Anno/)
+
     - Attribute Annotations (list_attr_cloth.txt & list_attr_items.txt)
+
         clothing attribute labels. See ATTRIBUTE LABELS section below for more info.
+
     - Bounding Box Annotations (list_bbox_inshop.txt)
+
         bounding box labels. See BBOX LABELS section below for more info.
+
     - Description Annotations (list_description_inshop.json)
+
         item descriptions. See DESCRIPTION LABELS section below for more info.
+
     - Item Annotations (list_item_inshop.txt)
+
         item labels. See ITEM LABELS section below for more info.
+
     - Fashion Landmark Annotations (list_landmarks_inshop.txt)
+
         fashion landmark labels. See LANDMARK LABELS section below for more info.
+
 - Images (Img/)
+
     in-shop clothes images. See IMAGE section below for more info.
+
 - Evaluation Partitions (Eval/list_eval_partition.txt)
+
     image names for training, validation and testing set respectively. See EVALUATION PARTITIONS section below for more info.
+
 
 ## IMAGE
 

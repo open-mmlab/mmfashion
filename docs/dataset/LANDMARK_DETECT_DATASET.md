@@ -1,15 +1,25 @@
 # LandmarkDetectDataset
 
 - Annotations (Anno/)
+
     - Bounding Box Annotations (list_bbox.txt)
+
         bounding box labels. See BBOX LABELS section below for more info.
+
     - Human Joint Annotations (list_joints.txt)
+
         human joint labels. See JOINT LABELS section below for more info.
+
     - Fashion Landmark Annotations (list_landmarks.txt)
+
         fashion landmark labels. See LANDMARK LABELS section below for more info.
+
 - Images (Img/)
+
     clothes images. See IMAGE section below for more info.
+
 - Evaluation Partitions (Eval/list_eval_partition.txt)
+
     image names for training, validation and testing set respectively. See EVALUATION PARTITIONS section below for more info.
 
 

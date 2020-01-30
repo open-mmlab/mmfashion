@@ -1,17 +1,29 @@
 # ConsumerToShopDataset
 
 - Annotations (Anno/)
+
     - Attribute Annotations (list_attr_cloth.txt & list_attr_type.txt & list_attr_items.txt)
+
         clothing attribute labels. See ATTRIBUTE LABELS section below for more info.
+
     - Bounding Box Annotations (list_bbox_consumer2shop.txt)
+
         bounding box labels. See BBOX LABELS section below for more info.
+
     - Item Annotations (list_item_consumer2shop.txt)
+
         item labels. See ITEM LABELS section below for more info.
+
     - Fashion Landmark Annotations (list_landmarks_consumer2shop.txt)
+
         fashion landmark labels. See LANDMARK LABELS section below for more info.
+
 - Images (Img/)
+
     consumer-to-shop clothes images. See IMAGE section below for more info.
+
 - Evaluation Partitions (Eval/list_eval_partition.txt)
+
     image pair names for training, validation and testing set respectively. See EVALUATION PARTITIONS section below for more info.
 
 

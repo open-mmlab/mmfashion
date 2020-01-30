@@ -37,7 +37,7 @@ mmfashion
 │   │   ├── train_attr.txt
 │   │   ├── ...
 │   │   ├── Img
-│   │   │   ├──img
+│   │   │   ├── img
 │   │   ├── Eval
 │   │   │   ├── ...
 │   ├── In-shop
@@ -52,7 +52,7 @@ mmfashion
 
 The file tree should be like this:
 
-```
+```sh
 Attr_Predict
 ├── Anno
 │   ├── list_attr_cloth.txt
@@ -77,7 +77,7 @@ Please refer to [dataset/ATTR_DATASET.md](dataset/ATTR_DATASET.md) for more info
 
 The file tree should be like this:
 
-```
+```sh
 In-shop
 ├── Anno
 │   ├── list_attr_cloth.txt
@@ -102,7 +102,7 @@ Please refer to [dataset/IN_SHOP_DATASET.md](dataset/IN_SHOP_DATASET.md) for mor
 
 The file tree should be like this:
 
-```
+```sh
 Consumer_to_shop
 ├── Anno
 │   ├── list_attr_cloth.txt
@@ -127,7 +127,7 @@ Please refer to [dataset/CONSUMER_TO_SHOP_DATASET.md](dataset/CONSUMER_TO_SHOP_D
 
 The file tree should be like this:
 
-```
+```sh
 Landmark_Detect
 ├── Anno
 │   ├── list_bbox.txt
