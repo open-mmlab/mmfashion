@@ -27,8 +27,8 @@ class LandmarkDetectorEvaluator(object):
         valid = 0  # the number of valid/visible landmarks
         norm_error_list = []
 
-        for i, (pred_lms_per_image, gt_lms_per_image) in enumerate(
-                zip(pred_lms, gt_lms)):
+        for i, (pred_lms_per_image,
+                gt_lms_per_image) in enumerate(zip(pred_lms, gt_lms)):
             if self.demo:
                 print(self.img_idx_to_name[i])
                 print('pred', pred_lms_per_image)

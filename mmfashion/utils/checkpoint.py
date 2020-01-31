@@ -10,11 +10,12 @@ def save_checkpoint(cfg, epoch, model, optimizer):
         os.makedirs(cfg.work_dir)
     ckpt_path = os.path.join(
         cfg.work_dir, '%s_%s_epoch%d.pth.tar' % (cfg.arch, cfg.pooling, epoch))
-    torch.save({
-        'epoch': epoch,
-        'model_state_dict': model.state_dict(),
-        'optimizer_state_dict': optimizer.state_dict(),
-    }, ckpt_path)
+    torch.save(
+        {
+            'epoch': epoch,
+            'model_state_dict': model.state_dict(),
+            'optimizer_state_dict': optimizer.state_dict(),
+        }, ckpt_path)
 
     print('Attribute Predictor saved in %s' % ckpt_path)
 
