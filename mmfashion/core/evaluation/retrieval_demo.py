@@ -2,6 +2,7 @@ import os
 
 import matplotlib.pyplot as plt
 import numpy as np
+import cv2
 from scipy.spatial.distance import cosine as cosine
 
 
@@ -25,10 +26,9 @@ class ClothesRetriever(object):
         for idx in retrieved_idx:
             retrieved_img = self.gallery_idx2im[idx]
             plt.figure()
-            plt.imshow(
-                os.path.join(self.data_dir, self.img_path, retrieved_img))
+            img = cv2.imread(os.path.join(self.img_path, retrieved_img))
+            plt.imshow(img)
             plt.show()
-
     def show_retrieved_images(self, query_embed, gallery_embeds):
         query_dist = []
         for i, feat in enumerate(gallery_embeds):
