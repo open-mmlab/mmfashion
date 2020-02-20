@@ -107,6 +107,8 @@ if __name__ == '__main__':
         version=get_version(),
         description='Open MMLab Fashion Toolbox',
         long_description=readme(),
+        author='OpenMMLab',
+        author_email='https://github.com/open-mmlab/mmfashion',
         keywords='computer vision, fashion',
         url='https://github.com/open-mmlab/mmfashion',
         classifiers=[
