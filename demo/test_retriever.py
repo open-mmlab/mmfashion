@@ -2,14 +2,14 @@ from __future__ import division
 import argparse
 
 import torch
-import torchvision.transforms as transforms
-from PIL import Image
+
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
 from mmfashion.core import ClothesRetriever
 from mmfashion.datasets import build_dataloader, build_dataset
 from mmfashion.models import build_retriever
+from mmfashion.utils import get_img_tensor
 
 
 def parse_args():
@@ -61,26 +61,6 @@ def _process_embeds(dataset, model, cfg, use_cuda=True):
     embeds = torch.cat(embeds)
     embeds = embeds.data.cpu().numpy()
     return embeds
-
-
-def get_img_tensor(img_path, use_cuda):
-    img = Image.open(img_path)
-    img_size = (224,224)
-    img.thumbnail(img_size, Image.ANTIALIAS)
-    img = img.convert('RGB')
-    normalize = transforms.Normalize(
-        mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-    transform = transforms.Compose([
-        transforms.RandomResizedCrop(img_size[0]),
-        transforms.RandomHorizontalFlip(),
-        transforms.ToTensor(),
-        normalize,
-    ])
-    img_tensor = transform(img)
-    img_tensor = torch.unsqueeze(img_tensor, 0)
-    if use_cuda:
-        img_tensor = img_tensor.cuda()
-    return img_tensor
 
 
 def main():

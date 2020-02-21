@@ -24,10 +24,10 @@ class ClothesRetriever(object):
     def show_topk_retrieved_images(self, retrieved_idxes):
         for idx in retrieved_idxes:
             retrieved_img = self.gallery_idx2im[idx]
-            plt.figure()
+            #plt.figure()
             print(os.path.join(self.data_dir, self.img_path, retrieved_img))
-            plt.imshow(os.path.join(self.data_dir, self.img_path, retrieved_img))
-            plt.show()
+            #plt.imshow(os.path.join(self.data_dir, self.img_path, retrieved_img))
+            #plt.show()
 
 
     def show_retrieved_images(self, query_feat, gallery_embeds):

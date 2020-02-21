@@ -2,35 +2,41 @@ from __future__ import division
 
 import matplotlib
 import matplotlib.pyplot as plt
+from PIL import Image
 import numpy as np
 import torch
+import torchvision.transforms as transforms
 
 
-def img_to_tensor(img, squeeze=False, cuda=False):
-    """ transform cv2 read numpy array to torch tensor
-    Args:
-    img(numpy arrary): cv2 read img, [H,W,C]
-    """
 
-    img = (img.astype(np.float32))[:, :, ::-1]  # bgr to rgb
-    img_norm = np.clip(img / 255., 0, 1)
-    img_norm = img_norm.transpose(2, 0, 1)  # [h,w,c] to [c,h,w]
+def get_img_tensor(img_path, use_cuda, get_size=False):
+    img = Image.open(img_path)
+    original_w, original_h = img.size
 
-    # transfer to tensor
-    img_tensor = torch.from_numpy(img_norm)
-
-    # add one dimension
-    if squeeze:
-        img_tensor = img_tensor.unsqueeze(0)
-    if cuda:
+    img_size = (224, 224) # crop image to (224, 224)
+    img.thumbnail(img_size, Image.ANTIALIAS)
+    img = img.convert('RGB')
+    normalize = transforms.Normalize(
+        mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    transform = transforms.Compose([
+        transforms.RandomResizedCrop(img_size[0]),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        normalize,
+    ])
+    img_tensor = transform(img)
+    img_tensor = torch.unsqueeze(img_tensor, 0)
+    if use_cuda:
         img_tensor = img_tensor.cuda()
-    return img_tensor
+    if get_size:
+        return img_tensor, original_w, original_w
+    else:
+        return img_tensor
 
 
 def save_img(img_tensor, img_name):
     img_np = img_tensor.data.cpu().numpy()
     img_np = (img_np * 255).astype(np.uint8).transpose(1, 2, 0)
-
     matplotlib.image.imsave(img_name, img_np)
 
 
