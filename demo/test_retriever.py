@@ -102,15 +102,15 @@ def main():
 
     img_tensor = get_img_tensor(args.input, args.use_cuda)
 
-    query_embed = model(img_tensor, landmark=None, return_loss=False)
-    query_embed = query_embed.data.cpu().numpy()
+    query_feat = model(img_tensor, landmark=None, return_loss=False)
+    query_feat = query_feat.data.cpu().numpy()
 
     gallery_set = build_dataset(cfg.data.gallery)
     gallery_embeds = _process_embeds(gallery_set, model, cfg)
 
     retriever = ClothesRetriever(cfg.data.gallery.img_file, cfg.data_root,
                                  cfg.data.gallery.img_path)
-    retriever.show_retrieved_images(query_embed, gallery_embeds)
+    retriever.show_retrieved_images(query_feat, gallery_embeds)
 
 
 
