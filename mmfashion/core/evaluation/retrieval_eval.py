@@ -3,7 +3,6 @@ from scipy.spatial.distance import cosine as cosine
 
 
 class Evaluator(object):
-
     def __init__(self,
                  query_dict_fn,
                  gallery_dict_fn,
@@ -25,8 +24,7 @@ class Evaluator(object):
             self.recall[k] = []
 
         self.query_dict, self.query_id2idx = self.get_id_dict(query_dict_fn)
-        self.gallery_dict, self.gallery_id2idx = self.get_id_dict(
-            gallery_dict_fn)
+        self.gallery_dict, self.gallery_id2idx = self.get_id_dict(gallery_dict_fn)
 
         self.extract_feature = extract_feature
 
@@ -56,8 +54,9 @@ class Evaluator(object):
         query_dist = np.array(query_dist)
 
         order = np.argsort(query_dist)
-
         single_recall = dict()
+
+        print(self.query_id2idx[query_id])
         for k in self.topks:
             retrieved_idxes = order[:k]
             tp = 0
@@ -87,6 +86,25 @@ class Evaluator(object):
             self.show_results()
 
         self.show_results()
+
+
+    def show_retrieved_images(self, query_feat, gallery_embeds):
+        query_dist = []
+
+        for i, feat in enumerate(gallery_embeds):
+            cosine_dist = cosine(
+                feat.reshape(1, -1), query_feat.reshape(1, -1))
+            query_dist.append(cosine_dist)
+
+        query_dist = np.array(query_dist)
+        order = np.argsort(query_dist)
+
+        for k in self.topks:
+            retrieved_idxes = order[:k]
+            for idx in retrieved_idxes:
+                retrieved_id = self.gallery_dict[idx]
+                print('retrieved id', retrieved_id)
+
 
     def get_id_dict(self, id_file):
         ids = []

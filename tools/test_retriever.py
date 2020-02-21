@@ -20,7 +20,7 @@ def parse_args():
     parser.add_argument(
         '--checkpoint',
         type=str,
-        default='checkpoint/Retrieve/vgg/latest.pth',
+        default='checkpoint/Retrieve/vgg/global/epoch_100.pth',
         help='the checkpoint file to resume from')
     parser.add_argument(
         '--validate',
@@ -67,7 +67,7 @@ def main():
     model = build_retriever(cfg.model)
     print('model built')
 
-    load_checkpoint(model, cfg.load_from, map_location='cpu')
+    load_checkpoint(model, cfg.load_from)
     print('load checkpoint from: {}'.format(cfg.load_from))
 
     # test

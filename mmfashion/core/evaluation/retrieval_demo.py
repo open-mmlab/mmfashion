@@ -6,7 +6,6 @@ from scipy.spatial.distance import cosine as cosine
 
 
 class ClothesRetriever(object):
-
     def __init__(self,
                  gallery_im_fn,
                  data_dir,
@@ -21,21 +20,26 @@ class ClothesRetriever(object):
         for i, img in enumerate(gallery_imgs):
             self.gallery_idx2im[i] = img.strip('\n')
 
-    def show_topk_retrieved_images(self, retrieved_idx):
-        for idx in retrieved_idx:
+
+    def show_topk_retrieved_images(self, retrieved_idxes):
+        for idx in retrieved_idxes:
             retrieved_img = self.gallery_idx2im[idx]
             plt.figure()
-            plt.imshow(
-                os.path.join(self.data_dir, self.img_path, retrieved_img))
+            print(os.path.join(self.data_dir, self.img_path, retrieved_img))
+            plt.imshow(os.path.join(self.data_dir, self.img_path, retrieved_img))
             plt.show()
 
-    def show_retrieved_images(self, query_embed, gallery_embeds):
+
+    def show_retrieved_images(self, query_feat, gallery_embeds):
         query_dist = []
         for i, feat in enumerate(gallery_embeds):
-            cosine_dist = cosine(feat, query_embed.reshape(1, -1))
+            cosine_dist = cosine(
+                feat.reshape(1, -1), query_feat.reshape(1, -1))
             query_dist.append(cosine_dist)
 
+        query_dist = np.array(query_dist)
         order = np.argsort(query_dist)
+
         for topk in self.topks:
-            print('Retrived Top%d Results' % topk)
+            print('Retrieved Top%d Results' % topk)
             self.show_topk_retrieved_images(order[:topk])

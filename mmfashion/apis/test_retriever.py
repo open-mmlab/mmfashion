@@ -47,7 +47,6 @@ def _process_embeds(dataset, model, cfg):
 
 
 def _non_dist_test(model, query_set, gallery_set, cfg, validate=False):
-
     model = MMDataParallel(model, device_ids=cfg.gpus.test).cuda()
     model.eval()
 
