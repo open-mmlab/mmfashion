@@ -96,7 +96,7 @@ def get_version():
         str, version string.
     """
     with open(VERSION_FILE, 'r') as fid:
-        exec (compile(fid.read(), VERSION_FILE, 'exec'))
+        exec compile(fid.read(), VERSION_FILE, 'exec')
     return locals()['__version__']
 
 

@@ -1,11 +1,10 @@
 from __future__ import division
 import argparse
+
 import torch
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
-from mmfashion.apis import get_root_logger, init_dist, test_landmark_detector
-from mmfashion.datasets import get_dataset
 from mmfashion.models import build_landmark_detector
 from mmfashion.utils import get_img_tensor
 
@@ -63,9 +62,10 @@ def main():
     pred_vis, pred_lm = model(img_tensor, return_loss=False)
     pred_lm = pred_lm.data.cpu().numpy()
 
-    for i,vis in enumerate(pred_vis):
-        if vis>=0.5:
-            print('detected landmark {}'.format(pred_lm[i]*(w/224.), pred_lm[i+1]*(h/224.)))
+    for i, vis in enumerate(pred_vis):
+        if vis >= 0.5:
+            print('detected landmark {} {}'.format(
+                pred_lm[i] * (w / 224.), pred_lm[i + 1] * (h / 224.)))
 
 
 if __name__ == '__main__':

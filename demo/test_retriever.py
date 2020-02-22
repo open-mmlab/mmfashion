@@ -2,7 +2,6 @@ from __future__ import division
 import argparse
 
 import torch
-
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
@@ -21,11 +20,7 @@ def parse_args():
         help='input image path',
         default='demo/imgs/06_1_front.jpg')
     parser.add_argument(
-        '--topk',
-        type=int,
-        default=5,
-        help='retrieve topk items'
-    )
+        '--topk', type=int, default=5, help='retrieve topk items')
     parser.add_argument(
         '--config',
         help='train config file path',
@@ -55,7 +50,7 @@ def _process_embeds(dataset, model, cfg, use_cuda=True):
         for data in data_loader:
             if use_cuda:
                 img = data['img'].cuda()
-            embed = model(img, landmark= data['landmark'], return_loss=False)
+            embed = model(img, landmark=data['landmark'], return_loss=False)
             embeds.append(embed)
 
     embeds = torch.cat(embeds)
@@ -91,7 +86,6 @@ def main():
     retriever = ClothesRetriever(cfg.data.gallery.img_file, cfg.data_root,
                                  cfg.data.gallery.img_path)
     retriever.show_retrieved_images(query_feat, gallery_embeds)
-
 
 
 if __name__ == '__main__':

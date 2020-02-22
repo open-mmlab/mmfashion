@@ -17,12 +17,14 @@ class LandmarkDetectorEvaluator(object):
         self.demo = demo
 
     def compute_distance(self, pred_lms, gt_lms):
-        """ compute the percentage of detected landmarks,
-             if pixel distance <= dist_threshold, such landmark is detected
-         Args:
-             pred_lms(list): predicted landmarks [[pred_lm1_x, pred_lm1_y], [pred_lm2_x, pred_lm2_y], ...]
-             gt_lms(list): ground truth landmarks [[gt_lm1_x, gt_lm1_y],[gt_lm2_x, gt_lm2_y], ...]
-         """
+        """Compute the percentage of detected landmarks,
+            if pixel distance <= dist_threshold, such landmark is detected.
+        Args:
+            pred_lms(list): predicted landmarks
+                [[pred_lm1_x, pred_lm1_y], [pred_lm2_x, pred_lm2_y], ...]
+            gt_lms(list): ground truth landmarks
+                [[gt_lm1_x, gt_lm1_y],[gt_lm2_x, gt_lm2_y], ...]
+        """
         detected = 0  # the number of detected landmarks
         valid = 0  # the number of valid/visible landmarks
         norm_error_list = []
@@ -60,16 +62,18 @@ class LandmarkDetectorEvaluator(object):
         return avg_norm_error, det_percent
 
     def evaluate_landmark_detection(self, pred_vis, pred_lm, vis, landmark):
-        """ Evaluate landmark detection.
-         Args:
-             pred_vis (tensor): predicted landmark visibility
-             pred_lm (tensor): predicted landmarks
-             vis (tensor): ground truth of landmark visibility
-             landmarks(tensor): ground truth of landmarks
+        """Evaluate landmark detection.
 
-         Returns:
-             dist: average value of landmark detection normalized error per image
-             detected_lm_percent: average value of detected landmarks per image
+        Args:
+            pred_vis (tensor): predicted landmark visibility.
+            pred_lm (tensor): predicted landmarks.
+            vis (tensor): ground truth of landmark visibility.
+            landmarks(tensor): ground truth of landmarks.
+
+        Returns:
+            dist: average value of landmark detection normalized error per
+                image.
+            detected_lm_percent: average value of detected landmarks per image.
         """
         batch_size = pred_lm.size(0)
         pred_lm_np = pred_lm.cpu().detach().numpy()
@@ -96,11 +100,14 @@ class LandmarkDetectorEvaluator(object):
         return normalized_error, det_percent
 
     def compute_vis_prediction_accuracy(self, pred_vis, vis):
-        """ compute the percentage of detected landmarks
-         Args:
-             pred_vis(list): predicted landmark visibility [[lm1_pred, lm2_pred, ...], ...]
-             vis(list): ground truth landmark visibility [[lm1_gt, lm2_gt, ...], ...]
-         """
+        """Compute the percentage of detected landmarks.
+
+        Args:
+            pred_vis(list): predicted landmark visibility
+                [[lm1_pred, lm2_pred, ...], ...]
+            vis(list): ground truth landmark visibility
+                [[lm1_gt, lm2_gt, ...], ...]
+        """
         correct = 0
         total = pred_vis.shape[0] * pred_vis.shape[1]
 

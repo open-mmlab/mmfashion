@@ -1,11 +1,11 @@
 import os
 
-import matplotlib.pyplot as plt
 import numpy as np
 from scipy.spatial.distance import cosine as cosine
 
 
 class ClothesRetriever(object):
+
     def __init__(self,
                  gallery_im_fn,
                  data_dir,
@@ -20,15 +20,10 @@ class ClothesRetriever(object):
         for i, img in enumerate(gallery_imgs):
             self.gallery_idx2im[i] = img.strip('\n')
 
-
     def show_topk_retrieved_images(self, retrieved_idxes):
         for idx in retrieved_idxes:
             retrieved_img = self.gallery_idx2im[idx]
-            #plt.figure()
             print(os.path.join(self.data_dir, self.img_path, retrieved_img))
-            #plt.imshow(os.path.join(self.data_dir, self.img_path, retrieved_img))
-            #plt.show()
-
 
     def show_retrieved_images(self, query_feat, gallery_embeds):
         query_dist = []

@@ -1,4 +1,3 @@
-from .checkpoint import init_weights_from, load_checkpoint, save_checkpoint
 from .image import get_img_tensor
 from .registry import Registry, build_from_cfg
 

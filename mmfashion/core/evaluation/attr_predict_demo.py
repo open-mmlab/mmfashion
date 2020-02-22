@@ -5,11 +5,12 @@ import torch
 class AttrPredictor(object):
 
     def __init__(self, cfg, tops_type=[3, 5, 10]):
-        """ create the empty array to count
-        true positive(tp), true negative(tn), false positive(fp) and false negative(fn);
+        """Create the empty array to count true positive(tp),
+            true negative(tn), false positive(fp) and false negative(fn).
+
         Args:
-        class_num : number of classes in the dataset
-        tops_type : default calculate top3, top5 and top10
+            class_num : number of classes in the dataset
+            tops_type : default calculate top3, top5 and top10
         """
 
         attr_cloth_file = open(cfg.attr_cloth_file).readlines()

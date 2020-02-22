@@ -11,7 +11,7 @@ def split_img():
 
     for i, line in enumerate(fn[2:]):
         aline = line.strip('\n').split()
-        img, id, prefix = aline[0], aline[1], aline[2]
+        img, _, prefix = aline[0], aline[1], aline[2]
         if prefix == 'train':
             train.write(img)
             train.write('\n')
@@ -44,8 +44,8 @@ def split_label():
             aline = line.strip('\n').split('/')
             id = aline[3]
             label = id2label[id]
-            for l in label:
-                if l == '1':
+            for element in label:
+                if element == '1':
                     wf.write('1 ')
                 else:
                     wf.write('0 ')
@@ -110,14 +110,13 @@ def split_bbox():
 def split_lms():
     name2lm = {}
     rf = open(os.path.join(PREFIX, 'list_landmarks_inshop.txt')).readlines()
-    for i, line in enumerate(rf[2:]):
+    for line in rf[2:]:
         aline = line.strip('\n').split()
         name = aline[0]
         landmark = []
-
-        for j, l in enumerate(aline[3:]):
+        for j, element in enumerate(aline[3:]):
             if j % 3 == 0:
-                if l != '0':
+                if element != '0':
                     continue
                 else:
                     landmark += [aline[j + 1], aline[j + 2]]

@@ -44,7 +44,8 @@ class BasicBlock(nn.Module):
         if dilation > 1:
             raise NotImplementedError(
                 "Dilation > 1 not supported in BasicBlock")
-        # Both self.conv1 and self.downsample layers downsample the input when stride != 1
+        # Both self.conv1 and self.downsample layers
+        # downsample the input when stride != 1
         self.conv1 = conv3x3(inplanes, planes, stride)
         self.bn1 = norm_layer(planes)
         self.relu = nn.ReLU(inplace=True)
@@ -88,7 +89,8 @@ class Bottleneck(nn.Module):
         if norm_layer is None:
             norm_layer = nn.BatchNorm2d
         width = int(planes * (base_width / 64.)) * groups
-        # Both self.conv2 and self.downsample layers downsample the input when stride != 1
+        # Both self.conv2 and self.downsample layers
+        # downsample the input when stride != 1
         self.conv1 = conv1x1(inplanes, width)
         self.bn1 = norm_layer(width)
         self.conv2 = conv3x3(width, width, stride, groups, dilation)
@@ -191,9 +193,10 @@ class ResNet(nn.Module):
                     nn.init.constant_(m.weight, 1)
                     nn.init.constant_(m.bias, 0)
 
-            # Zero-initialize the last BN in each residual branch,
-            # so that the residual branch starts with zeros, and each residual block behaves like an identity.
-            # This improves the model by 0.2~0.3% according to https://arxiv.org/abs/1706.02677
+            # Zero-initialize the last BN in each residual branch, so that the
+            # residual branch starts with zeros, and each residual block
+            # behaves like an identity. This improves the model by 0.2~0.3%
+            # according to https://arxiv.org/abs/1706.02677
             if self.zero_init_residual:
                 for m in self.modules():
                     if isinstance(m, Bottleneck):

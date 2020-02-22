@@ -91,11 +91,7 @@ class InShopDataset(Dataset):
             y1 = max(0, int(bbox_cor[1]) - 20)
             x2 = int(bbox_cor[2]) + 20
             y2 = int(bbox_cor[3]) + 20
-            bbox_w = x2 - x1
-            bbox_h = y2 - y1
             img = img.crop(box=(x1, y1, x2, y2))
-        else:
-            bbox_w, bbox_h = self.img_size[0], self.img_size[1]
 
         img.thumbnail(self.img_size, Image.ANTIALIAS)
         img = img.convert('RGB')

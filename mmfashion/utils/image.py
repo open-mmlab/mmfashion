@@ -2,18 +2,17 @@ from __future__ import division
 
 import matplotlib
 import matplotlib.pyplot as plt
-from PIL import Image
 import numpy as np
 import torch
 import torchvision.transforms as transforms
-
+from PIL import Image
 
 
 def get_img_tensor(img_path, use_cuda, get_size=False):
     img = Image.open(img_path)
     original_w, original_h = img.size
 
-    img_size = (224, 224) # crop image to (224, 224)
+    img_size = (224, 224)  # crop image to (224, 224)
     img.thumbnail(img_size, Image.ANTIALIAS)
     img = img.convert('RGB')
     normalize = transforms.Normalize(

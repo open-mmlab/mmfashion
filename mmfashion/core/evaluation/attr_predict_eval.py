@@ -9,14 +9,18 @@ class AttrCalculator(object):
                  tops_type=[3, 5, 10],
                  show_attr_name=False,
                  attr_name_file=None):
-        """ create the empty array to count
-        true positive(tp), true negative(tn), false positive(fp) and false negative(fn);
+        """Create the empty array to count true positive(tp),
+            true negative(tn), false positive(fp) and false negative(fn).
+
         Args:
-        cfg(config): testing config
-        class_num(int) : number of classes in the dataset
-        tops_type(list of int) : default calculate top3, top5 and top10 accuracy
-        show_attr_name(bool) : print predicted attribute name, for demo usage
-        attr_name_file(str) : file of attribute name, used for mapping attribute index to attribute names
+            cfg(config): testing config.
+            class_num(int): number of classes in the dataset.
+            tops_type(list of int): default calculate top3, top5 and top10
+                accuracy.
+            show_attr_name(bool): print predicted attribute name, for demo
+                usage.
+            attr_name_file(str): file of attribute name, used for mapping
+                attribute index to attribute names.
         """
         self.collector = dict()
         self.total = 0  # the number of total predictions

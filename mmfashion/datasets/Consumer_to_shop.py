@@ -150,10 +150,6 @@ class ConsumerToShopDataset(Dataset):
             x2 = min(bbox_cor[2] + 20, width)
             y2 = min(bbox_cor[3] + 20, height)
             img = img.crop(box=(x1, y1, x2, y2))
-            bbox_w = x2 - x1
-            bbox_h = y2 - y1
-        else:
-            bbox_w, bbox_h = self.img_size[0], self.img_size[1]
 
         img.thumbnail(self.img_size, Image.ANTIALIAS)
         img = img.convert('RGB')

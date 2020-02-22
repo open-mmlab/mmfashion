@@ -3,17 +3,22 @@ from scipy.spatial.distance import cosine as cosine
 
 
 class Evaluator(object):
+
     def __init__(self,
                  query_dict_fn,
                  gallery_dict_fn,
                  topks=[3, 5, 10],
                  extract_feature=False):
-        """ create the empty array to count
+        """Create the empty array to count
+
         Args:
-        query_dict_fn(dict) : the mapping of the index to the id of each query_embed
-        gallery_dict_fn(dict): the mapping of the index to the id of each gallery_embed
-        tops_type(int) : default retrieve top3, top5
-        extract_feature(bool) : whether to save extracted garment feature or not
+            query_dict_fn(dict): the mapping of the index to the id of each
+                query_embed.
+            gallery_dict_fn(dict): the mapping of the index to the id of each
+                gallery_embed.
+            tops_type(int): default retrieve top3, top5.
+            extract_feature(bool): whether to save extracted garment feature
+                or not.
         """
 
         self.topks = topks
@@ -24,7 +29,8 @@ class Evaluator(object):
             self.recall[k] = []
 
         self.query_dict, self.query_id2idx = self.get_id_dict(query_dict_fn)
-        self.gallery_dict, self.gallery_id2idx = self.get_id_dict(gallery_dict_fn)
+        self.gallery_dict, self.gallery_id2idx = self.get_id_dict(
+            gallery_dict_fn)
 
         self.extract_feature = extract_feature
 
@@ -87,7 +93,6 @@ class Evaluator(object):
 
         self.show_results()
 
-
     def show_retrieved_images(self, query_feat, gallery_embeds):
         query_dist = []
 
@@ -104,7 +109,6 @@ class Evaluator(object):
             for idx in retrieved_idxes:
                 retrieved_id = self.gallery_dict[idx]
                 print('retrieved id', retrieved_id)
-
 
     def get_id_dict(self, id_file):
         ids = []

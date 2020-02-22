@@ -112,12 +112,6 @@ class LandmarkDetectDataset(Dataset):
             np.array(landmark_for_roi_pool)).float()
         vis = torch.from_numpy(np.array(vis)).float()
 
-        # load attribute
-        if self.attributes is not None:
-            attr = self.attributes[idx]
-        else:
-            attr = None
-
         data = {
             'img': img,
             'vis': vis,

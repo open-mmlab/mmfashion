@@ -18,7 +18,7 @@ def split_img():
 
     for i, line in enumerate(fn[2:]):
         aline = line.strip('\n').split()
-        consumer, shop, id, cate = aline[0], aline[1], aline[2], aline[3]
+        consumer, shop, _, cate = aline[0], aline[1], aline[2], aline[3]
         if cate == 'train':
             newline = consumer + ' ' + shop + '\n'
             train_consumer2shop.write(newline)

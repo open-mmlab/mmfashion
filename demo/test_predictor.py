@@ -1,13 +1,12 @@
 from __future__ import division
 import argparse
 
-import cv2
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
 from mmfashion.core import AttrPredictor
 from mmfashion.models import build_predictor
-from mmfashion.utils import img_to_tensor
+from mmfashion.utils import get_img_tensor
 
 
 def parse_args():
@@ -37,8 +36,7 @@ def main():
     args = parse_args()
     cfg = Config.fromfile(args.config)
 
-    img = cv2.imread(args.input, -1)
-    img_tensor = img_to_tensor(img, squeeze=True, cuda=args.use_cuda)
+    img_tensor = get_img_tensor(args.input, args.use_cuda)
 
     cfg.model.pretrained = None
     model = build_predictor(cfg.model)

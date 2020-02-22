@@ -49,17 +49,16 @@ def _non_dist_test(model, dataset, cfg, validate=False):
         det_error, det_lm_percent = evaluator.evaluate_landmark_detection(
             pred_vis, pred_lm, vis, landmark)
         if batch_idx % 20 == 0:
-            print(
-                'Batch idx {:d}, normalized error = {:.4f}, det. percent = {:.2f}'
-                .format(batch_idx, det_error, det_lm_percent))
+            print('Batch idx {:d}, normalized error = {:.4f}, '
+                  'det. percent = {:.2f}'.format(batch_idx, det_error,
+                                                 det_lm_percent))
             error_list.append(det_error)
             det_percent_list.append(det_lm_percent)
 
-    print(
-        'Fashion Landmark Detection Normalized Error: {:.4f}, Detected Percent: {:.2f}'
-        .format(
-            sum(error_list) / len(error_list),
-            sum(det_percent_list) / len(det_percent_list)))
+    print('Fashion Landmark Detection Normalized Error: {:.4f}, '
+          'Detected Percent: {:.2f}'.format(
+              sum(error_list) / len(error_list),
+              sum(det_percent_list) / len(det_percent_list)))
 
 
 def _dist_test(model, dataset, cfg, validate=False):

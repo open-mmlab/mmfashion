@@ -38,9 +38,11 @@ class RoIPooling(nn.Module):
 
     def forward(self, features, landmarks):
         """batch-wise RoI pooling.
+
         Args:
-            features(tensor): the feature maps to be pooled
-            landmarks(tensor): crop the region of interest based on the landmarks(bs, self.num_lms)
+            features(tensor): the feature maps to be pooled.
+            landmarks(tensor): crop the region of interest based on the
+                landmarks(bs, self.num_lms).
         """
         batch_size = features.size(0)
 
