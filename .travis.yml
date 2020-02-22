@@ -37,7 +37,4 @@ before_script:
 script:
   - python setup.py check -m -s
   - python setup.py build_ext --inplace
-  - coverage run --source mmfashion -m py.test -v --xdoctest-modules mmfashion
 
-after_success:
-  - coverage report
