@@ -26,7 +26,7 @@ before_install:
   - PATH=${CUDA_HOME}/bin:${PATH}
 
 install:
-  - pip install coverage flake8 isort mmcv pytest torch yapf
+  - pip install coverage flake8 isort mmcv pytest scipy torch torchvision yapf
 
 before_script:
   - flake8 .
