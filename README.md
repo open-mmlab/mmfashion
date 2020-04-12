@@ -17,7 +17,8 @@
 
 ## Updates
 [2019-11-01] `MMFashion` v0.1 is released.
-[2020-02-14] `MMFashion` v0.2 is released, adding consumer-to-shop retrieval module
+
+[2020-02-14] `MMFashion` v0.2 is released, adding consumer-to-shop retrieval module.
 
 
 ## Features
@@ -30,6 +31,7 @@
     - [x] Fashion Landmark Detection
     - [ ] Fashion Parsing and Segmentation
     - [ ] Fashion Compatibility and Recommendation
+    - [ ] Fashion Virtual Try-On
 
 
 ## Requirements
@@ -85,3 +87,14 @@ This project is released under the [Apache 2.0 license](LICENSE).
 * Jiancheng Li ([lijiancheng0614](https://github.com/lijiancheng0614))
 * Jiaqi Wang ([myownskyW7](https://github.com/myownskyW7))
 * Ziwei Liu ([liuziwei7](https://github.com/liuziwei7))
+
+## Citation
+
+```
+@misc{mmfashion,
+  title={mmfashion},
+  author={Liu, Xin and Li, Jiancheng and Wang, Jiaqi and Liu, Ziwei},
+  howpublished={\url{https://github.com/open-mmlab/mmfashion}},
+  year={2020}
+}
+```
