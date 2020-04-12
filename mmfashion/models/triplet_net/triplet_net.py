@@ -119,8 +119,8 @@ class TripletNet(nn.Module):
         distd_n1 = F.pairwise_distance(desc_x, desc_y, 2)
         distd_n2 = F.pairwise_distance(desc_x, desc_z, 2)
         has_text = has_text_x * has_text_y * has_text_z
-        loss_sim_t1 = self.selective_margin_loss(distd_p, distd_n1, has_text)
-        loss_sim_t2 = self.selective_margin_loss(distd_p, distd_n2, has_text)
+        loss_sim_t1 = self.loss_selective_margin(distd_p, distd_n1, has_text)
+        loss_sim_t2 = self.loss_selective_margin(distd_p, distd_n2, has_text)
         loss_sim_t = (loss_sim_t1 + loss_sim_t2) / 2.
         return loss_sim_t, desc_x, desc_y, desc_z
 
