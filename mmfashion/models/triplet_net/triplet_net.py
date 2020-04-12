@@ -159,7 +159,7 @@ class TripletNet(nn.Module):
         loss_vse_x = self.calc_vse_loss(desc_x, general_x, general_y, general_z, has_text_x)
         loss_vse_y = self.calc_vse_loss(desc_y, general_y, general_x, general_z, has_text_y)
         loss_vse_z = self.calc_vse_loss(desc_z, general_z, general_x, general_y, has_text_z)
-        loss_vse = self.loss_vse(loss_vse_x, loss_vse_y, loss_vse_z)
+        loss_vse = self.loss_vse(loss_vse_x, loss_vse_y, loss_vse_z, len(general_x))
 
         return loss_type_triplet, loss_sim_t, loss_vse, loss_sim_i
 
