@@ -17,6 +17,7 @@
 
 ## Updates
 [2019-11-01] `MMFashion` v0.1 is released.
+
 [2020-02-14] `MMFashion` v0.2 is released, adding consumer-to-shop retrieval module
 
 
@@ -30,6 +31,7 @@
     - [x] Fashion Landmark Detection
     - [ ] Fashion Parsing and Segmentation
     - [ ] Fashion Compatibility and Recommendation
+    - [ ] Fashion Virtual Try-On
 
 
 ## Requirements
