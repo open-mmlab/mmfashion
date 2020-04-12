@@ -5,7 +5,7 @@ import torch.nn as nn
 
 
 class BaseRetriever(nn.Module):
-    ''' Base class for attribute predictors'''
+    ''' Base class for fashion retriever'''
     __metaclass__ = ABCMeta
 
     def __init__(self):

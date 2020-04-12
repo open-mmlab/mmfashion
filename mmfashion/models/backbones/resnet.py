@@ -60,16 +60,13 @@ class BasicBlock(nn.Module):
         out = self.conv1(x)
         out = self.bn1(out)
         out = self.relu(out)
-
         out = self.conv2(out)
         out = self.bn2(out)
 
         if self.downsample is not None:
             identity = self.downsample(x)
-
         out += identity
         out = self.relu(out)
-
         return out
 
 
@@ -126,17 +123,25 @@ class Bottleneck(nn.Module):
 
 @BACKBONES.register_module
 class ResNet(nn.Module):
-    setting = {'resnet50': [3, 4, 6, 3]}
+    layer_setting = {'resnet50': [3, 4, 6, 3],
+                     'resnet18': [2, 2, 2, 2],
+                     'resnet34': [3, 4, 6, 3]}
+
+    block_setting = {'resnet18': BasicBlock,
+                     'resnet34': BasicBlock,
+                     'resnet50': Bottleneck}
 
     def __init__(self,
+                 setting='resnet50',
                  zero_init_residual=False,
                  groups=1,
                  width_per_group=64,
                  replace_stride_with_dilation=None,
                  norm_layer=None):
+
         super(ResNet, self).__init__()
-        block = Bottleneck
-        layers = self.setting['resnet50']
+        block = self.block_setting[setting]
+        layers = self.layer_setting[setting]
 
         if norm_layer is None:
             norm_layer = nn.BatchNorm2d
@@ -178,7 +183,9 @@ class ResNet(nn.Module):
             layers[3],
             stride=2,
             dilate=replace_stride_with_dilation[2])
+
         self.zero_init_residual = zero_init_residual
+
 
     def init_weights(self, pretrained=None):
         print('pretrained model', pretrained)
@@ -234,6 +241,7 @@ class ResNet(nn.Module):
 
         return nn.Sequential(*layers)
 
+
     def forward(self, x):
         x = self.conv1(x)
         x = self.bn1(x)
@@ -241,10 +249,7 @@ class ResNet(nn.Module):
         x = self.maxpool(x)
 
         x = self.layer1(x)
-
         x = self.layer2(x)
-
         x = self.layer3(x)
-
         x = self.layer4(x)
         return x

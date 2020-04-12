@@ -47,7 +47,6 @@ def load_checkpoint(filename, model, strict=False, logger=None):
 def init_weights_from(init_from, model):
     # resume from ImageNet pretrained weights for backbone
     load_state_dict(model.backbone, torch.load(init_from))
-
     return model
 
 

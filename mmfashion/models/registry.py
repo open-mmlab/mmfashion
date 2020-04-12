@@ -18,3 +18,8 @@ PREDICTOR = Registry('predictor')
 RETRIEVER = Registry('retriever')
 
 LANDMARKDETECTOR = Registry('landmark_detector')
+
+TYPESPECIFICNET = Registry('type_specific_net')
+TRIPLETNET = Registry('triplet_net')
+
+RECOMMENDER = Registry('fashion_recommender')

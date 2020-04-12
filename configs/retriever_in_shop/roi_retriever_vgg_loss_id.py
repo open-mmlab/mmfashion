@@ -8,7 +8,8 @@ id_num = 7982
 img_size = (224, 224)
 model = dict(
     type='RoIRetriever',
-    backbone=dict(type='Vgg'),
+    backbone=dict(type='Vgg',
+                  layer_setting='vgg16'),
     global_pool=dict(
         type='GlobalPooling',
         inplanes=(7, 7),

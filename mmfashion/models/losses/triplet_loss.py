@@ -6,7 +6,6 @@ from ..registry import LOSSES
 
 @LOSSES.register_module
 class TripletLoss(nn.Module):
-
     def __init__(self,
                  method='cosine',
                  ratio=1,

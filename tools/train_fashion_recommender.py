@@ -4,9 +4,9 @@ import argparse
 from mmcv import Config
 
 from mmfashion.apis import (get_root_logger, init_dist, set_random_seed,
-                            train_retriever)
+                            train_fashion_recommender)
 from mmfashion.datasets import build_dataset
-from mmfashion.models import build_retriever
+from mmfashion.models import build_fashion_recommender
 from mmfashion.utils import init_weights_from
 
 
@@ -16,7 +16,7 @@ def parse_args():
     parser.add_argument(
         '--config',
         help='train config file path',
-        default='configs/retriever_in_shop/roi_retriever_vgg.py')
+        default='configs/fashion_recommendation/type_aware_recommendation_polyvore.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument(
         '--resume_from', help='the checkpoint file to resume from')
@@ -24,7 +24,7 @@ def parse_args():
         '--validate',
         action='store_true',
         help='whether to evaluate the checkpoint during training',
-        default=True)
+        default=False)
     parser.add_argument('--seed', type=int, default=None, help='random seed')
     parser.add_argument(
         '--launcher',
@@ -33,6 +33,7 @@ def parse_args():
         help='job launcher')
     args = parser.parse_args()
     return args
+
 
 
 def main():
@@ -59,8 +60,8 @@ def main():
         logger.info('Set random seed to {}'.format(args.seed))
         set_random_seed(args.seed)
 
-    # build predictor to extract embeddings
-    model = build_retriever(cfg.model)
+    # build fashion recommender
+    model = build_fashion_recommender(cfg.model)
     print('model built')
 
     if cfg.init_weights_from is not None:
@@ -72,14 +73,12 @@ def main():
     print('dataset loaded')
 
     # train
-    train_retriever(
-        model,
-        dataset,
-        cfg,
-        distributed=distributed,
-        validate=args.validate,
-        logger=logger)
-
+    train_fashion_recommender(model,
+                              dataset,
+                              cfg,
+                              distributed=distributed,
+                              validate=args.validate,
+                              logger=logger)
 
 if __name__ == '__main__':
     main()

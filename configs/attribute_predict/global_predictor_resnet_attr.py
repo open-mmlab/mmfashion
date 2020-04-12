@@ -8,7 +8,8 @@ img_size = (224, 224)
 
 model = dict(
     type='GlobalPredictor',
-    backbone=dict(type='ResNet'),
+    backbone=dict(type='ResNet',
+                  layer_setting='resnet50'),
     global_pool=dict(
         type='GlobalPooling',
         inplanes=(7, 7),
