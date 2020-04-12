@@ -45,8 +45,8 @@ class TypeAwareRecommender(BaseFashionRecommender):
         masked_embed_z, mask_norm_z, embed_norm_z = self.type_specific_net(embed_z, condition, return_loss=True)
         masked_embed_y, mask_norm_y, embed_norm_y = self.type_specific_net(embed_y, condition, return_loss=True)
 
-        loss_embed = self.loss_embed(embed_norm_x, embed_norm_y, embed_norm_z)
-        loss_mask = self.loss_mask(mask_norm_x, mask_norm_y, mask_norm_z)
+        loss_embed = self.loss_embed(embed_norm_x, embed_norm_y, embed_norm_z, len(img))
+        loss_mask = self.loss_mask(mask_norm_x, mask_norm_y, mask_norm_z, len(img))
 
         loss_type_triplet, loss_sim_t, loss_vse, loss_sim_i = self.triplet_net(embed_x, masked_embed_x, text, has_text,
                                                                                embed_y, masked_embed_y, neg_text, neg_has_text,

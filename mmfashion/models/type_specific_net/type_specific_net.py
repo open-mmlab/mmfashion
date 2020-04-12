@@ -33,8 +33,8 @@ class ListModule(nn.Module):
 class TypeSpecificNet(nn.Module):
     def __init__(self,
                  learned,
-                 rand_typespaces,
                  n_conditions,
+                 rand_typespaces=False,
                  use_fc=True,
                  l2_embed=False,
                  dim_embed=256,
@@ -60,6 +60,8 @@ class TypeSpecificNet(nn.Module):
         self.l2_norm = l2_embed
 
         if self.fc_masks:
+            # learn a fully connected layer rather than a mask to project the general embedding
+            # into the type specific space
             masks = []
             for i in range(n_conditions):
                 masks.append(nn.Linear(dim_embed, dim_embed))
@@ -140,6 +142,7 @@ class TypeSpecificNet(nn.Module):
         if self.l2_norm:
             norm = torch.norm(masked_embedding, p=2, dim=1) + 1e-10
             masked_embedding = masked_embedding / norm.expand_as(masked_embedding)
+
         return masked_embedding, mask_norm, embed_norm
 
 

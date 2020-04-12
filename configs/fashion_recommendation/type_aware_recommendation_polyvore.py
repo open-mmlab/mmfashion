@@ -12,12 +12,12 @@ model = dict(
             type='GlobalPooling',
             inplanes=(7, 7),
             pool_plane=(2, 2),
-            inter_channels=[512, 256],
+            inter_channels=[512],
             outchannels=256),
     type_specific_net=dict(type='TypeSpecificNet',
                            learned=True,
-                           rand_typespaces=False,
                            n_conditions=66,
+                           rand_typespaces=False,
                            use_fc=True,
                            l2_embed=False,
                            dim_embed=256,
@@ -44,7 +44,7 @@ data_root = 'data/Polyvore'
 img_norm = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
 data = dict(
-    imgs_per_gpu=1,
+    imgs_per_gpu=2,
     workers_per_gpu=1,
     train=dict(type=dataset_type,
                img_path=os.path.join(data_root, 'images'),
