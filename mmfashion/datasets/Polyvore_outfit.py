@@ -73,44 +73,47 @@ class PolyvoreOutfitDataset(Dataset):
         for i, item in enumerate(self.item_list):
             self.item2index[item] = i
 
+        if typespaces_fn is not None:
+            self.type_spaces = self.load_typespaces(typespaces_fn)
+
         self.train = train
         # collect positive pairs
         if self.train:
             self.pos_pairs = self.collect_pos_pairs()
 
-        # read text features
-        if text_feat_path is not None:
-            self.text_feat_dim = text_feat_dim
-            # get feature vector based on text description
-            self.desc2vecs = {}
-            with open(text_feat_path, 'r') as rf:
-                for line in rf:
-                    line = line.strip()
-                    if not line:
-                        continue
+            # read text features
+            if text_feat_path is not None:
+                self.text_feat_dim = text_feat_dim
+                # get feature vector based on text description
+                self.desc2vecs = {}
+                with open(text_feat_path, 'r') as rf:
+                    for line in rf:
+                        line = line.strip()
+                        if not line:
+                            continue
 
-                    vec = line.split(',')
-                    label = ','.join(vec[:-self.text_feat_dim])
-                    vec = np.array([float(x) for x in vec[-self.text_feat_dim:]], np.float32)
-                    assert (len(vec) == text_feat_dim)
-                    self.desc2vecs[label] = vec
+                        vec = line.split(',')
+                        label = ','.join(vec[:-self.text_feat_dim])
+                        vec = np.array([float(x) for x in vec[-self.text_feat_dim:]], np.float32)
+                        assert (len(vec) == text_feat_dim)
+                        self.desc2vecs[label] = vec
 
-            # get item to text description mapping
-            self.item2desc = {}
-            for item in self.item_list:
-                desc = self.meta_data[item]['title']
-                if not desc:
-                    desc = self.meta_data[item]['url_name']
-                desc = desc.replace('\n', ',').encode('ascii', 'ignore').strip().lower()
-                if desc and desc in self.desc2vecs:
-                    self.item2desc[item] = desc
+                # get item to text description mapping
+                self.item2desc = {}
+                for item in self.item_list:
+                    desc = self.meta_data[item]['title']
+                    if not desc:
+                        desc = self.meta_data[item]['url_name']
+                    desc = desc.replace('\n', ',').encode('ascii', 'ignore').strip().lower()
+                    if desc and desc in self.desc2vecs:
+                        self.item2desc[item] = desc
 
-        if compatibility_test_fn is not None:
-            self.compatibility_questions = self.collect_compatibility_questions(compatibility_test_fn)
-        if fitb_test_fn is not None:
-            self.fitb_questions = self.collect_fitb_questions(fitb_test_fn)
-        if typespaces_fn is not None:
-            self.type_spaces = self.load_typespaces(typespaces_fn)
+        else: # test data setting
+            if compatibility_test_fn is not None:
+                self.compatibility_questions = self.collect_compatibility_questions(compatibility_test_fn)
+            if fitb_test_fn is not None:
+                self.fitb_questions = self.collect_fitb_questions(fitb_test_fn)
+
 
 
     def collect_pos_pairs(self):

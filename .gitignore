@@ -9,6 +9,7 @@ mmfashion/datasets/In-shop/
 mmfashion/datasets/Attr_Predict/
 mmfashion/checkpoint
 mmfashion/utils/temp
+data/Polyvore
 data/In-shop
 data/Landmark_Detect
 data/Consumer_to_shop

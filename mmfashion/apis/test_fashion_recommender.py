@@ -4,6 +4,7 @@ from mmcv.parallel import MMDataParallel
 from ..datasets import build_dataloader
 from .env import get_root_logger
 import torch
+import numpy as np
 
 
 def test_fashion_recommender(model,
@@ -38,10 +39,13 @@ def _non_dist_test(model, dataset, cfg, validate=False):
     embeddings = []
     for batch_idx, testdata in enumerate(data_loader):
         embed = model(testdata['img'], return_loss=False)
-        embeddings.append(embed)
+        embeddings.append(embed.data.cpu().numpy())
 
-    embeddings = torch.cat(embeddings)
-    metric = model.metric_branch
+    # save as numpy array, and then transfer to tensor
+    # this is to avoid out-of-memory
+    embeddings = np.asarray(embeddings)
+    embeddings = torch.from_numpy(embeddings)
+    metric = model.triplet_net.metric_branch
 
     # compatibility auc
     auc = dataset.test_compatibility(embeddings, metric)
