@@ -61,8 +61,6 @@ class TripletNet(nn.Module):
 
         if learned_metric:
             self.metric_branch = nn.Linear(embed_feature_dim, 1, bias=False)
-            weight = torch.zeros(1, embed_feature_dim)/float(embed_feature_dim)
-            self.metric_branch.weight = nn.Parameter(weight)
 
         self.loss_vse = build_loss(loss_vse)
         self.loss_triplet = build_loss(loss_triplet)
@@ -166,3 +164,5 @@ class TripletNet(nn.Module):
 
     def init_weights(self):
         self.text_branch.init_weights()
+        if self.metric_branch is not None:
+            self.metric_branch.weight.data.fill_(0.01)

@@ -211,8 +211,6 @@ class PolyvoreOutfitDataset(Dataset):
             num_comparisons = 0.0
             for i in range(n_items-1):
                 item1, item1_id = outfit[i]
-                print('item1', item1)
-                print('item1_id', item1_id)
 
                 type1 = self.item2category[item1_id]
                 for j in range(i+1, n_items):
@@ -221,15 +219,21 @@ class PolyvoreOutfitDataset(Dataset):
                     condition = self.get_typespaces(type1, type2)
                     embed1 = embeds[item1][condition].unsqueeze(0)
                     embed2 = embeds[item2][condition].unsqueeze(0)
+                    embed1 = embed1.cuda()
+                    embed2 = embed2.cuda()
                     if metric is None:
                         outfit_score += torch.nn.functional.pairwise_distance(embed1, embed2, 2)
                     else:
                         outfit_score += metric(Variable(embed1 * embed2)).data
+                    print('outfit_score', outfit_score)
+                    import pdb
+                    pdb.set_trace()
                     num_comparisons += 1
 
         outfit_score /= num_comparisons
         scores.append(outfit_score)
         scores = torch.cat(scores).squeeze().cpu().numpy()
+        print('scores', scores)
         auc = roc_auc_score(labels, 1-scores)
         return auc
 

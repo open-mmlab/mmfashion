@@ -8,6 +8,8 @@
 
 4. [DeepFashion - Fashion Landmark Detection Benchmark](http://mmlab.ie.cuhk.edu.hk/projects/DeepFashion/LandmarkDetection.html)
 
+5. [Polyvore Outfits](https://drive.google.com/file/d/13-J4fAPZahauaGycw3j_YvbAHO7tOTW5/view?usp=sharing)
+
 To use the DeepFashion dataset you need to first download it to 'data/' , then follow these steps to re-organize the dataset.
 
 ```sh
@@ -143,3 +145,31 @@ Landmark_Detect
 Then run `python prepare_landmark_detect.py` to re-organize the dataset.
 
 Please refer to [dataset/LANDMARK_DETECT_DATASET.md](dataset/LANDMARK_DETECT_DATASET.md) for more info.
+
+
+## Prepare Polyvore-Outfit dataset
+Polyvore dataset is widely used for learning fashion compatibility, containing rich multimodel information like
+images and descriptions of fashion items, number of likes of the outfit, etc. 
+It is firstly collected by Maryland(https://arxiv.org/pdf/1707.05691.pdf). 
+Here we use a better sorted and grouped version from UIUC(https://arxiv.org/pdf/1803.09196.pdf).
+
+Download Polyvore(https://drive.google.com/file/d/13-J4fAPZahauaGycw3j_YvbAHO7tOTW5/view?usp=sharing) 
+and put it in the `data/`
+
+The file tree should be like this:
+
+```sh
+Polyvore
+├── disjoint
+│   ├── compatibility_test.txt
+│   ├── compatibility_train.txt
+│   ├── fill_in_blank_test.json
+|   └── ...
+├── nondisjoint
+│   └── ...
+└── images
+│   ├── XXX.jpg
+├── categories.csv
+├── polyvore_item_metadata.json
+├── polyvore_outfit_titles.json
+```

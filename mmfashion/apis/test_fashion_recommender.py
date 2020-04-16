@@ -23,7 +23,7 @@ def test_fashion_recommender(model,
         _non_dist_test(model, dataset, cfg, validate=validate)
 
 
-def _non_dist_test(model, dataset, cfg, validate=False):
+def _process_embeds(dataset, model, cfg):
     data_loader = build_dataloader(
         dataset,
         cfg.data.imgs_per_gpu,
@@ -31,27 +31,31 @@ def _non_dist_test(model, dataset, cfg, validate=False):
         len(cfg.gpus.test),
         dist=False,
         shuffle=False)
-
     print('dataloader built')
 
+    embeds = []
+    with torch.no_grad():
+        for data in data_loader:
+            embed = model(data['img'], return_loss=False)
+            embeds.append(embed.data.cpu())
+
+    embeds = torch.cat(embeds)
+    return embeds
+
+
+def _non_dist_test(model, dataset, cfg, validate=False):
     model = MMDataParallel(model, device_ids=cfg.gpus.test).cuda()
     model.eval()
-    embeddings = []
-    for batch_idx, testdata in enumerate(data_loader):
-        embed = model(testdata['img'], return_loss=False)
-        embeddings.append(embed.data.cpu().numpy())
 
-    # save as numpy array, and then transfer to tensor
-    # this is to avoid out-of-memory
-    embeddings = np.asarray(embeddings)
-    embeddings = torch.from_numpy(embeddings)
-    metric = model.triplet_net.metric_branch
+    embeds = _process_embeds(dataset, model, cfg)
+
+    metric = model.module.triplet_net.metric_branch
 
     # compatibility auc
-    auc = dataset.test_compatibility(embeddings, metric)
+    auc = dataset.test_compatibility(embeds, metric)
 
     # fill-in-blank accuracy
-    acc = dataset.test_fitb(embeddings, metric)
+    acc = dataset.test_fitb(embeds, metric)
 
     print('Compat AUC: {:.2f} FITB: {:.1f}\n'.format(
         round(auc, 2), round(acc * 100, 1)))

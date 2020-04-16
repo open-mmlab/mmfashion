@@ -20,7 +20,7 @@ def parse_args():
     parser.add_argument(
         '--checkpoint',
         help='checkpoint file',
-        default='checkpoint/resnet18.pth')
+        default='checkpoint/FashionRecommend/TypeAware/epoch_10.pth')
     parser.add_argument(
         '--validate',
         action='store_true',
@@ -61,6 +61,8 @@ def main():
     model = build_fashion_recommender(cfg.model)
     load_checkpoint(model, cfg.load_from, map_location='cpu')
     print('load checkpoint from: {}'.format(cfg.load_from))
+    import pdb
+    pdb.set_trace()
 
     test_fashion_recommender(model,
                              dataset,
