@@ -165,4 +165,4 @@ class TripletNet(nn.Module):
     def init_weights(self):
         self.text_branch.init_weights()
         if self.metric_branch is not None:
-            self.metric_branch.weight.data.fill_(0.01)
+            self.metric_branch.weight.data.fill_(1)

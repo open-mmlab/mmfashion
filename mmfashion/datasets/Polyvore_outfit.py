@@ -254,6 +254,8 @@ class PolyvoreOutfitDataset(Dataset):
                     condition = self.get_typespaces(type1, type2)
                     embed1 = embeds[question][condition].unsqueeze(0)
                     embed2 = embeds[answer][condition].unsqueeze(0)
+                    embed1 = embed1.cuda()
+                    embed2 = embed2.cuda()
                     if metric is None:
                         score += torch.nn.functional.pairwise_distance(embed1, embed2, 2)
                     else:
