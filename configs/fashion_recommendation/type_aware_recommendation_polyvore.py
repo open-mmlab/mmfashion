@@ -33,7 +33,8 @@ model = dict(
                                        loss_weight=5e-5),
                      loss_selective_margin=dict(type='SelectiveMarginLoss',
                                                 margin=0.3,
-                                                loss_weight=5e-5)),
+                                                loss_weight=5e-5),
+                     learned_metric=True),
     loss_embed=dict(type='L2NormLoss', loss_weight=5e-4),
     loss_mask=dict(type='L1NormLoss', loss_weight=5e-4),
     pretrained='checkpoint/resnet18.pth')

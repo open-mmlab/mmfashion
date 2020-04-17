@@ -225,15 +225,13 @@ class PolyvoreOutfitDataset(Dataset):
                         outfit_score += torch.nn.functional.pairwise_distance(embed1, embed2, 2)
                     else:
                         outfit_score += metric(Variable(embed1 * embed2)).data
-                    print('outfit_score', outfit_score)
-                    import pdb
-                    pdb.set_trace()
+
                     num_comparisons += 1
 
-        outfit_score /= num_comparisons
-        scores.append(outfit_score)
+            outfit_score /= num_comparisons
+            scores.append(outfit_score)
+
         scores = torch.cat(scores).squeeze().cpu().numpy()
-        print('scores', scores)
         auc = roc_auc_score(labels, 1-scores)
         return auc
 

@@ -61,8 +61,6 @@ def main():
     model = build_fashion_recommender(cfg.model)
     load_checkpoint(model, cfg.load_from, map_location='cpu')
     print('load checkpoint from: {}'.format(cfg.load_from))
-    import pdb
-    pdb.set_trace()
 
     test_fashion_recommender(model,
                              dataset,
