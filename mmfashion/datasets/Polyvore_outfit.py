@@ -211,7 +211,6 @@ class PolyvoreOutfitDataset(Dataset):
             num_comparisons = 0.0
             for i in range(n_items-1):
                 item1, item1_id = outfit[i]
-
                 type1 = self.item2category[item1_id]
                 for j in range(i+1, n_items):
                     item2, item2_id = outfit[j]

@@ -15,12 +15,12 @@ def parse_args():
     parser.add_argument(
         '--config',
         help='test config file path',
-        default='configs/fashion_recommendation/type_aware_recommendation_polyvore.py')
+        default='configs/fashion_recommendation/type_aware_recommendation_polyvore_disjoint.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument(
         '--checkpoint',
         help='checkpoint file',
-        default='checkpoint/FashionRecommend/TypeAware/epoch_10.pth')
+        default='checkpoint/FashionRecommend/TypeAware/disjoint/epoch_15.pth')
     parser.add_argument(
         '--validate',
         action='store_true',
