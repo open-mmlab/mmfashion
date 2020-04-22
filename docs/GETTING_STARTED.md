@@ -36,6 +36,13 @@ python demo/test_retriever.py \
     --input demo/retrieve_demo1.jpg
 ```
 
+3. Test fashion segmentation and detection
+```sh
+# Download the pretrained checkpoint and write the path in 'tests/demo.py'
+cd mmdetection
+python tests/demo.py 
+```
+
 
 ### Test a dataset
 
@@ -79,6 +86,14 @@ python tools/test_landmark_detector.py \
     --checkpoint checkpoint/LandmarkDetect/vgg/latest.pth
 ```
 
+4. Test a fashion-compatibility predictor
+
+```sh
+
+python tools/test_fashion_recommender.py \
+--config configs/fashion_recommendation/type_aware_recommendation_polyvore_disjoint.py 
+--checkpoint checkpoint/FashionRecommend/TypeAware/latest.pth
+```
 
 ## Train a model
 
@@ -116,6 +131,17 @@ python tools/train_landmark_detector.py \
     --config configs/landmark_detect/landmark_detect_vgg.py
 ```
 
+4. Train a Fashion-Compatibility Predictor
+```sh
+python tools/train_fashion_recommender.py \
+--config configs/fashion_recommendation/type_aware_recommendation_polyvore_disjoint.py 
+```
+
+5. Train a fashion detector
+```sh
+python tools/train.py \
+configs/mmfashion/mask_rcnn_r50_fpn_1x.py
+```
 
 ## Use custom datasets
 

@@ -28,15 +28,15 @@ class EmbedBranch(nn.Module):
         x = x / norm.expand_as(x)
         return x
 
-    def init_weights(self):
-        for m in self.fc1:
-            if type(m) == nn.Linear:
-                nn.init.xavier_uniform_(m.weight)
-                if m.bias is not None:
-                    m.bias.data.fill_(0.01)
-        nn.init.xavier_uniform_(self.fc2.weight)
-        if self.fc2.bias is not None:
-            self.fc2.bias.data.fill_(0.01)
+    # def init_weights(self):
+    #     for m in self.fc1:
+    #         if type(m) == nn.Linear:
+    #             nn.init.xavier_uniform_(m.weight)
+    #             if m.bias is not None:
+    #                 m.bias.data.fill_(0.01)
+    #     nn.init.xavier_uniform_(self.fc2.weight)
+    #     if self.fc2.bias is not None:
+    #         self.fc2.bias.data.fill_(0.01)
 
 
 @TRIPLETNET.register_module
@@ -49,7 +49,10 @@ class TripletNet(nn.Module):
                                average=False),
                  loss_triplet=dict(type='MarginRankingLoss',
                                    margin=0.3,
-                                   loss_weight=5e-5),
+                                   loss_weight=1),
+                 loss_sim_i=dict(type='MarginRankingLoss',
+                                 margin=0.3,
+                                 loss_weight=5e-5),
                  loss_selective_margin=dict(type='SelectiveMarginLoss',
                                             margin=0.3,
                                             loss_weight=5e-5),
@@ -64,6 +67,7 @@ class TripletNet(nn.Module):
 
         self.loss_vse = build_loss(loss_vse)
         self.loss_triplet = build_loss(loss_triplet)
+        self.loss_sim_i = build_loss(loss_sim_i)
         self.loss_selective_margin = build_loss(loss_selective_margin)
 
 
@@ -77,8 +81,8 @@ class TripletNet(nn.Module):
         disti_n1 = F.pairwise_distance(general_y, general_x, 2)
         disti_n2 = F.pairwise_distance(general_z, general_x, 2)
         target = torch.FloatTensor(disti_p.size()).fill_(1).cuda()
-        loss_sim_i1 = self.loss_triplet(disti_p, disti_n1, target)
-        loss_sim_i2 = self.loss_triplet(disti_p, disti_n2, target)
+        loss_sim_i1 = self.loss_sim_i(disti_p, disti_n1, target)
+        loss_sim_i2 = self.loss_sim_i(disti_p, disti_n2, target)
         loss_sim_i = (loss_sim_i1 + loss_sim_i2) / 2.
         return loss_sim_i
 
@@ -163,6 +167,7 @@ class TripletNet(nn.Module):
 
 
     def init_weights(self):
-        self.text_branch.init_weights()
+        # self.text_branch.init_weights()
         if self.metric_branch is not None:
-            self.metric_branch.weight.data.fill_(1)
+            weight = torch.zeros(1, self.embed_feature_dim) / float(self.embed_feature_dim)
+            self.metric_branch.weight = nn.Parameter(weight)

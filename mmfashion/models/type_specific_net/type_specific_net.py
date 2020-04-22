@@ -49,6 +49,8 @@ class TypeSpecificNet(nn.Module):
         """
         super(TypeSpecificNet, self).__init__()
 
+        assert((learned==True and use_fc==False) or (learned==False and use_fc==True)), \
+                "learn a metric or use fc layer to transform the general embeddings, only one can be true."
         self.learnedmask = learned
 
         # Indicates that there isn't a 1:1 relationship between type specific spaces
@@ -111,6 +113,7 @@ class TypeSpecificNet(nn.Module):
 
         if self.l2_norm:
             norm = torch.norm(masked_embedding, p=2, dim=2) + 1e-10
+            norm.unsqueeze_(2)
             masked_embedding = masked_embedding / norm.expand_as(masked_embedding)
 
         return torch.cat((masked_embedding, embedded_x), 1)
@@ -141,7 +144,8 @@ class TypeSpecificNet(nn.Module):
         embed_norm = embed_x.norm(2)
         if self.l2_norm:
             norm = torch.norm(masked_embedding, p=2, dim=1) + 1e-10
-            masked_embedding = masked_embedding / norm.expand_as(masked_embedding)
+            norm.unsqueeze_(1)
+            masked_embedding = masked_embedding / norm
 
         return masked_embedding, mask_norm, embed_norm
 

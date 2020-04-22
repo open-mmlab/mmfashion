@@ -152,7 +152,7 @@ class PolyvoreOutfitDataset(Dataset):
 
             Maps the questions from the FITB and compatibility tasks back to
             their index in the precomputed matrix of features
-            question: List of images to measure compatibility between
+            question: List of images to measure compatibility
             im2index: Dictionary mapping an image name to its location in a
                       precomputed matrix of features
             gt: optional, the ground truth outfit set this item belongs to
@@ -171,15 +171,16 @@ class PolyvoreOutfitDataset(Dataset):
 
 
     def collect_fitb_questions(self, fitb_test_fn):
-        ''' collect Fill-in-the-blank question'''
+        ''' collect Fill-in-the-blank questions'''
         fitb_questions = []
         data = json.load(open(fitb_test_fn, 'r'))
         for item in data:
             question = item['question']
             q_index, _, gt = self.parse_iminfo(question, self.item2index, self.setid2item)
             answer = item['answers']
-            a_index, is_correct, _ = self.parse_iminfo(answer, self.item2index, self.setid2item)
+            a_index, is_correct, _ = self.parse_iminfo(answer, self.item2index, self.setid2item, gt)
             fitb_questions.append((q_index, a_index, is_correct))
+
         return fitb_questions
 
 
@@ -261,10 +262,10 @@ class PolyvoreOutfitDataset(Dataset):
                         score += metric(Variable(embed1 * embed2)).data
                 answer_score[index] = score.squeeze().cpu().numpy()
 
+            # scores are based on distances so need to convert them so higher is better
             correct += is_correct[np.argmin(answer_score)]
             n_questions += 1
 
-        # scores are based on distances so need to convert them so higher is better
         acc = correct / n_questions
         return acc
 

@@ -76,14 +76,16 @@ Please refer to [dataset/ATTR_DATASET.md](dataset/ATTR_DATASET.md) for more info
 
 
 ## Prepare an InShopDataset
-
+We add segmentation annotations for "Fashion Parsing and Segmentation" task. Please download the updated data.
 The file tree should be like this:
 
 ```sh
 In-shop
 ├── Anno
-│   ├── list_attr_cloth.txt
-│   ├── list_attr_items.txt
+│   ├── segmentation
+│   |   ├── DeepFashion_segmentation_train.json
+│   |   ├── DeepFashion_segmentation_query.json
+│   |   ├── DeepFashion_segmentation_gallery.json
 │   ├── list_bbox_inshop.txt
 │   ├── list_description_inshop.json
 │   ├── list_item_inshop.txt
@@ -91,8 +93,11 @@ In-shop
 ├── Eval
 │   └── list_eval_partition.txt
 └── Img
-    ├── XXX.jpg
-    └── ...
+    ├── img
+    |   ├──XXX.jpg
+    ├── img_highres
+    └── ├──XXX.jpg
+
 ```
 
 Then run `python prepare_in_shop.py` to re-organize the dataset.
@@ -150,10 +155,10 @@ Please refer to [dataset/LANDMARK_DETECT_DATASET.md](dataset/LANDMARK_DETECT_DAT
 ## Prepare Polyvore-Outfit dataset
 Polyvore dataset is widely used for learning fashion compatibility, containing rich multimodel information like
 images and descriptions of fashion items, number of likes of the outfit, etc. 
-It is firstly collected by Maryland(https://arxiv.org/pdf/1707.05691.pdf). 
-Here we use a better sorted and grouped version from UIUC(https://arxiv.org/pdf/1803.09196.pdf).
+It is firstly collected by [Maryland](https://arxiv.org/pdf/1707.05691.pdf). 
+Here we use a better sorted and grouped version from [UIUC](https://arxiv.org/pdf/1803.09196.pdf).
 
-Download Polyvore(https://drive.google.com/file/d/13-J4fAPZahauaGycw3j_YvbAHO7tOTW5/view?usp=sharing) 
+Download [Polyvore](https://drive.google.com/file/d/13-J4fAPZahauaGycw3j_YvbAHO7tOTW5/view?usp=sharing) 
 and put it in the `data/`
 
 The file tree should be like this:

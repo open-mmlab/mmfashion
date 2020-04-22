@@ -42,3 +42,17 @@ More models with different backbones will be added to the model zoo.
 | :---------: | :-----: | :--------------: | :-----------------: | :----------------: | :----------------: |
 |    VGG-16   | L2 Loss |       0.0813     |        55.35        |     [model](https://drive.google.com/open?id=1LWhPnkT9AbbldvteFn8u_s21PCQ-h00h)      |     [model](https://pan.baidu.com/s/1tzVGeV5P5Sed3diXEr1UPg), passwd: 4ebx      |
 |  ResNet-50  | L2 Loss |       0.0758     |        56.32        |     [model](https://drive.google.com/open?id=1VGbOgkqBOgs2MaZ6qvLplopqqt7vKAM1)      |
+
+
+## Fashion Compatibility Predictor
+|   Backbone  |   Dataset   |  Embedding Projection |                             Loss                            | Fill-in-blank Acc | Compatibility AUC |      Download (Google)      |
+| :---------: | :---------: | :-------------------: | :---------------------------------------------------------: | :----------------:| :----------------:| :-------------------------: |
+|  ResNet-18  |   Disjoint  | fully-connected layer | Triplet loss, Type-specific loss, Similarity loss, VSE loss |       50.4        |        0.80       | [model](https://drive.google.com/open?id=1T-9BLWbuZhEHpX8xV6f1ZoGUpcjV3efc)   |     
+|  ResNet-18  |   Disjoint  |     learned metric    | Triplet loss, Type-specific loss, Similarity loss, VSE loss |       55.6        |        0.84       | [model](https://drive.google.com/open?id=1sYF0vqfI2z1riBvF9O643IH6mDikER7n)   |     
+|  ResNet-18  | Nondisjoint | fully-connected layer | Triplet loss, Type-specific loss, Similarity loss, VSE loss |       53.5        |        0.85       | [model](https://drive.google.com/open?id=177W9T7Szl7Z--mF2Zjv89q6u7nUQG2Lq)   |
+
+
+## Fashion Segmentation
+|   Backbone  |  Model type  |       Dataset       |  bbox detection Average Precision  | segmentation Average Precision |      Download (Google)      |
+| :---------: | :----------: | :-----------------: | :--------------------------------: | :----------------------------: | :-------------------------: |
+|   Resnet50  |   Mask RCNN  | DeepFashion-In-shop |                0.599               |              0.584             |  [model](https://drive.google.com/open?id=1q6zF7J6Gb-FFgM87oIORIt6uBozaXp5r)   |

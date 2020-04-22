@@ -1,6 +1,8 @@
 # InShopDataset
 
 - Annotations (Anno/)
+    - segmentation/ 
+        clothing semgentaion and detection annotations
 
     - Attribute Annotations (list_attr_cloth.txt & list_attr_items.txt)
 
@@ -33,6 +35,7 @@
 
 ## IMAGE
 
+For Fashion Retrieval task, use "img.zip"; for fashion parsing and segmentation task, use "img_highres.zip".
 *.jpg
 
 format: JPG

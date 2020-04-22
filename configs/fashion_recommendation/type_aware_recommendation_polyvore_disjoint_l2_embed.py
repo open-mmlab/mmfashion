@@ -18,8 +18,8 @@ model = dict(
                            learned=True,
                            n_conditions=66,
                            rand_typespaces=False,
-                           use_fc=True,
-                           l2_embed=False,
+                           use_fc=False,
+                           l2_embed=True,
                            dim_embed=256,
                            prein=False),
     triplet_net=dict(type='TripletNet',
@@ -30,14 +30,11 @@ model = dict(
                                    average=False),
                      loss_triplet=dict(type='MarginRankingLoss',
                                        margin=0.3,
-                                       loss_weight=1),
-                     loss_sim=dict(type='MarginRankingLoss',
-                                   margin=0.3,
-                                   loss_weight=5e-5),
+                                       loss_weight=5e-4),
                      loss_selective_margin=dict(type='SelectiveMarginLoss',
                                                 margin=0.3,
-                                                loss_weight=5e-5),
-                     learned_metric=True),
+                                                loss_weight=5e-4),
+                     learned_metric=False),
     loss_embed=dict(type='L2NormLoss', loss_weight=5e-4),
     loss_mask=dict(type='L1NormLoss', loss_weight=5e-4),
     pretrained='checkpoint/resnet18.pth')
@@ -48,8 +45,8 @@ data_root = 'data/Polyvore'
 img_norm = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
 data = dict(
-    imgs_per_gpu=2,
-    workers_per_gpu=1,
+    imgs_per_gpu=32,
+    workers_per_gpu=2,
     drop_last=False,
     train=dict(type=dataset_type,
                img_path=os.path.join(data_root, 'images'),
@@ -105,9 +102,9 @@ log_config = dict(
     ])
 
 start_epoch = 0
-total_epochs = 10
+total_epochs = 16
 gpus = dict(train=[0], test=[0])
-work_dir = 'checkpoint/FashionRecommend/TypeAware'
+work_dir = 'checkpoint/FashionRecommend/TypeAware/disjoint/l2_embed'
 print_interval = 20  # interval to print information
 save_interval = 5
 init_weights_from = 'checkpoint/resnet18.pth'

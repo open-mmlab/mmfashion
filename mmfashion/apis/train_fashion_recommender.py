@@ -67,6 +67,7 @@ def _non_dist_train(model, dataset, cfg, validate=False):
             cfg.data.imgs_per_gpu,
             cfg.data.workers_per_gpu,
             len(cfg.gpus.train),
+            drop_last=cfg.data.drop_last,
             dist=False)
     ]
     print('dataloader built')
