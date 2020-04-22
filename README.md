@@ -29,8 +29,8 @@
     - [x] Fashion Attribute Prediction
     - [x] Fashion Recognition and Retrieval
     - [x] Fashion Landmark Detection
-    - [ ] Fashion Parsing and Segmentation
-    - [ ] Fashion Compatibility and Recommendation
+    - [x] Fashion Parsing and Segmentation
+    - [x] Fashion Compatibility and Recommendation
     - [ ] Fashion Virtual Try-On
 
 
