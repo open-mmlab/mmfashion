@@ -43,17 +43,18 @@ class EmbedBranch(nn.Module):
 @TRIPLETNET.register_module
 class TripletNet(nn.Module):
 
-    def __init__(
-        self,
-        text_feature_dim,
-        embed_feature_dim,
-        loss_vse=dict(type='L1NormLoss', loss_weight=5e-3, average=False),
-        loss_triplet=dict(type='MarginRankingLoss', margin=0.3, loss_weight=1),
-        loss_sim_i=dict(
-            type='MarginRankingLoss', margin=0.3, loss_weight=5e-5),
-        loss_selective_margin=dict(
-            type='SelectiveMarginLoss', margin=0.3, loss_weight=5e-5),
-        learned_metric=True):  # noqa: F401, F403
+    def __init__(self,
+                 text_feature_dim,
+                 embed_feature_dim,
+                 loss_vse=dict(
+                     type='L1NormLoss', loss_weight=5e-3, average=False),
+                 loss_triplet=dict(
+                     type='MarginRankingLoss', margin=0.3, loss_weight=1),
+                 loss_sim_i=dict(
+                     type='MarginRankingLoss', margin=0.3, loss_weight=5e-5),
+                 loss_selective_margin=dict(
+                     type='SelectiveMarginLoss', margin=0.3, loss_weight=5e-5),
+                 learned_metric=True):
         super(TripletNet, self).__init__()
         self.text_branch = EmbedBranch(text_feature_dim, embed_feature_dim)
         self.metric_branch = None
