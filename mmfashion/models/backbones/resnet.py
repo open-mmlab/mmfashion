@@ -123,13 +123,17 @@ class Bottleneck(nn.Module):
 
 @BACKBONES.register_module
 class ResNet(nn.Module):
-    layer_setting = {'resnet50': [3, 4, 6, 3],
-                     'resnet18': [2, 2, 2, 2],
-                     'resnet34': [3, 4, 6, 3]}
+    layer_setting = {
+        'resnet50': [3, 4, 6, 3],
+        'resnet18': [2, 2, 2, 2],
+        'resnet34': [3, 4, 6, 3]
+    }
 
-    block_setting = {'resnet18': BasicBlock,
-                     'resnet34': BasicBlock,
-                     'resnet50': Bottleneck}
+    block_setting = {
+        'resnet18': BasicBlock,
+        'resnet34': BasicBlock,
+        'resnet50': Bottleneck
+    }
 
     def __init__(self,
                  setting='resnet50',
@@ -186,7 +190,6 @@ class ResNet(nn.Module):
 
         self.zero_init_residual = zero_init_residual
 
-
     def init_weights(self, pretrained=None):
         print('pretrained model', pretrained)
         if isinstance(pretrained, str):
@@ -240,7 +243,6 @@ class ResNet(nn.Module):
                     norm_layer=norm_layer))
 
         return nn.Sequential(*layers)
-
 
     def forward(self, x):
         x = self.conv1(x)

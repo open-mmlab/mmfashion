@@ -15,7 +15,8 @@ def parse_args():
     parser.add_argument(
         '--config',
         help='test config file path',
-        default='configs/fashion_recommendation/type_aware_recommendation_polyvore_disjoint.py')
+        default='configs/fashion_recommendation/'
+        'type_aware_recommendation_polyvore_disjoint.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument(
         '--checkpoint',
@@ -62,12 +63,8 @@ def main():
     load_checkpoint(model, cfg.load_from, map_location='cpu')
     print('load checkpoint from: {}'.format(cfg.load_from))
 
-    test_fashion_recommender(model,
-                             dataset,
-                             cfg,
-                             distributed=False,
-                             validate=False,
-                             logger=None)
+    test_fashion_recommender(
+        model, dataset, cfg, distributed=False, validate=False, logger=None)
 
 
 if __name__ == '__main__':

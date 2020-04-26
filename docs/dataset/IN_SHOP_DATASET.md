@@ -1,7 +1,7 @@
 # InShopDataset
 
 - Annotations (Anno/)
-    - segmentation/ 
+    - segmentation/
         clothing semgentaion and detection annotations
 
     - Attribute Annotations (list_attr_cloth.txt & list_attr_items.txt)

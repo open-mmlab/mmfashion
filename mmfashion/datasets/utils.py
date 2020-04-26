@@ -58,16 +58,12 @@ def get_dataset(data_cfg):
                                         data_cfg.landmark_file,
                                         data_cfg.img_size)
     elif data_cfg['type'] == 'PolyvoreOutfitDataset':
-        dataset = PolyvoreOutfitDataset(data_cfg.img_path,
-                                        data_cfg.annotation_path,
-                                        data_cfg.meta_file_path,
-                                        data_cfg.img_size,
-                                        data_cfg.text_feat_path,
-                                        data_cfg.text_feat_dim,
-                                        data_cfg.compatibility_test_fn,
-                                        data_cfg.fitb_test_fn,
-                                        data_cfg.typespaces_fn,
-                                        data_cfg.train)
+        dataset = PolyvoreOutfitDataset(
+            data_cfg.img_path, data_cfg.annotation_path,
+            data_cfg.meta_file_path, data_cfg.img_size,
+            data_cfg.text_feat_path, data_cfg.text_feat_dim,
+            data_cfg.compatibility_test_fn, data_cfg.fitb_test_fn,
+            data_cfg.typespaces_fn, data_cfg.train)
     else:
         raise TypeError('type {} does not exist.'.format(data_cfg['type']))
 

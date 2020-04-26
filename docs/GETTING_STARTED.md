@@ -40,7 +40,7 @@ python demo/test_retriever.py \
 ```sh
 # Download the pretrained checkpoint and write the path in 'tests/demo.py'
 cd mmdetection
-python tests/demo.py 
+python tests/demo.py
 ```
 
 
@@ -91,7 +91,7 @@ python tools/test_landmark_detector.py \
 ```sh
 
 python tools/test_fashion_recommender.py \
---config configs/fashion_recommendation/type_aware_recommendation_polyvore_disjoint.py 
+--config configs/fashion_recommendation/type_aware_recommendation_polyvore_disjoint.py
 --checkpoint checkpoint/FashionRecommend/TypeAware/latest.pth
 ```
 
@@ -134,7 +134,7 @@ python tools/train_landmark_detector.py \
 4. Train a Fashion-Compatibility Predictor
 ```sh
 python tools/train_fashion_recommender.py \
---config configs/fashion_recommendation/type_aware_recommendation_polyvore_disjoint.py 
+--config configs/fashion_recommendation/type_aware_recommendation_polyvore_disjoint.py
 ```
 
 5. Train a fashion detector

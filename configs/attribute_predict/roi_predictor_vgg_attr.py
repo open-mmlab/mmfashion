@@ -8,8 +8,7 @@ img_size = (224, 224)
 
 model = dict(
     type='RoIPredictor',
-    backbone=dict(type='Vgg',
-                  layer_setting='vgg16'),
+    backbone=dict(type='Vgg', layer_setting='vgg16'),
     global_pool=dict(
         type='GlobalPooling',
         inplanes=(7, 7),

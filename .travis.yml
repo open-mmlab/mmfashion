@@ -37,4 +37,3 @@ before_script:
 script:
   - python setup.py check -m -s
   - python setup.py build_ext --inplace
-

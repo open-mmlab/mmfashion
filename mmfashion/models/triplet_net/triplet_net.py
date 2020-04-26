@@ -1,6 +1,5 @@
 from __future__ import division
 
-import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -11,11 +10,13 @@ from ..registry import TRIPLETNET
 
 
 class EmbedBranch(nn.Module):
+
     def __init__(self, feat_dim, embedding_dim):
         super(EmbedBranch, self).__init__()
-        self.fc1 = nn.Sequential(nn.Linear(feat_dim, embedding_dim),
-                                 nn.BatchNorm1d(embedding_dim, eps=0.001, momentum=0.01),
-                                 nn.ReLU(inplace=True))
+        self.fc1 = nn.Sequential(
+            nn.Linear(feat_dim, embedding_dim),
+            nn.BatchNorm1d(embedding_dim, eps=0.001, momentum=0.01),
+            nn.ReLU(inplace=True))
 
         self.fc2 = nn.Linear(embedding_dim, embedding_dim)
 
@@ -41,23 +42,18 @@ class EmbedBranch(nn.Module):
 
 @TRIPLETNET.register_module
 class TripletNet(nn.Module):
-    def __init__(self,
-                 text_feature_dim,
-                 embed_feature_dim,
-                 loss_vse=dict(type='L1NormLoss',
-                               loss_weight=5e-3,
-                               average=False),
-                 loss_triplet=dict(type='MarginRankingLoss',
-                                   margin=0.3,
-                                   loss_weight=1),
-                 loss_sim_i=dict(type='MarginRankingLoss',
-                                 margin=0.3,
-                                 loss_weight=5e-5),
-                 loss_selective_margin=dict(type='SelectiveMarginLoss',
-                                            margin=0.3,
-                                            loss_weight=5e-5),
-                 learned_metric=True):
 
+    def __init__(
+        self,
+        text_feature_dim,
+        embed_feature_dim,
+        loss_vse=dict(type='L1NormLoss', loss_weight=5e-3, average=False),
+        loss_triplet=dict(type='MarginRankingLoss', margin=0.3, loss_weight=1),
+        loss_sim_i=dict(
+            type='MarginRankingLoss', margin=0.3, loss_weight=5e-5),
+        loss_selective_margin=dict(
+            type='SelectiveMarginLoss', margin=0.3, loss_weight=5e-5),
+        learned_metric=True):  # noqa: F401, F403
         super(TripletNet, self).__init__()
         self.text_branch = EmbedBranch(text_feature_dim, embed_feature_dim)
         self.metric_branch = None
@@ -69,7 +65,6 @@ class TripletNet(nn.Module):
         self.loss_triplet = build_loss(loss_triplet)
         self.loss_sim_i = build_loss(loss_sim_i)
         self.loss_selective_margin = build_loss(loss_selective_margin)
-
 
     def image_forward(self, general_x, general_y, general_z):
         """ calculate image similarity loss on the general embedding
@@ -86,11 +81,7 @@ class TripletNet(nn.Module):
         loss_sim_i = (loss_sim_i1 + loss_sim_i2) / 2.
         return loss_sim_i
 
-
-    def embed_forward(self,
-                      embed_x,
-                      embed_y,
-                      embed_z):
+    def embed_forward(self, embed_x, embed_y, embed_z):
         """embed_x, mask_norm_x: type_specific net output (Anchor)
            embed_y, mask_norm_y: type_specifc net output (Negative)
            embed_z, mask_norm_z: type_specifi net output (Positive)
@@ -100,8 +91,8 @@ class TripletNet(nn.Module):
             dist_neg = F.pairwise_distance(embed_x, embed_y, 2)
             dist_pos = F.pairwise_distance(embed_x, embed_z, 2)
         else:
-            dist_neg = self.metric_branch(embed_x*embed_y)
-            dist_pos = self.metric_branch(embed_x*embed_z)
+            dist_neg = self.metric_branch(embed_x * embed_y)
+            dist_pos = self.metric_branch(embed_x * embed_z)
 
         target = torch.FloatTensor(dist_neg.size()).fill_(1)
         target = Variable(target.cuda())
@@ -110,9 +101,8 @@ class TripletNet(nn.Module):
         loss_type_triplet = self.loss_triplet(dist_neg, dist_pos, target)
         return loss_type_triplet
 
-
-    def text_forward(self, text_x, text_y, text_z,
-                     has_text_x, has_text_y, has_text_z):
+    def text_forward(self, text_x, text_y, text_z, has_text_x, has_text_y,
+                     has_text_z):
         desc_x = self.text_branch(text_x)
         desc_y = self.text_branch(text_y)
         desc_z = self.text_branch(text_z)
@@ -125,7 +115,6 @@ class TripletNet(nn.Module):
         loss_sim_t2 = self.loss_selective_margin(distd_p, distd_n2, has_text)
         loss_sim_t = (loss_sim_t1 + loss_sim_t2) / 2.
         return loss_sim_t, desc_x, desc_y, desc_z
-
 
     def calc_vse_loss(self, desc_x, general_x, general_y, general_z, has_text):
         """ Both y and z are assumed to be negatives because they are not from the same
@@ -143,31 +132,34 @@ class TripletNet(nn.Module):
         loss_vse_2 = self.loss_selective_margin(distd1_p, distd1_n2, has_text)
         return (loss_vse_1 + loss_vse_2) / 2.
 
-
-    def forward(self,
-                general_x, type_embed_x, text_x, has_text_x,
-                general_y, type_embed_y, text_y, has_text_y,
-                general_z, type_embed_z, text_z, has_text_z):
+    def forward(self, general_x, type_embed_x, text_x, has_text_x, general_y,
+                type_embed_y, text_y, has_text_y, general_z, type_embed_z,
+                text_z, has_text_z):
         """x: Anchor data
            y: Distant(negative) data
            z: Close(positive) data
         """
         loss_sim_i = self.image_forward(general_x, general_y, general_z)
-        loss_type_triplet = self.embed_forward(type_embed_x, type_embed_y, type_embed_z)
+        loss_type_triplet = self.embed_forward(type_embed_x, type_embed_y,
+                                               type_embed_z)
 
-        loss_sim_t, desc_x, desc_y, desc_z = self.text_forward(text_x, text_y, text_z,
-                                                               has_text_x, has_text_y, has_text_z)
+        loss_sim_t, desc_x, desc_y, desc_z = self.text_forward(
+            text_x, text_y, text_z, has_text_x, has_text_y, has_text_z)
 
-        loss_vse_x = self.calc_vse_loss(desc_x, general_x, general_y, general_z, has_text_x)
-        loss_vse_y = self.calc_vse_loss(desc_y, general_y, general_x, general_z, has_text_y)
-        loss_vse_z = self.calc_vse_loss(desc_z, general_z, general_x, general_y, has_text_z)
-        loss_vse = self.loss_vse(loss_vse_x, loss_vse_y, loss_vse_z, len(general_x))
+        loss_vse_x = self.calc_vse_loss(desc_x, general_x, general_y,
+                                        general_z, has_text_x)
+        loss_vse_y = self.calc_vse_loss(desc_y, general_y, general_x,
+                                        general_z, has_text_y)
+        loss_vse_z = self.calc_vse_loss(desc_z, general_z, general_x,
+                                        general_y, has_text_z)
+        loss_vse = self.loss_vse(loss_vse_x, loss_vse_y, loss_vse_z,
+                                 len(general_x))
 
         return loss_type_triplet, loss_sim_t, loss_vse, loss_sim_i
-
 
     def init_weights(self):
         # self.text_branch.init_weights()
         if self.metric_branch is not None:
-            weight = torch.zeros(1, self.embed_feature_dim) / float(self.embed_feature_dim)
+            weight = torch.zeros(1, self.embed_feature_dim) / float(
+                self.embed_feature_dim)
             self.metric_branch.weight = nn.Parameter(weight)
