@@ -7,6 +7,7 @@ Users can also refer to other model configurations in mmdetection or extend thei
 ## File description
 Please create a folder named `mmfashion` and put it into `mmdetection/configs/`, place the config file under this folder.
 Also, replace `mmdetection/mmdet/datasets/__init__.py` with our provided `__init__.py`.
+Replace `inference.py` in `mmdetection/mmdet/apis/`.
 Add the data config `mmfashion.py` into `mmdetection/mmdet/datasets/`.
 Add the demo script `demo.py` into `mmdetection/tools/`.
 
@@ -21,6 +22,8 @@ mmfashion
 │   |    ├── datasets
 │   |    |    ├── __init__.py
 │   |    |    └── mmfashion.py
+│   |    ├── apis
+│   |    |    ├── inference.py
 │   ├── tools
 │   |    ├── demo.py
 ├── data
