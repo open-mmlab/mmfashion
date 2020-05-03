@@ -10,7 +10,6 @@ from .env import get_root_logger
 from .utils import build_optimizer
 
 
-
 def parse_losses(losses):
     log_vars = OrderedDict()
     for loss_name, loss_value in losses.items():

@@ -16,7 +16,8 @@ def parse_args():
     parser.add_argument(
         '--config',
         help='train config file path',
-        default='configs/fashion_recommendation/type_aware_recommendation_polyvore.py')
+        default='configs/fashion_recommendation/'
+        'type_aware_recommendation_polyvore.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument(
         '--resume_from', help='the checkpoint file to resume from')
@@ -33,7 +34,6 @@ def parse_args():
         help='job launcher')
     args = parser.parse_args()
     return args
-
 
 
 def main():
@@ -73,12 +73,14 @@ def main():
     print('dataset loaded')
 
     # train
-    train_fashion_recommender(model,
-                              dataset,
-                              cfg,
-                              distributed=distributed,
-                              validate=args.validate,
-                              logger=logger)
+    train_fashion_recommender(
+        model,
+        dataset,
+        cfg,
+        distributed=distributed,
+        validate=args.validate,
+        logger=logger)
+
 
 if __name__ == '__main__':
     main()

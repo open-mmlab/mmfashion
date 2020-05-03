@@ -1,10 +1,10 @@
 from __future__ import division
 
+import torch
 from mmcv.parallel import MMDataParallel
+
 from ..datasets import build_dataloader
 from .env import get_root_logger
-import torch
-import numpy as np
 
 
 def test_fashion_recommender(model,

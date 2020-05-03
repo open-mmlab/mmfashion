@@ -14,7 +14,7 @@ class GlobalPooling(nn.Module):
 
         inter_plane = inter_channels[0] * inplanes[0] * inplanes[1]
 
-        if len(inter_channels)>1:
+        if len(inter_channels) > 1:
             self.global_layers = nn.Sequential(
                 nn.Linear(inter_plane, inter_channels[1]),
                 nn.ReLU(True),
@@ -23,9 +23,8 @@ class GlobalPooling(nn.Module):
                 nn.ReLU(True),
                 nn.Dropout(),
             )
-        else: # just one linear layer
+        else:  # just one linear layer
             self.global_layers = nn.Linear(inter_plane, outchannels)
-
 
     def forward(self, x):
         x = self.avgpool(x)

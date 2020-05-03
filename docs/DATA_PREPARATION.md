@@ -154,11 +154,11 @@ Please refer to [dataset/LANDMARK_DETECT_DATASET.md](dataset/LANDMARK_DETECT_DAT
 
 ## Prepare Polyvore-Outfit dataset
 Polyvore dataset is widely used for learning fashion compatibility, containing rich multimodel information like
-images and descriptions of fashion items, number of likes of the outfit, etc. 
-It is firstly collected by [Maryland](https://arxiv.org/pdf/1707.05691.pdf). 
+images and descriptions of fashion items, number of likes of the outfit, etc.
+It is firstly collected by [Maryland](https://arxiv.org/pdf/1707.05691.pdf).
 Here we use a better sorted and grouped version from [UIUC](https://arxiv.org/pdf/1803.09196.pdf).
 
-Download [Polyvore](https://drive.google.com/file/d/13-J4fAPZahauaGycw3j_YvbAHO7tOTW5/view?usp=sharing) 
+Download [Polyvore](https://drive.google.com/file/d/13-J4fAPZahauaGycw3j_YvbAHO7tOTW5/view?usp=sharing)
 and put it in the `data/`
 
 The file tree should be like this:

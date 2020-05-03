@@ -13,9 +13,13 @@ class Vgg(nn.Module):
         ],
     }
 
-    def __init__(self, layer_setting='vgg16', batch_norm=False, init_weights=False):
+    def __init__(self,
+                 layer_setting='vgg16',
+                 batch_norm=False,
+                 init_weights=False):
         super(Vgg, self).__init__()
-        self.features = self._make_layers(self.setting[layer_setting], batch_norm)
+        self.features = self._make_layers(self.setting[layer_setting],
+                                          batch_norm)
 
         if init_weights:
             self._initialize_weights()
