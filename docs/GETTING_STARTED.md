@@ -40,7 +40,9 @@ python demo/test_retriever.py \
 ```sh
 # Download the pretrained checkpoint and write the path in 'tests/demo.py'
 cd mmdetection
-python tests/demo.py 
+python tests/demo.py \
+    --input demo/01_4_full.jpg \
+    --checkpoint [your checkpoint path]
 ```
 
 
