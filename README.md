@@ -9,16 +9,21 @@
 
 `MMFashion` is an open source visual fashion analysis toolbox based on [PyTorch](https://pytorch.org/). It is a part of the [open-mmlab](https://github.com/open-mmlab) project developed by [Multimedia Lab, CUHK](http://mmlab.ie.cuhk.edu.hk/).
 
-<p align="left">
-    <img src='./misc/demo_attribute.gif' height=220>
-    <img src='./misc/demo_retrieval.gif' height=220>
-</p>
-
 
 ## Updates
 [2019-11-01] `MMFashion` v0.1 is released.
 
 [2020-02-14] `MMFashion` v0.2 is released, adding consumer-to-shop retrieval module.
+
+[2020-04-27] `MMFashion` v0.3 is released, adding fashion segmentation and parsing module.
+
+[2020-05-04] `MMFashion` v0.4 is released, adding fashion compatibility and recommendation module.
+
+
+<p align="left">
+    <img src='./misc/demo_attribute.gif' height=220>
+    <img src='./misc/demo_retrieval.gif' height=220>
+</p>
 
 
 ## Features
