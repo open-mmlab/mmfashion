@@ -23,6 +23,8 @@
 <p align="left">
     <img src='./misc/demo_attribute.gif' height=220>
     <img src='./misc/demo_retrieval.gif' height=220>
+    <img src='./misc/demo_parsing.gif' height=220>
+    <img src='./misc/demo_landmark.gif' height=220>
 </p>
 
 
