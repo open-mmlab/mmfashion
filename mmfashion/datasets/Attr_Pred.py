@@ -103,8 +103,8 @@ class AttrDataset(Dataset):
                     l_y = float(l_y) / bbox_h * self.img_size[1]
                     landmark.append(l_y)
             landmark = torch.from_numpy(np.array(landmark)).float()
-        else:
-            landmark = None
+        else: # here no landmark will be used, just use zero for initialization (global predictor)
+            landmark = torch.zeros(8)
         data = {'img': img, 'attr': label, 'cate': cate, 'landmark': landmark}
         return data
 
