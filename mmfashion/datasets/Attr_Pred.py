@@ -91,17 +91,20 @@ class AttrDataset(Dataset):
 
         landmark = []
         # compute the shiftness
-        origin_landmark = self.landmarks[idx]
-        for i, l in enumerate(origin_landmark):
-            if i % 2 == 0:  # x
-                l_x = max(0, l - x1)
-                l_x = float(l_x) / bbox_w * self.img_size[0]
-                landmark.append(l_x)
-            else:  # y
-                l_y = max(0, l - y1)
-                l_y = float(l_y) / bbox_h * self.img_size[1]
-                landmark.append(l_y)
-        landmark = torch.from_numpy(np.array(landmark)).float()
+        if self.landmarks is not None:
+            origin_landmark = self.landmarks[idx]
+            for i, l in enumerate(origin_landmark):
+                if i % 2 == 0:  # x
+                    l_x = max(0, l - x1)
+                    l_x = float(l_x) / bbox_w * self.img_size[0]
+                    landmark.append(l_x)
+                else:  # y
+                    l_y = max(0, l - y1)
+                    l_y = float(l_y) / bbox_h * self.img_size[1]
+                    landmark.append(l_y)
+            landmark = torch.from_numpy(np.array(landmark)).float()
+        else:
+            landmark = None
         data = {'img': img, 'attr': label, 'cate': cate, 'landmark': landmark}
         return data
 

@@ -291,9 +291,11 @@ class PolyvoreOutfitDataset(Dataset):
         for q_index, (questions, answers,
                       is_correct) in enumerate(self.fitb_questions):
             answer_score = np.zeros(len(answers), dtype=np.float32)
+
             for index, (answer, item_id1) in enumerate(answers):
                 type1 = self.item2category[item_id1]
                 score = 0.0
+
                 for question, item_id2 in questions:
                     type2 = self.item2category[item_id2]
                     condition = self.get_typespaces(type1, type2)
@@ -301,6 +303,7 @@ class PolyvoreOutfitDataset(Dataset):
                     embed2 = embeds[answer][condition].unsqueeze(0)
                     embed1 = embed1.cuda()
                     embed2 = embed2.cuda()
+
                     if metric is None:
                         score += torch.nn.functional.pairwise_distance(
                             embed1, embed2, 2)

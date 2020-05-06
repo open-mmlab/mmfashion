@@ -42,7 +42,7 @@ data = dict(
         label_file=os.path.join(data_root, 'Anno/train_attr.txt'),
         cate_file=os.path.join(data_root, 'Anno/train_cate.txt'),
         bbox_file=os.path.join(data_root, 'Anno/train_bbox.txt'),
-        landmark_file=os.path.join(data_root, 'Anno/train_landmarks.txt'),
+        landmark_file=None,
         img_size=img_size),
     test=dict(
         type=dataset_type,
@@ -51,7 +51,7 @@ data = dict(
         label_file=os.path.join(data_root, 'Anno/test_attr.txt'),
         cate_file=os.path.join(data_root, 'Anno/test_cate.txt'),
         bbox_file=os.path.join(data_root, 'Anno/test_bbox.txt'),
-        landmark_file=os.path.join(data_root, 'Anno/test_landmarks.txt'),
+        landmark_file=None,
         attr_cloth_file=os.path.join(data_root, 'Anno/list_attr_cloth.txt'),
         img_size=img_size),
     val=dict(
@@ -61,7 +61,7 @@ data = dict(
         label_file=os.path.join(data_root, 'Anno/val_attr.txt'),
         cate_file=os.path.join(data_root, 'Anno/val_cate.txt'),
         bbox_file=os.path.join(data_root, 'Anno/val_bbox.txt'),
-        landmark_file=os.path.join(data_root, 'Anno/val_landmarks.txt'),
+        landmark_file=None,
         img_size=img_size))
 
 # optimizer

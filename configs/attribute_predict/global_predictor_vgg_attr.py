@@ -41,7 +41,7 @@ data = dict(
         label_file=os.path.join(data_root, 'Anno/train_attr.txt'),
         cate_file=os.path.join(data_root, 'Anno/train_cate.txt'),
         bbox_file=os.path.join(data_root, 'Anno/train_bbox.txt'),
-        landmark_file=os.path.join(data_root, 'Anno/train_landmarks.txt'),
+        landmark_file=None,
         img_size=img_size),
     test=dict(
         type=dataset_type,
@@ -50,7 +50,7 @@ data = dict(
         label_file=os.path.join(data_root, 'Anno/test_attr.txt'),
         cate_file=os.path.join(data_root, 'Anno/test_cate.txt'),
         bbox_file=os.path.join(data_root, 'Anno/test_bbox.txt'),
-        landmark_file=os.path.join(data_root, 'Anno/test_landmarks.txt'),
+        landmark_file=None,
         attr_cloth_file=os.path.join(data_root, 'Anno/list_attr_cloth.txt'),
         img_size=img_size),
     val=dict(
@@ -60,7 +60,7 @@ data = dict(
         label_file=os.path.join(data_root, 'Anno/val_attr.txt'),
         cate_file=os.path.join(data_root, 'Anno/val_cate.txt'),
         bbox_file=os.path.join(data_root, 'Anno/val_bbox.txt'),
-        landmark_file=os.path.join(data_root, 'Anno/val_landmarks.txt'),
+        landmark_file=None,
         img_size=img_size))
 
 # optimizer
@@ -83,7 +83,7 @@ log_config = dict(
 
 start_epoch = 0
 total_epochs = 40
-gpus = dict(train=[0, 1, 2, 3], test=[0, 1, 2, 3])
+gpus = dict(train=[0], test=[0, 1, 2, 3])
 work_dir = 'checkpoint/Predict/vgg/global'
 print_interval = 20  # interval to print information
 save_interval = 5
