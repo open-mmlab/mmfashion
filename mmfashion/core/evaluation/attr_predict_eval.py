@@ -102,6 +102,7 @@ class AttrCalculator(object):
         empty = 0
         recall = np.zeros(tp.shape)
         for i, num in enumerate(tp):
+            # ground truth number = true_positive(tp) + false_negative(fn)
             if tp[i] + fn[i] == 0:
                 empty += 1
                 continue

@@ -52,7 +52,7 @@ def _non_dist_test(model, dataset, cfg, validate=False):
     metric = model.module.triplet_net.metric_branch
 
     # compatibility auc
-    #auc = dataset.test_compatibility(embeds, metric)
+    auc = dataset.test_compatibility(embeds, metric)
 
     # fill-in-blank accuracy
     acc = dataset.test_fitb(embeds, metric)

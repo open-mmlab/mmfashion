@@ -6,7 +6,7 @@ class Evaluator(object):
     def __init__(self,
                  query_dict_fn,
                  gallery_dict_fn,
-                 topks=[3, 5, 10],
+                 topks=[3, 5, 10, 20, 30, 50],
                  extract_feature=False):
         """Create the empty array to count
 
