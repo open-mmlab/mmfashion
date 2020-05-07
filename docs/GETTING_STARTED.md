@@ -148,4 +148,3 @@ configs/mmfashion/mask_rcnn_r50_fpn_1x.py
 The simplest way is to prepare your dataset to existing dataset formats (AttrDataset, InShopDataset, ConsumerToShopDataset or LandmarkDetectDataset).
 
 Please refer to [DATA_PREPARATION.md](DATA_PREPARATION.md) for the dataset specifics.
-

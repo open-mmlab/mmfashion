@@ -7,7 +7,6 @@ import pycocotools.mask as maskUtils
 import torch
 from mmcv.parallel import collate, scatter
 from mmcv.runner import load_checkpoint
-
 from mmdet.core import get_classes
 from mmdet.datasets.pipelines import Compose
 from mmdet.models import build_detector
@@ -152,7 +151,7 @@ def show_result(img,
     # remove duplicate
     new_bbox_result = []
     for ti, temp in enumerate(bbox_result):
-        if len(temp) <=1:
+        if len(temp) <= 1:
             new_bbox_result.append(temp)
             continue
         new_temp = sorted(temp, key=lambda x: x[-1])[-1]

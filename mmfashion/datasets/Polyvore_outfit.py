@@ -205,15 +205,18 @@ class PolyvoreOutfitDataset(Dataset):
             compatibility_questions.append((compat_question, int(data[0])))
         return compatibility_questions
 
-
-    def get_single_compatibility_score(self, embeds, item_ids, metric, use_cuda=True):
+    def get_single_compatibility_score(self,
+                                       embeds,
+                                       item_ids,
+                                       metric,
+                                       use_cuda=True):
         n_items = embeds.size(0)
         outfit_score = 0.0
         num_comparisons = 0.0
         for i in range(n_items - 1):
             item1_id = item_ids[i]
             type1 = self.item2category[item1_id]
-            for j in range(i+1, n_items):
+            for j in range(i + 1, n_items):
                 item2_id = item_ids[j]
                 type2 = self.item2category[item2_id]
                 condition = self.get_typespaces(type1, type2)
@@ -231,7 +234,6 @@ class PolyvoreOutfitDataset(Dataset):
         outfit_score /= num_comparisons
         outfit_score = 1 - outfit_score.item()
         return outfit_score
-
 
     def test_compatibility(self, embeds, metric):
         """ Returns the area under a roc curve for the compatibility task
@@ -275,7 +277,6 @@ class PolyvoreOutfitDataset(Dataset):
         scores = 1 - scores
         auc = roc_auc_score(labels, scores)
         return auc
-
 
     def test_fitb(self, embeds, metric):
         """Returns the accuracy of the fill in the blank task

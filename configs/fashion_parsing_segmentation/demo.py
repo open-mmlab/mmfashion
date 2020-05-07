@@ -1,6 +1,6 @@
-from mmdet.apis import init_detector, inference_detector, show_result
-import mmcv
 import argparse
+
+from mmdet.apis import inference_detector, init_detector, show_result
 
 
 def parse_args():
@@ -34,5 +34,5 @@ def main():
 
     # visualize the results in a new window
     # or save the visualization results to image files
-    show_result(img, result, model.CLASSES, out_file=img.split('.')[0]+'_result.jpg')
-
+    show_result(
+        img, result, model.CLASSES, out_file=img.split('.')[0] + '_result.jpg')
