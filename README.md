@@ -57,6 +57,21 @@ cd mmfashion
 python setup.py install
 ```
 
+### Another option: Docker Image
+
+We provide a [Dockerfile](https://github.com/open-mmlab/mmfashion/blob/master/docker/Dockerfile) to build an image.
+
+```sh
+# build an image with PyTorch 1.5, CUDA 10.1
+docker build -t mmfashion docker/
+```
+
+Run it with
+
+```sh
+docker run --gpus all --shm-size=8g -it mmfashion
+```
+
 
 ## Get Started
 
