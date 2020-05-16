@@ -1,7 +1,9 @@
 """Setup script.
 """
 import os
+import re
 import subprocess
+import sys
 import time
 
 from setuptools import find_packages, setup
@@ -18,7 +20,7 @@ def get_git_hash():
     """Get git hash value.
 
     Returns:
-        str, git hash value.
+        str: git hash value.
     """
 
     def _minimal_ext_cmd(cmd):
@@ -48,13 +50,16 @@ def get_hash():
     """Get hash value.
 
     Returns:
-        str, hash value.
+        str: hash value.
+
+    Raises:
+        ImportError: import error.
     """
     if os.path.exists('.git'):
         sha = get_git_hash()[:7]
     elif os.path.exists(VERSION_FILE):
         try:
-            from mmdet.version import __version__
+            from mmfashion.version import __version__
             sha = __version__.split('+')[-1]
         except ImportError:
             raise ImportError('Unable to get git version')
@@ -67,7 +72,7 @@ def readme():
     """Get readme.
 
     Returns:
-        str, readme content string.
+        str: readme content string.
     """
     with open('README.md') as fid:
         content = fid.read()
@@ -93,11 +98,85 @@ def get_version():
     """Get version.
 
     Returns:
-        str, version string.
+        str: version string.
     """
     with open(VERSION_FILE, 'r') as fid:
         exec(compile(fid.read(), VERSION_FILE, 'exec'))
     return locals()['__version__']
+
+
+def parse_requirements(fname='requirements.txt', with_version=True):
+    """Parse the package dependencies listed in a requirements file but strips
+        specific versioning information.
+
+    Args:
+        fname (str): path to requirements file.
+        with_version (bool, default=False): if True include version specs.
+
+    Returns:
+        List[str]: list of requirements items.
+
+    CommandLine:
+        python -c "import setup; print(setup.parse_requirements())"
+    """
+    require_fpath = fname
+
+    def parse_line(line):
+        """Parse information from a line in a requirements text file.
+        """
+        if line.startswith('-r '):
+            # Allow specifying requirements in other files
+            target = line.split(' ')[1]
+            for info in parse_require_file(target):
+                yield info
+        else:
+            info = {'line': line}
+            if line.startswith('-e '):
+                info['package'] = line.split('#egg=')[1]
+            else:
+                # Remove versioning from the package
+                pat = '(' + '|'.join(['>=', '==', '>']) + ')'
+                parts = re.split(pat, line, maxsplit=1)
+                parts = [p.strip() for p in parts]
+
+                info['package'] = parts[0]
+                if len(parts) > 1:
+                    op, rest = parts[1:]
+                    if ';' in rest:
+                        # Handle platform specific dependencies
+                        # http://setuptools.readthedocs.io/en/latest/setuptools.html#declaring-platform-specific-dependencies
+                        version, platform_deps = map(str.strip,
+                                                     rest.split(';'))
+                        info['platform_deps'] = platform_deps
+                    else:
+                        version = rest  # NOQA
+                    info['version'] = (op, version)
+            yield info
+
+    def parse_require_file(fpath):
+        with open(fpath, 'r') as fid:
+            for line in fid.readlines():
+                line = line.strip()
+                if line and not line.startswith('#'):
+                    for info in parse_line(line):
+                        yield info
+
+    def gen_packages_items():
+        if os.path.exists(require_fpath):
+            for info in parse_require_file(require_fpath):
+                parts = [info['package']]
+                if with_version and 'version' in info:
+                    parts.extend(info['version'])
+                if not sys.version.startswith('3.4'):
+                    # apparently package_deps are broken in 3.4
+                    platform_deps = info.get('platform_deps')
+                    if platform_deps is not None:
+                        parts.append(';' + platform_deps)
+                item = ''.join(parts)
+                yield item
+
+    packages = list(gen_packages_items())
+    return packages
 
 
 if __name__ == '__main__':
@@ -121,10 +200,13 @@ if __name__ == '__main__':
             'Programming Language :: Python :: 3.7',
         ],
         license='Apache License 2.0',
-        setup_requires=['pytest-runner'],
-        tests_require=['pytest'],
-        install_requires=[
-            'mmcv', 'numpy', 'scikit-image', 'pandas', 'torch', 'torchvision'
-        ],
+        setup_requires=parse_requirements('requirements/build.txt'),
+        install_requires=parse_requirements('requirements/runtime.txt'),
+        tests_require=parse_requirements('requirements/tests.txt'),
+        extras_require={
+            'all': parse_requirements('requirements.txt'),
+            'build': parse_requirements('requirements/build.txt'),
+            'tests': parse_requirements('requirements/tests.txt')
+        },
         packages=find_packages(),
         zip_safe=False)

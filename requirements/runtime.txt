@@ -1,0 +1,7 @@
+matplotlib
+mmcv>=0.5.1
+numpy
+scikit-image
+scikit-learn
+torch>=1.3
+torchvision
