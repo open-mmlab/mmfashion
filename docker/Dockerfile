@@ -17,4 +17,5 @@ RUN conda clean --all
 RUN git clone --recursive https://github.com/open-mmlab/mmfashion.git /mmfashion
 WORKDIR /mmfashion
 ENV FORCE_CUDA="1"
+RUN pip install -r requirements.txt
 RUN pip install --no-cache-dir -e .
