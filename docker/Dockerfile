@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y git libglib2.0-0 libsm6 libxrender-dev 
 
 # Install mmfashion
 RUN conda clean --all
-RUN git clone https://github.com/open-mmlab/mmfashion.git /mmfashion
+RUN git clone --recursive https://github.com/open-mmlab/mmfashion.git /mmfashion
 WORKDIR /mmfashion
 ENV FORCE_CUDA="1"
 RUN pip install --no-cache-dir -e .

@@ -54,7 +54,7 @@
 ## Installation
 
 ```sh
-git clone https://github.com/open-mmlab/mmfashion.git
+git clone --recursive https://github.com/open-mmlab/mmfashion.git
 cd mmfashion
 python setup.py install
 ```
