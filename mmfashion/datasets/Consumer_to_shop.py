@@ -97,7 +97,7 @@ class ConsumerToShopDataset(Dataset):
                 attributes = aline[1:]
                 one_attr = []
                 for a in attributes:
-                    if 'a' == 1:
+                    if a == 1:
                         one_attr.append(1)
                     else:
                         one_attr.append(0)
