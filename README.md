@@ -11,6 +11,7 @@
 
 
 ## Updates
+
 [2019-11-01] `MMFashion` v0.1 is released.
 
 [2020-02-14] `MMFashion` v0.2 is released, adding consumer-to-shop retrieval module.
@@ -30,6 +31,7 @@
 
 
 ## Features
+
 - **Flexible:** modular design and easy to extend
 - **Friendly:** off-the-shelf models for layman users
 - **Comprehensive:** support a wide spectrum of fashion analysis tasks
@@ -52,9 +54,24 @@
 ## Installation
 
 ```sh
-git clone https://github.com/open-mmlab/mmfashion.git
+git clone --recursive https://github.com/open-mmlab/mmfashion.git
 cd mmfashion
 python setup.py install
+```
+
+### Another option: Docker Image
+
+We provide a [Dockerfile](https://github.com/open-mmlab/mmfashion/blob/master/docker/Dockerfile) to build an image.
+
+```sh
+# build an image with PyTorch 1.5, CUDA 10.1
+docker build -t mmfashion docker/
+```
+
+Run it with
+
+```sh
+docker run --gpus all --shm-size=8g -it mmfashion
 ```
 
 
@@ -86,6 +103,7 @@ We appreciate all contributions to improve `MMFashion`. Please refer to [CONTRIB
 
 
 ## License
+
 This project is released under the [Apache 2.0 license](LICENSE).
 
 

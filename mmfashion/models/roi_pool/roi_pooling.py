@@ -57,9 +57,9 @@ class RoIPooling(nn.Module):
             (batch_size, features.size(1), self.roi_size, self.roi_size))
 
         pooled = []
-        for l in range(self.num_lms):
-            tx = -1 + 2 * landmarks[:, l, 0] / float(self.crop_size)
-            ty = -1 + 2 * landmarks[:, l, 1] / float(self.crop_size)
+        for i in range(self.num_lms):
+            tx = -1 + 2 * landmarks[:, i, 0] / float(self.crop_size)
+            ty = -1 + 2 * landmarks[:, i, 1] / float(self.crop_size)
             t_xy = torch.stack((tx, ty)).view(batch_size, 2, 1)
             theta = torch.cat((ab, t_xy), 2)
 

@@ -3,6 +3,7 @@ from scipy.spatial.distance import cosine as cosine
 
 
 class Evaluator(object):
+
     def __init__(self,
                  query_dict_fn,
                  gallery_dict_fn,
