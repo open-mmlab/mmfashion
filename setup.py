@@ -9,7 +9,7 @@ import time
 from setuptools import find_packages, setup
 
 MAJOR = 0
-MINOR = 1
+MINOR = 4
 PATCH = 0
 SUFFIX = ''
 SHORT_VERSION = '{}.{}.{}{}'.format(MAJOR, MINOR, PATCH, SUFFIX)
