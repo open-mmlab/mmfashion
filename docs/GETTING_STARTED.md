@@ -25,7 +25,7 @@ Assume that you have already downloaded the checkpoints to `checkpoints/`.
     ```sh
     # Prepare `Anno/list_attr_cloth.txt` which is specified in `configs/attribute_predict/global_predictor_vgg_attr.py`
     python demo/test_predictor.py \
-        --input demo/attr_pred_demo1.jpg
+        --input demo/imgs/attr_pred_demo1.jpg
     ```
 
 2. Test an in-shop / Consumer-to_shop clothes retriever.
@@ -33,14 +33,14 @@ Assume that you have already downloaded the checkpoints to `checkpoints/`.
     ```sh
     # Prepare the gallery data which is specified in `configs/retriever_in_shop/global_retriever_vgg_loss_id.py`
     python demo/test_retriever.py \
-        --input demo/retrieve_demo1.jpg
+        --input demo/imgs/retrieve_demo1.jpg
     ```
 
 3. Test a landmark detector.
 
     ```sh
     python demo/test_landmark_detector.py \
-        --input demo/04_1_front.jpg
+        --input demo/imgs/04_1_front.jpg
     ```
 
 4. Test a fashion-compatibility predictor.
