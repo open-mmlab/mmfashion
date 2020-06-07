@@ -56,6 +56,8 @@ class TripletNet(nn.Module):
                      type='SelectiveMarginLoss', margin=0.3, loss_weight=5e-5),
                  learned_metric=True):
         super(TripletNet, self).__init__()
+        self.text_feature_dim = text_feature_dim
+        self.embed_feature_dim = embed_feature_dim
         self.text_branch = EmbedBranch(text_feature_dim, embed_feature_dim)
         self.metric_branch = None
 
