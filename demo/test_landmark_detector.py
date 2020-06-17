@@ -6,7 +6,7 @@ from mmcv import Config
 from mmcv.runner import load_checkpoint
 
 from mmfashion.models import build_landmark_detector
-from mmfashion.utils import get_img_tensor
+from mmfashion.utils import get_img_tensor, draw_landmarks
 
 
 def parse_args():
@@ -61,11 +61,16 @@ def main():
     model.eval()
     pred_vis, pred_lm = model(img_tensor, return_loss=False)
     pred_lm = pred_lm.data.cpu().numpy()
+    vis_lms = []
 
     for i, vis in enumerate(pred_vis):
         if vis >= 0.5:
             print('detected landmark {} {}'.format(
-                pred_lm[i] * (w / 224.), pred_lm[i + 1] * (h / 224.)))
+                pred_lm[i][0] * (w / 224.), pred_lm[i][1] * (h / 224.)))
+            vis_lms.append(pred_lm[i])
+
+    draw_landmarks(args.input, vis_lms)
+
 
 
 if __name__ == '__main__':

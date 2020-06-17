@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 import torchvision.transforms as transforms
-from PIL import Image
+from PIL import Image, ImageDraw
 
 
 def get_img_tensor(img_path, use_cuda, get_size=False):
@@ -45,3 +45,13 @@ def show_img(img_tensor):
     img_np = (img_np * 255).astype(np.uint8)
     plt.imshow(img_np.transpose(1, 2, 0))
     plt.show()
+
+
+def draw_landmarks(img_file, landmarks, r=2):
+    img = Image.open(img_file)
+    draw = ImageDraw.Draw(img)
+    for i, lm in enumerate(landmarks):
+        x = lm[0]
+        y = lm[1]
+        draw.ellipse([(x-r, y-r), (x+r, y+r)], fill=(255, 0, 0, 0))
+    img.show()
