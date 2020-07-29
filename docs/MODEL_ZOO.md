@@ -22,7 +22,7 @@ More models with different backbones will be added to the model zoo.
 ## Category and Attribute Prediction(Fine)
 |   Backbone  |      Pooling     |      Loss     | Top-5 Cate. Recall | Top-5 Attr. Recall. |      Download (Google)      |      Download (Baidu)      |
 | :---------: | :--------------: | :-----------: | :----------------: | :-----------------: | :----------------: | :----------------: |
-|    VGG-16   |  Global Pooling  | Cross-Entropy |        35.91       |        25.44        |     [model](hhttps://drive.google.com/file/d/10SZ3Lw4U0F9OKAuHWc-tBbvLS6yfE_x8/view?usp=sharing)      |     -     |
+|    VGG-16   |  Global Pooling  | Cross-Entropy |        35.91       |        25.44        |     [model](https://drive.google.com/file/d/10SZ3Lw4U0F9OKAuHWc-tBbvLS6yfE_x8/view?usp=sharing)      |     -     |
 |    VGG-16   | Landmark Pooling | Cross-Entropy |        37.71       |        26.69        |     [model](https://drive.google.com/file/d/17XlihpZS9iY__i7rPxqlzpenHHRSbLGa/view?usp=sharing)      |     -     |
 |  ResNet-50  |  Global Pooling  | Cross-Entropy |        42.87       |        29.37        |     [model](https://drive.google.com/file/d/1zsgxJAkdumpw4uDkapb1Ulq-aG1Hwz45/view?usp=sharing)      |     -     |
 |  ResNet-50  | Landmark Pooling | Cross-Entropy |        48.25       |        32.57        |     [model](https://drive.google.com/file/d/1zsgxJAkdumpw4uDkapb1Ulq-aG1Hwz45/view?usp=sharing)      |     -     |
