@@ -16,7 +16,7 @@ def parse_args():
     parser.add_argument(
         '--config',
         help='train config file path',
-        default='configs/category_attribute_predict/roi_predictor_vgg.py')
+        default='configs/attribute_predict_coarse/roi_predictor_vgg_attr.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument(
         '--resume_from', help='the checkpoint file to resume from')

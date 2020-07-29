@@ -20,7 +20,7 @@ def parse_args():
     parser.add_argument(
         '--checkpoint',
         help='checkpoint file',
-        default='checkpoint/CateAttrPredict/vgg/roi/latest.pth')
+        default='checkpoint/CateAttrPredict/vgg/roi/epoch_40.pth')
     parser.add_argument(
         '--validate',
         action='store_true',

@@ -9,7 +9,7 @@ More models with different backbones will be added to the model zoo.
 |    VGG-16   |     [vgg16.pth](https://download.pytorch.org/models/vgg16-397923af.pth)      |
 
 
-## Attribute Prediction
+## Attribute Prediction(Coarse)
 
 |   Backbone  |      Pooling     |      Loss     | Top-5 Recall | Top-5 Acc. |      Download (Google)      |      Download (Baidu)      |
 | :---------: | :--------------: | :-----------: | :----------: | :--------: | :----------------: | :----------------: |
@@ -17,6 +17,15 @@ More models with different backbones will be added to the model zoo.
 |    VGG-16   | Landmark Pooling | Cross-Entropy |     14.79    |   99.27    |     [model](https://drive.google.com/open?id=18ZWz9Tr6vsAW5Lxq81ps6GddCJPJ0gMx)      |     -     |
 |  ResNet-50  |  Global Pooling  | Cross-Entropy |     23.52    |   99.29    |     [model](https://drive.google.com/open?id=1LmC4aKiOY3qmm9qo6RNDU5v_o-xDCAdT)      |     -     |
 |  ResNet-50  | Landmark Pooling | Cross-Entropy |     30.84    |   99.30    |     [model](https://drive.google.com/open?id=1bOL4GhLyBEcXgATiVcZ-g3RD8xhKsj5f)      |     -     |
+
+
+## Category and Attribute Prediction(Fine)
+|   Backbone  |      Pooling     |      Loss     | Top-5 Cate. Recall | Top-5 Attr. Recall. |      Download (Google)      |      Download (Baidu)      |
+| :---------: | :--------------: | :-----------: | :----------------: | :-----------------: | :----------------: | :----------------: |
+|    VGG-16   |  Global Pooling  | Cross-Entropy |        35.91       |        25.44        |     [model](hhttps://drive.google.com/file/d/10SZ3Lw4U0F9OKAuHWc-tBbvLS6yfE_x8/view?usp=sharing)      |     -     |
+|    VGG-16   | Landmark Pooling | Cross-Entropy |        37.71       |        26.69        |     [model](https://drive.google.com/file/d/17XlihpZS9iY__i7rPxqlzpenHHRSbLGa/view?usp=sharing)      |     -     |
+|  ResNet-50  |  Global Pooling  | Cross-Entropy |        42.87       |        29.37        |     [model](https://drive.google.com/file/d/1zsgxJAkdumpw4uDkapb1Ulq-aG1Hwz45/view?usp=sharing)      |     -     |
+|  ResNet-50  | Landmark Pooling | Cross-Entropy |        48.25       |        32.57        |     [model](https://drive.google.com/file/d/1zsgxJAkdumpw4uDkapb1Ulq-aG1Hwz45/view?usp=sharing)      |     -     |
 
 
 ## In-Shop Clothes Retrieval

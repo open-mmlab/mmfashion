@@ -1,5 +1,6 @@
 from __future__ import division
 import argparse
+import torch
 
 from mmcv import Config
 from mmcv.runner import load_checkpoint
@@ -16,7 +17,7 @@ def parse_args():
         '--input',
         type=str,
         help='input image path',
-        default='demo/attr_pred_demo1.jpg')
+        default='demo/imgs/attr_pred_demo1.jpg')
     parser.add_argument(
         '--checkpoint',
         type=str,

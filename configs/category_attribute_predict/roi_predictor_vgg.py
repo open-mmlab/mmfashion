@@ -73,6 +73,7 @@ data = dict(
         bbox_file=os.path.join(data_root, 'Anno_fine/test_bbox.txt'),
         landmark_file=os.path.join(data_root, 'Anno_fine/test_landmarks.txt'),
         attr_cloth_file=os.path.join(data_root, 'Anno_fine/list_attr_cloth.txt'),
+        cate_cloth_file=os.path.join(data_root, 'Anno_fine/list_category_cloth.txt'),
         img_size=img_size),
     val=dict(
         type=dataset_type,
@@ -103,7 +104,7 @@ log_config = dict(
     ])
 
 start_epoch = 0
-total_epochs = 80
+total_epochs = 50
 gpus = dict(train=[0, 1], test=[0])
 work_dir = 'checkpoint/CateAttrPredict/vgg/roi'
 print_interval = 20  # interval to print information

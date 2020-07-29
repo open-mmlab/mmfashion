@@ -7,7 +7,7 @@ category_num = 50
 img_size = (224, 224)
 
 model = dict(
-    type='RoIAttrCatePredictor',
+    type='GlobalAttrCatePredictor',
     backbone=dict(type='ResNet', setting='resnet50'),
     global_pool=dict(
         type='GlobalPooling',
@@ -15,15 +15,6 @@ model = dict(
         pool_plane=(2, 2),
         inter_channels=[2048, 1024],
         outchannels=2048),
-    roi_pool=dict(
-        type='RoIPooling',
-        pool_plane=(2, 2),
-        inter_channels=2048,
-        outchannels=2048,
-        crop_size=7,
-        img_size=img_size,
-        num_lms=8),
-    concat=dict(type='Concat', inchannels=2 * 2048, outchannels=2048),
     attr_predictor=dict(
         type='AttrPredictor',
         inchannels=2048,
@@ -106,7 +97,7 @@ log_config = dict(
 start_epoch = 0
 total_epochs = 50
 gpus = dict(train=[0, 1, 2], test=[0])
-work_dir = 'checkpoint/CateAttrPredict/resnet/roi'
+work_dir = 'checkpoint/CateAttrPredict/resnet/global'
 print_interval = 20  # interval to print information
 save_interval = 5
 init_weights_from = None

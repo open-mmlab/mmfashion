@@ -13,7 +13,6 @@ class GlobalPooling(nn.Module):
         self.avgpool = nn.AdaptiveAvgPool2d(inplanes)
 
         inter_plane = inter_channels[0] * inplanes[0] * inplanes[1]
-
         if len(inter_channels) > 1:
             self.global_layers = nn.Sequential(
                 nn.Linear(inter_plane, inter_channels[1]),
