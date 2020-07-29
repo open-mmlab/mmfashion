@@ -15,7 +15,7 @@ def parse_args():
     parser.add_argument(
         '--config',
         help='test config file path',
-        default='configs/attribute_predict/roi_predictor_vgg_attr.py')
+        default='configs/attribute_predict_coarse/roi_predictor_vgg.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument(
         '--checkpoint',

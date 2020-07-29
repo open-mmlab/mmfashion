@@ -2,30 +2,30 @@ from __future__ import division
 import argparse
 
 from mmcv import Config
+from mmcv.runner import load_checkpoint
 
-from mmfashion.apis import (get_root_logger, init_dist, set_random_seed,
-                            train_predictor)
-from mmfashion.datasets import get_dataset
+from mmfashion.apis import get_root_logger, init_dist, test_cate_attr_predictor
+from mmfashion.datasets.utils import get_dataset
 from mmfashion.models import build_predictor
-from mmfashion.utils import init_weights_from
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Train a Fashion Attribute Predictor')
+        description='Test a Fashion Attribute Predictor')
     parser.add_argument(
         '--config',
-        help='train config file path',
+        help='test config file path',
         default='configs/category_attribute_predict/roi_predictor_vgg.py')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument(
-        '--resume_from', help='the checkpoint file to resume from')
+        '--checkpoint',
+        help='checkpoint file',
+        default='checkpoint/CateAttrPredict/vgg/roi/latest.pth')
     parser.add_argument(
         '--validate',
         action='store_true',
         help='whether to evaluate the checkpoint during training',
         default=True)
-    parser.add_argument('--seed', type=int, default=None, help='random seed')
     parser.add_argument(
         '--launcher',
         choices=['none', 'pytorch', 'mpi', 'slurm'],
@@ -40,9 +40,8 @@ def main():
     cfg = Config.fromfile(args.config)
     if args.work_dir is not None:
         cfg.work_dir = args.work_dir
-    if args.resume_from is not None:
-        cfg.resume_from = args.resume_from
-
+    if args.checkpoint is not None:
+        cfg.load_from = args.checkpoint
     # init distributed env first
     if args.launcher == 'none':
         distributed = False
@@ -52,32 +51,26 @@ def main():
 
     # init logger
     logger = get_root_logger(cfg.log_level)
-    logger.info('Distributed training: {}'.format(distributed))
+    logger.info('Distributed test: {}'.format(distributed))
 
-    # set random seeds
-    if args.seed is not None:
-        logger.info('Set random seed to {}'.format(args.seed))
-        set_random_seed(args.seed)
+    # data loader
+    dataset = get_dataset(cfg.data.test)
+    print('dataset loaded')
 
-    # build model
+    # build model and load checkpoint
     model = build_predictor(cfg.model)
     print('model built')
 
-    if cfg.init_weights_from:
-        model = init_weights_from(cfg.init_weights_from, model)
+    load_checkpoint(model, cfg.load_from, map_location='cpu')
+    print('load checkpoint from: {}'.format(cfg.load_from))
 
-    # data loader
-    dataset = get_dataset(cfg.data.train)
-    print('dataset loaded')
-
-    # train
-    train_predictor(
-        model,
-        dataset,
-        cfg,
-        distributed=distributed,
-        validate=args.validate,
-        logger=logger)
+    # test
+    test_cate_attr_predictor(model,
+                             dataset,
+                             cfg,
+                             distributed=distributed,
+                             validate=args.validate,
+                             logger=logger)
 
 
 if __name__ == '__main__':

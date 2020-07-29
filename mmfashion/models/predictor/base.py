@@ -31,12 +31,12 @@ class BasePredictor(nn.Module):
             return self.aug_test(img, landmark)
 
     @abstractmethod
-    def forward_train(self, img, landmark, attr):
+    def forward_train(self, img, landmark, attr, cate):
         pass
 
-    def forward(self, img, attr, cate=None, landmark=None, return_loss=True):
+    def forward(self, img, attr=None, cate=None, landmark=None, return_loss=True):
         if return_loss:
-            return self.forward_train(img, landmark, attr)
+            return self.forward_train(img, landmark, attr, cate)
         else:
             return self.forward_test(img, landmark)
 

@@ -4,18 +4,18 @@ from .base import BasePredictor
 
 
 @PREDICTOR.register_module
-class RoIPredictor(BasePredictor):
+class RoIAttrCatePredictor(BasePredictor):
 
     def __init__(self,
                  backbone,
                  global_pool,
+                 roi_pool,
                  concat,
                  attr_predictor,
-                 cate_predictor=None,
-                 roi_pool=None,
+                 cate_predictor,
                  pretrained=None):
-        super(RoIPredictor, self).__init__()
-  
+        super(RoIAttrCatePredictor, self).__init__()
+
         self.backbone = builder.build_backbone(backbone)
         self.global_pool = builder.build_global_pool(global_pool)
 
@@ -24,8 +24,11 @@ class RoIPredictor(BasePredictor):
 
         self.concat = builder.build_concat(concat)
         self.attr_predictor = builder.build_attr_predictor(attr_predictor)
+        self.cate_predictor = builder.build_cate_predictor(cate_predictor)
 
-    def forward_train(self, x, landmark, attr, cate=None):
+        self.init_weights(pretrained)
+
+    def forward_train(self, x, landmark, attr, cate):
         # 1. conv layers extract global features
         x = self.backbone(x)
 
@@ -42,6 +45,7 @@ class RoIPredictor(BasePredictor):
         # 5. attribute prediction
         losses = dict()
         losses['loss_attr'] = self.attr_predictor(feat, attr, return_loss=True)
+        losses['loss_cate'] = self.cate_predictor(feat, cate, return_loss=True)
 
         return losses
 
@@ -49,8 +53,8 @@ class RoIPredictor(BasePredictor):
         """Test single image"""
         x = x.unsqueeze(0)
         landmark = landmark.unsqueeze(0)
-        attr_pred = self.aug_test(x, landmark)
-        return attr_pred[0]
+        attr_pred, cate_pred = self.aug_test(x, landmark)
+        return attr_pred[0], cate_pred[0]
 
     def aug_test(self, x, landmark=None):
         """Test batch of images"""
@@ -61,7 +65,8 @@ class RoIPredictor(BasePredictor):
 
         feat = self.concat(global_x, local_x)
         attr_pred = self.attr_predictor(feat)
-        return attr_pred
+        cate_pred = self.cate_predictor(feat)
+        return attr_pred, cate_pred
 
     def init_weights(self, pretrained=None):
         self.backbone.init_weights(pretrained=pretrained)
@@ -69,3 +74,4 @@ class RoIPredictor(BasePredictor):
         self.roi_pool.init_weights()
         self.concat.init_weights()
         self.attr_predictor.init_weights()
+        self.cate_predictor.init_weights()

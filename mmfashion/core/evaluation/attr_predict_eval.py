@@ -6,7 +6,7 @@ class AttrCalculator(object):
 
     def __init__(self,
                  cfg,
-                 tops_type=[3, 5, 10],
+                 topns=[3, 5, 10],
                  show_attr_name=False,
                  attr_name_file=None):
         """Create the empty array to count true positive(tp),
@@ -15,7 +15,7 @@ class AttrCalculator(object):
         Args:
             cfg(config): testing config.
             class_num(int): number of classes in the dataset.
-            tops_type(list of int): default calculate top3, top5 and top10
+            topns(list of int): default calculate top3, top5 and top10
                 accuracy.
             show_attr_name(bool): print predicted attribute name, for demo
                 usage.
@@ -25,7 +25,8 @@ class AttrCalculator(object):
         self.collector = dict()
         self.total = 0  # the number of total predictions
         num_classes = cfg.attribute_num
-        for i in tops_type:
+        self.topns = topns
+        for i in self.topns:
             tp, tn, fp, fn = np.zeros(num_classes), np.zeros(
                 num_classes), np.zeros(num_classes), np.zeros(num_classes)
             pos = np.zeros(num_classes)
@@ -92,11 +93,9 @@ class AttrCalculator(object):
         for i in range(pred.size(0)):
             self.total += 1
             indexes = np.argsort(data[i])[::-1]
-            idx3, idx5, idx10 = indexes[:3], indexes[:5], indexes[:10]
-
-            self.collect(idx3, target[i], self.collector['top3'])
-            self.collect(idx5, target[i], self.collector['top5'])
-            self.collect(idx10, target[i], self.collector['top10'])
+            for k in self.topns:
+                idx = indexes[:k]
+                self.collect(idx, target[i], self.collector['top%d'%k])
 
     def compute_one_recall(self, tp, fn):
         empty = 0
@@ -148,19 +147,31 @@ class AttrCalculator(object):
                 top['tp'], top['tn'])
 
     def show_result(self, batch_idx=None):
+        print('----------- Attribute Prediction ----------')
         if batch_idx is not None:
-            print('\n')
             print('Batch[%d]' % batch_idx)
         else:
             print('Total')
 
         self.compute_recall()
-        print('[Recall] top3 = %.2f, top5 = %.2f, top10 = %.2f' %
-              (self.recall['top3'], self.recall['top5'], self.recall['top10']))
+        print('[ Recall Rate ]')
+        for k in self.topns:
+            print('top%d = %.2f' % (k, self.recall['top%d'%k]))
 
         self.compute_accuracy()
-        print('[Accuracy] top3 = %.2f, top5 = %.2f, top10 = %.2f' %
-              (self.accuracy['top3'], self.accuracy['top5'],
-               self.accuracy['top10']))
-
+        print('[ Accuracy ]')
+        for k in self.topns:
+            print('top%d = %.2f' % (k, self.accuracy['top%d'%k]))
         print('\n')
+
+    def show_per_attr_result(self):
+        for key, top in self.collector.items():
+            tp = top['tp']
+            tn = top['tn']
+            accuracy = np.zeros(tp.shape)
+            print("------------- %s Per-Attribute Accuracy -------------" % key)
+            for i, num in enumerate(tp):
+                accuracy[i] = float(tp[i] + tn[i]) / float(self.total)
+                # i: attribute index
+                print('%s %.2f'% (self.attr_dict[i], accuracy[i]))
+                

@@ -37,17 +37,21 @@ def main():
     cfg = Config.fromfile(args.config)
 
     img_tensor = get_img_tensor(args.input, args.use_cuda)
-
+    # global attribute predictor will not use landmarks
+    # just set a default value
+    landmark_tensor = torch.zeros(8)
     cfg.model.pretrained = None
     model = build_predictor(cfg.model)
     load_checkpoint(model, args.checkpoint, map_location='cpu')
     if args.use_cuda:
         model.cuda()
+        landmark_tensor = landmark_tensor.cuda()
 
     model.eval()
 
     # predict probabilities for each attribute
-    attr_prob = model(img_tensor, attr=None, landmark=None, return_loss=False)
+    attr_prob = model(img_tensor, attr=None,
+                      landmark=landmark_tensor, return_loss=False)
     attr_predictor = AttrPredictor(cfg.data.test)
 
     attr_predictor.show_prediction(attr_prob)
