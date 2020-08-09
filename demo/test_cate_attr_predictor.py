@@ -17,7 +17,7 @@ def parse_args():
         '--input',
         type=str,
         help='input image path',
-        default='demo/imgs/attr_pred_demo1.jpg')
+        default='demo/imgs/attr_pred_demo2.jpg')
     parser.add_argument(
         '--checkpoint',
         type=str,
