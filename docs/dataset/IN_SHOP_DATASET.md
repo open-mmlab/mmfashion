@@ -81,6 +81,30 @@ Notes:
 5. For upper-body clothes, landmark annotations are listed in the order of ["left collar", "right collar", "left sleeve", "right sleeve", "left hem", "right hem"]; For lower-body clothes, landmark annotations are listed in the order of ["left waistline", "right waistline", "left hem", "right hem"]; For upper-body clothes, landmark annotations are listed in the order of ["left collar", "right collar", "left sleeve", "right sleeve", "left waistline", "right waistline", "left hem", "right hem"].
 
 
+## COLOR MAPPING LABELS
+segmentation/img_highres_seg
+
+|    Color(R-G-B)       |      Label      |
+| :-------------------: | :-------------: |
+|        0-0-0          |    background   |
+|        255-250-250    |    top          |
+|        250-235-215    |    skirt        |
+|        70-130-180     |    leggings     |
+|        16-78-139      |    dress        |
+|        255-250-205    |    outer        |
+|        255-140-0      |    pants        |
+|        50-205-50      |    bag          |
+|        220-220-220    |    neckwear     |
+|        255-0-0        |    headwear     |
+|        127-255-212    |    eyeglass     |
+|        0-100-0        |    belt         |
+|        255-255-0      |    footwear     |
+|        211-211-211    |    hair         |
+|        144-238-144    |    skin         |
+|        245-222-179    |    face         |
+
+
+
 ## ITEM LABELS
 
 list_item_inshop.txt
