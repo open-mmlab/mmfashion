@@ -42,7 +42,7 @@ class CPVTONDataset(Dataset):
         # load data list
         im_names = []
         c_names = []
-        with open(os.path.join(self.dataroot, data_list), 'r') as rf:
+        with open(os.path.join(self.dataroot, self.datamode, data_list), 'r') as rf:
             for line in rf.readlines():
                 # get person img and in-shop cloth c
                 im_name, c_name = line.strip().split()
@@ -99,7 +99,7 @@ class CPVTONDataset(Dataset):
 
         # load pose points
         pose_name = im_name.replace('.jpg', '_keypoints.json')
-        with open(os.path.join(self.data_path, 'pose', pose_name), 'r') as rf:
+        with open(os.path.join(self.data_path, 'pose', pose_name), 'r') as f:
             pose_label = json.load(f)
             pose_data = pose_label['people'][0]['pose_keypoints']
             pose_data = np.array(pose_data)
@@ -121,30 +121,17 @@ class CPVTONDataset(Dataset):
             one_map = self.transform(one_map)
             pose_map[i] = one_map[0]
 
-        # for visualization
-        im_pose = self.transform(im_pose)
-
         # cloth-agnostic representation
         agnostic = torch.cat([shape, im_h, pose_map], 0)
 
-        if self.stage == 'GMM':
-            im_g = Image.open('grid.png')
-            im_g = self.transform(im_g)
-        else:
-            im_g = ''
-
         data = {
-            'c_name': c_name,
             'im_name': im_name,
+            'img': im,
+            'c_name': c_name,
             'cloth': c,
             'cloth_mask': cm,
-            'image': im,
             'agnostic': agnostic,
             'parse_cloth': im_c,
-            'shape': shape,
-            'head': im_h,
-            'pose_image': im_pose,
-            'grid_image': im_g
         }
         return data
 

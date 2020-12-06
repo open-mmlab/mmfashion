@@ -7,6 +7,7 @@ import torch
 
 from .Attr_Pred import AttrDataset
 from .Consumer_to_shop import ConsumerToShopDataset
+from .CP_VTON import CPVTONDataset
 from .In_shop import InShopDataset
 from .Landmark_Detect import LandmarkDetectDataset
 from .Polyvore_outfit import PolyvoreOutfitDataset
@@ -64,6 +65,12 @@ def get_dataset(data_cfg):
             data_cfg.text_feat_path, data_cfg.text_feat_dim,
             data_cfg.compatibility_test_fn, data_cfg.fitb_test_fn,
             data_cfg.typespaces_fn, data_cfg.train)
+    elif data_cfg['type'] == 'CP_VTON':
+        dataset = CPVTONDataset(
+            data_cfg.dataroot, data_cfg.datamode,
+            data_cfg.stage, data_cfg.data_list,
+            data_cfg.fine_height, data_cfg.fine_width,
+            data_cfg.radius)
     else:
         raise TypeError('type {} does not exist.'.format(data_cfg['type']))
 

@@ -4,9 +4,9 @@ import torch.nn as nn
 from ..registry import FEATURENORM
 
 @FEATURENORM.register_module
-class FeatureL2Norm(nn.Module):
+class FeatureNorm(nn.Module):
     def __init__(self, eps=1e-6):
-        super(FeatureL2Norm, self).__init__()
+        super(FeatureNorm, self).__init__()
         self.eps = eps
 
     def forward(self, feature):

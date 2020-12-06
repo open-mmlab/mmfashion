@@ -11,24 +11,22 @@ class FeatureRegression(nn.Module):
                  inter_channels=(512, 256, 128, 64)):
         super(FeatureRegression, self).__init__()
 
-        conv_layers = []
-        conv_layer = nn.Conv2d(in_channels, inter_channels[0],
-                               kernel_size=4, stride=2, padding=1)
-        conv_layers += [conv_layer, nn.BatchNorm2d(inter_channels[0]), nn.ReLU(True)]
+        self.conv_layers = nn.Sequential(
+            nn.Conv2d(in_channels, inter_channels[0], kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm2d(inter_channels[0]),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(inter_channels[0], inter_channels[1], kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm2d(inter_channels[1]),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(inter_channels[1], inter_channels[2], kernel_size=3, padding=1),
+            nn.BatchNorm2d(inter_channels[2]),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(inter_channels[2], inter_channels[3], kernel_size=3, padding=1),
+            nn.BatchNorm2d(inter_channels[3]),
+            nn.ReLU(inplace=True),
+        )
 
-        if len(inter_channels) > 2:
-            for i, inter_channel in enumerate(inter_channels[1:-1]):
-                conv_layer = nn.Conv2d(inter_channel, inter_channels[i+1],
-                                       kernel_size=4, stride=2, padding=1)
-                conv_layers += [conv_layer, nn.BatchNorm2d(inter_channels[0]), nn.ReLU(True)]
-        elif len(inter_channels) == 2:
-            conv_layer = nn.Conv2d(inter_channels[0], inter_channels[1],
-                                   kernel_size=4, stride=2, padding=1)
-            conv_layers += [conv_layer, nn.BatchNorm2d(inter_channels[0]), nn.ReLU(True)]
-
-        self.conv_layers = nn.Sequential(*conv_layers)
-
-        self.linear = nn.Linear(inter_channels[-1]*4*3, out_channels)
+        self.linear = nn.Linear(inter_channels[3]*4*3, out_channels)
         self.tanh = nn.Tanh()
 
     def forward(self, x):
@@ -37,3 +35,16 @@ class FeatureRegression(nn.Module):
         x = self.linear(x)
         x = self.tanh(x)
         return x
+
+    def init_weights(self, pretrained):
+        if pretrained is not None:
+            load_checkpoint(self, pretrained)
+        else:
+            for m in self.modules():
+                if isinstance(m, nn.Conv2d):
+                    nn.init.normal_(m.weight.data, 0.0, 0.02)
+                elif isinstance(m, nn.Linear):
+                    nn.init.normal(m.weight.data, 0.0, 0.02)
+                elif isinstance(m, nn.BatchNorm2d):
+                    nn.init.normal_(m.weight.data, 1.0, 0.02)
+                    nn.init.constant_(m.bias.data, 0.0)

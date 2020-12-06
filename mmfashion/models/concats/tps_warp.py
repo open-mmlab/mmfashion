@@ -26,6 +26,9 @@ class TPSWarp(nn.Module):
         # gridX, gridY: size [1, H, W, 1, 1]
         self.gridX = torch.FloatTensor(self.gridX).unsqueeze(0).unsqueeze(3)
         self.gridY = torch.FloatTensor(self.gridY).unsqueeze(0).unsqueeze(3)
+        # put on gpu
+        self.gridX = self.gridX.cuda()
+        self.gridY = self.gridY.cuda()
 
         # init regular grid for control points P_i
         if use_regular_grid:
@@ -41,6 +44,11 @@ class TPSWarp(nn.Module):
             self.Li = self.compute_L_inverse(P_X, P_Y).unsqueeze(0)
             self.P_X = P_X.unsqueeze(2).unsqueeze(3).unsqueeze(4).transpose(0, 4)
             self.P_Y = P_Y.unsqueeze(2).unsqueeze(3).unsqueeze(4).transpose(0, 4)
+            # put on gpu
+            self.P_X = self.P_X.cuda()
+            self.P_X_base = self.P_X_base.cuda()
+            self.P_Y = self.P_Y.cuda()
+            self.P_Y_base = self.P_Y_base.cuda()
 
     def compute_L_inverse(self, X, Y):
         N = X.size()[0]  # num of points (along dim 0)
@@ -59,7 +67,7 @@ class TPSWarp(nn.Module):
         P = torch.cat((O, X, Y), 1)
         L = torch.cat((torch.cat((K, P), 1), torch.cat((P.transpose(0, 1), Z), 1)), 0)
         Li = torch.inverse(L)
-
+        Li = Li.cuda()
         return Li
 
     def apply_transformation(self, theta, points):
@@ -142,6 +150,6 @@ class TPSWarp(nn.Module):
         return torch.cat((points_X_prime, points_Y_prime), 3)
 
     def forward(self, theta):
-        points = torch.cat((self.grid_X, self.grid_Y), 3)
+        points = torch.cat((self.gridX, self.gridY), 3)
         warped_grid = self.apply_transformation(theta, points)
         return warped_grid

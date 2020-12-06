@@ -33,3 +33,6 @@ FEATUREREGRESSION = Registry('feature_regression')
 TPSWARP = Registry('tps_warp')
 
 GEOMETRICMATCHING = Registry('geometric_matching')
+
+UNETSKIPCONNECTIONBLOCK = Registry('unet_skip_connection_block')
+TRYON = Registry('tryon')

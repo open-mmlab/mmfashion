@@ -86,7 +86,7 @@ log_config = dict(
         dict(type='TextLoggerHook'),
     ])
 
-start_epoch = 101
+start_epoch = 0
 total_epochs = 150
 gpus = dict(train=[0, 1, 2, 3], test=[0, 1, 2, 3])
 work_dir = 'checkpoint/LandmarkDetect/vgg/global'
