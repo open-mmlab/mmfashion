@@ -10,6 +10,8 @@
 
 5. [Polyvore Outfits](https://drive.google.com/file/d/13-J4fAPZahauaGycw3j_YvbAHO7tOTW5/view?usp=sharing)
 
+6. [VTON](https://drive.google.com/file/d/1MxCUvKxejnwWnoZ-KoCyMCXo3TLhRuTo/view)
+
 To use the DeepFashion dataset you need to first download it to 'data/' , then follow these steps to re-organize the dataset.
 
 ```sh
@@ -191,4 +193,35 @@ Polyvore
 ├── categories.csv
 ├── polyvore_item_metadata.json
 ├── polyvore_outfit_titles.json
+```
+
+
+## Prepare VTON dataset
+
+VTON dataset is used for virtual try-on task. 
+It is first collected by [Han](https://arxiv.org/abs/1711.08447), containing around 19,000 front-view woman and top clothing image pairs. 
+Here, we use a better sorted and grouped version from [Wang](https://arxiv.org/abs/1807.07688). 
+
+Download [VTON](https://drive.google.com/file/d/1MxCUvKxejnwWnoZ-KoCyMCXo3TLhRuTo/view) 
+and put it in the `data/`
+
+The file tree should be like this:
+
+```sh
+VTON
+├── vton_resize
+│   ├── train
+│   |   ├── cloth
+|   |   ├── cloth-mask
+|   |   ├── image
+|   |   ├── image-parse
+|   |   ├── pose
+|   |   ├── train-pairs.txt
+└── ├── test
+        ├── cloth
+        ├── cloth-mask
+        ├── image
+        ├── image-parse
+        ├── pose
+        └── test_pairs.txt
 ```

@@ -116,6 +116,26 @@ Assume that you have already downloaded the checkpoints to `checkpoints/` and pr
         --config configs/fashion_recommendation/type_aware_recommendation_polyvore_disjoint.py
         --checkpoint checkpoint/FashionRecommend/TypeAware/latest.pth
     ```
+   
+
+6. Test a virtual try-on module.
+   
+   Step 1, use the geometric matching module(GMM) to generate warp-cloth and warp-mask,
+   ```sh
+    python tools/test_virtual_tryon.py \
+        --config configs/virtual_tryon/cp_vton.py \
+        --stage GMM
+    ```
+   
+    Step 2, use the tryon module(TOM) to generate the results. 
+    The default result directory is `data/VTON/result`, you can modify the path in config file(line 103).
+   ```sh
+    python tools/test_virtual_tryon.py \
+        --config configs/virtual_tryon/cp_vton.py \
+        --stage TOM
+    ```
+   
+   
 
 ## Train a model
 
@@ -167,6 +187,40 @@ Examples:
         configs/fashion_parsing_segmentation/mask_rcnn_r50_fpn_1x.py
     ```
 
+6. Train a virtual try-on module.
+   
+   Step 1, train a geometric matching module(GMM)
+   ```sh
+    python tools/train_virtual_tryon.py \
+        --config configs/virtual_tryon/cp_vton.py \
+        --stage GMM
+    ```
+   
+    After training GMM, you need to generate the training images which are required by Step 2.
+    
+    **Note** that you need to modify the config file `configs/virtual_tryon/cp_vton.py` as follows,
+    
+    Line 87 should be `datamode='train'`,
+    
+    Line 89 should be `data_list='test_pairs.txt'`,
+    
+    Line 93 should be `save_dir=os.path.join(data_root, 'vton_resize', 'train')`
+    
+    Then,  
+   ```sh
+    python tools/test_virtual_tryon.py \
+        --config configs/virtual_tryon/cp_vton.py \
+        --stage GMM
+    ```
+   
+   Step 2, train a tryon module(TOM),
+   ```sh
+    python tools/train_virtual_tryon.py \
+        --config configs/virtual_tryon/cp_vton.py \
+        --stage TOM
+    ```
+   
+   
 
 ## Use custom datasets
 
