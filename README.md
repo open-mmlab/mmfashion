@@ -22,6 +22,7 @@
 
 [2020-05-04] `MMFashion` v0.4 is released, adding fashion compatibility and recommendation module.
 
+[2020-12-08] `MMFashion` v0.5 is released, adding virtual try-on module.
 
 <p align="left">
     <img src='./misc/demo_attribute.gif' height=220>
@@ -29,6 +30,7 @@
     <img src='./misc/demo_parsing.gif' height=220>
     <img src='./misc/demo_landmark.gif' height=220>
     <img src='./misc/demo_compatibility.gif' height=220>
+    <img src='./misc/demo_tryon.gif' height=220>
 </p>
 
 
@@ -43,7 +45,7 @@
     - [x] Fashion Landmark Detection
     - [x] Fashion Parsing and Segmentation
     - [x] Fashion Compatibility and Recommendation
-    - [ ] Fashion Virtual Try-On
+    - [x] Fashion Virtual Try-On
 
 
 ## Requirements
