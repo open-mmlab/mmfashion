@@ -25,7 +25,8 @@ class CELoss(nn.Module):
         Calculate the cross-entropy loss
         :param input(torch.Tensor): The prediction with shape (N, C),
                                     C is the number of classes.
-        :param target(torch.Tensor): The learning label(N, 1) of the prediction.
+        :param target(torch.Tensor): The learning label(N, 1) of
+                                     the prediction.
         :return: (torch.Tensor): The calculated loss
         """
         target = target.squeeze_()

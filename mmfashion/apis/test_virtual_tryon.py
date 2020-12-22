@@ -1,9 +1,6 @@
 from __future__ import division
 import os
 
-import numpy as np
-import torch
-
 from ..datasets import build_dataloader
 from ..utils import save_imgs
 from .env import get_root_logger

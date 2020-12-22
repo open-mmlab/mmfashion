@@ -58,16 +58,16 @@ class TPSWarp(nn.Module):
         # construct matrix K
         Xmat = X.expand(N, N)
         Ymat = Y.expand(N, N)
-        P_dist_squared = torch.pow(Xmat - Xmat.transpose(0, 1), 2) \
-                         + torch.pow(Ymat - Ymat.transpose(0, 1), 2)
+        P_dist_squared = torch.pow(Xmat - Xmat.transpose(0, 1), 2) + torch.pow(
+            Ymat - Ymat.transpose(0, 1), 2)
         # make diagonal 1 to avoid NaN in log computation
         P_dist_squared[P_dist_squared == 0] = 1
         K = torch.mul(P_dist_squared, torch.log(P_dist_squared))
 
         # construct matrix L
-        O = torch.FloatTensor(N, 1).fill_(1)
+        one = torch.FloatTensor(N, 1).fill_(1)
         Z = torch.FloatTensor(3, 3).fill_(0)
-        P = torch.cat((O, X, Y), 1)
+        P = torch.cat((one, X, Y), 1)
         L = torch.cat((torch.cat(
             (K, P), 1), torch.cat((P.transpose(0, 1), Z), 1)), 0)
         Li = torch.inverse(L)
@@ -125,7 +125,8 @@ class TPSWarp(nn.Module):
             1, points_h, points_w, 1, 1)
 
         # compute distance P_i - (grid_X,grid_Y)
-        # grid is expanded in point dim 4, but not in batch dim 0, as points P_X,P_Y are fixed for all batch
+        # grid is expanded in point dim 4, but not in batch dim 0,
+        # as points P_X,P_Y are fixed for all batch
         points_X_for_summation = points[:, :, :, 0].unsqueeze(3).unsqueeze(
             4).expand(points[:, :, :, 0].size() + (1, self.N))
         points_Y_for_summation = points[:, :, :, 1].unsqueeze(3).unsqueeze(
@@ -155,15 +156,15 @@ class TPSWarp(nn.Module):
             points_Y_batch = points_Y_batch.expand((batch_size, ) +
                                                    points_Y_batch.size()[1:])
 
-        points_X_prime = A_X[:, :, :, :, 0] + \
-                         torch.mul(A_X[:, :, :, :, 1], points_X_batch) + \
-                         torch.mul(A_X[:, :, :, :, 2], points_Y_batch) + \
-                         torch.sum(torch.mul(W_X, U.expand_as(W_X)), 4)
+        points_X_prime = A_X[:, :, :, :, 0] + torch.mul(
+            A_X[:, :, :, :, 1], points_X_batch) + torch.mul(
+                A_X[:, :, :, :, 2], points_Y_batch) + torch.sum(
+                    torch.mul(W_X, U.expand_as(W_X)), 4)
 
-        points_Y_prime = A_Y[:, :, :, :, 0] + \
-                         torch.mul(A_Y[:, :, :, :, 1], points_X_batch) + \
-                         torch.mul(A_Y[:, :, :, :, 2], points_Y_batch) + \
-                         torch.sum(torch.mul(W_Y, U.expand_as(W_Y)), 4)
+        points_Y_prime = A_Y[:, :, :, :, 0] + torch.mul(
+            A_Y[:, :, :, :, 1], points_X_batch) + torch.mul(
+                A_Y[:, :, :, :, 2], points_Y_batch) + torch.sum(
+                    torch.mul(W_Y, U.expand_as(W_Y)), 4)
 
         return torch.cat((points_X_prime, points_Y_prime), 3)
 

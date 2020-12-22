@@ -76,13 +76,10 @@ class CPVTONDataset(Dataset):
             os.path.join(self.data_path, 'image-parse', parse_name))
         parse_array = np.array(im_parse)
         parse_shape = (parse_array > 0).astype(np.float32)
-        parse_head = (parse_array==1).astype(np.float32) \
-                     + (parse_array==2).astype(np.float32) \
-                     + (parse_array==4).astype(np.float32) \
-                     + (parse_array==13).astype(np.float32)
-        parse_cloth = (parse_array==5).astype(np.float32) \
-                     + (parse_array==6).astype(np.float32) \
-                     + (parse_array==7).astype(np.float32)
+        parse_head = sum([(parse_array == i).astype(np.float32)
+                          for i in [1, 2, 4, 13]])
+        parse_cloth = sum([(parse_array == i).astype(np.float32)
+                           for i in [5, 6, 7]])
 
         # shape downsample
         parse_shape = Image.fromarray((parse_shape * 255).astype(np.uint8))

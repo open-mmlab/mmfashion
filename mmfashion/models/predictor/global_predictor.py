@@ -19,8 +19,6 @@ class GlobalPredictor(BasePredictor):
         self.global_pool = builder.build_global_pool(global_pool)
         self.attr_predictor = builder.build_attr_predictor(attr_predictor)
 
-        self.loss_attr = builder.build_loss(loss_attr)
-
     def forward_train(self, x, landmarks, attr, cate=None):
         # 1. conv layers extract global features
         x = self.backbone(x)

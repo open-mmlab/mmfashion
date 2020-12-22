@@ -1,6 +1,6 @@
-import torch
 import torch.nn as nn
 
+from .. import builder
 from ..registry import GEOMETRICMATCHING
 
 
