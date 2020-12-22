@@ -9,10 +9,10 @@ repos:
     -   id: trailing-whitespace
     -   id: end-of-file-fixer
 -   repo: https://github.com/pre-commit/mirrors-isort
-    rev: v4.3.21
+    rev: v5.6.4
     hooks:
     -   id: isort
 -   repo: https://github.com/pre-commit/mirrors-yapf
-    rev: v0.29.0
+    rev: v0.30.0
     hooks:
     -   id: yapf

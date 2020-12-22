@@ -1,15 +1,20 @@
 from .attr_cate_predictor import *  # noqa: F401, F403
 from .backbones import *  # noqa: F401, F403
-from .builder import (
-    build_attr_predictor, build_backbone, build_cate_predictor, build_concat,
-    build_embed_extractor, build_fashion_recommender,
-    build_feature_correlation, build_feature_extractor, build_feature_norm,
-    build_feature_regression, build_geometric_matching, build_global_pool,
-    build_landmark_detector, build_landmark_feature_extractor,
-    build_landmark_regression, build_loss, build_predictor, build_retriever,
-    build_roi_pool, build_tps_warp, build_triplet_net, build_tryon,
-    build_type_specific_net, build_unet_skip_connection_block,
-    build_visibility_classifier)
+# yapf:disable
+from .builder import (build_attr_predictor, build_backbone,
+                      build_cate_predictor, build_concat,
+                      build_embed_extractor, build_fashion_recommender,
+                      build_feature_correlation, build_feature_extractor,
+                      build_feature_norm, build_feature_regression,
+                      build_geometric_matching, build_global_pool,
+                      build_landmark_detector,
+                      build_landmark_feature_extractor,
+                      build_landmark_regression, build_loss, build_predictor,
+                      build_retriever, build_roi_pool, build_tps_warp,
+                      build_triplet_net, build_tryon, build_type_specific_net,
+                      build_unet_skip_connection_block,
+                      build_visibility_classifier)
+# yapf:enable
 from .concats import *  # noqa: F401, F403
 from .embed_extractor import *  # noqa: F401, F403
 from .fashion_recommender import *  # noqa: F401, F403
