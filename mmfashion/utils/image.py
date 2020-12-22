@@ -1,9 +1,9 @@
 from __future__ import division
+import os
 
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
-import os
 import torch
 import torchvision.transforms as transforms
 from PIL import Image, ImageDraw
@@ -44,11 +44,13 @@ def save_img(img_tensor, img_name):
 
     Image.fromarray(img_np).save(img_name)
 
+
 def save_imgs(img_tensors, img_names, save_dir):
     for img_tensor, img_name in zip(img_tensors, img_names):
-        tensor = (img_tensor.clone() + 1) * 0.5 * 255 # same with cp-vton
+        tensor = (img_tensor.clone() + 1) * 0.5 * 255  # same with cp-vton
         tensor = tensor.cpu().clamp(0, 255)
         save_img(tensor, os.path.join(save_dir, img_name))
+
 
 def show_img(img_tensor):
     plt.figure()
@@ -57,11 +59,12 @@ def show_img(img_tensor):
     plt.imshow(img_np.transpose(1, 2, 0))
     plt.show()
 
+
 def draw_landmarks(img_file, landmarks, r=2):
     img = Image.open(img_file)
     draw = ImageDraw.Draw(img)
     for i, lm in enumerate(landmarks):
         x = lm[0]
         y = lm[1]
-        draw.ellipse([(x-r, y-r), (x+r, y+r)], fill=(255, 0, 0, 0))
+        draw.ellipse([(x - r, y - r), (x + r, y + r)], fill=(255, 0, 0, 0))
     img.show()

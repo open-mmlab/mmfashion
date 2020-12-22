@@ -95,7 +95,7 @@ class AttrCalculator(object):
             indexes = np.argsort(data[i])[::-1]
             for k in self.topns:
                 idx = indexes[:k]
-                self.collect(idx, target[i], self.collector['top%d'%k])
+                self.collect(idx, target[i], self.collector['top%d' % k])
 
     def compute_one_recall(self, tp, fn):
         empty = 0
@@ -156,12 +156,12 @@ class AttrCalculator(object):
         self.compute_recall()
         print('[ Recall Rate ]')
         for k in self.topns:
-            print('top%d = %.2f' % (k, self.recall['top%d'%k]))
+            print('top%d = %.2f' % (k, self.recall['top%d' % k]))
 
         self.compute_accuracy()
         print('[ Accuracy ]')
         for k in self.topns:
-            print('top%d = %.2f' % (k, self.accuracy['top%d'%k]))
+            print('top%d = %.2f' % (k, self.accuracy['top%d' % k]))
         print('\n')
 
     def show_per_attr_result(self):
@@ -169,9 +169,9 @@ class AttrCalculator(object):
             tp = top['tp']
             tn = top['tn']
             accuracy = np.zeros(tp.shape)
-            print("------------- %s Per-Attribute Accuracy -------------" % key)
+            print("------------- %s Per-Attribute Accuracy -------------" %
+                  key)
             for i, num in enumerate(tp):
                 accuracy[i] = float(tp[i] + tn[i]) / float(self.total)
                 # i: attribute index
-                print('%s %.2f'% (self.attr_dict[i], accuracy[i]))
-                
+                print('%s %.2f' % (self.attr_dict[i], accuracy[i]))

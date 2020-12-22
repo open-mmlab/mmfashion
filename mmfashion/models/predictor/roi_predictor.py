@@ -15,7 +15,7 @@ class RoIPredictor(BasePredictor):
                  roi_pool=None,
                  pretrained=None):
         super(RoIPredictor, self).__init__()
-  
+
         self.backbone = builder.build_backbone(backbone)
         self.global_pool = builder.build_global_pool(global_pool)
 

@@ -4,6 +4,7 @@ from mmcv.runner import load_checkpoint
 
 from ..registry import FEATUREEXTRACTOR
 
+
 @FEATUREEXTRACTOR.register_module
 class FeatureExtractor(nn.Module):
 
@@ -14,16 +15,18 @@ class FeatureExtractor(nn.Module):
                  norm_layer=nn.BatchNorm2d):
         super(FeatureExtractor, self).__init__()
         # downsample layer
-        downconv = nn.Conv2d(in_channels, ngf, kernel_size=4, stride=2, padding=1)
+        downconv = nn.Conv2d(
+            in_channels, ngf, kernel_size=4, stride=2, padding=1)
         layers = [downconv, nn.ReLU(True), norm_layer(ngf)]
         for i in range(n_layers):
             if 2**i * ngf < 512:
                 in_ngf = 2**i * ngf
-                out_ngf = 2**(i+1) * ngf
+                out_ngf = 2**(i + 1) * ngf
             else:
                 in_ngf = 512
                 out_ngf = 512
-            downconv = nn.Conv2d(in_ngf, out_ngf, kernel_size=4, stride=2, padding=1)
+            downconv = nn.Conv2d(
+                in_ngf, out_ngf, kernel_size=4, stride=2, padding=1)
             layers += [downconv, nn.ReLU(True), norm_layer(out_ngf)]
         # last layer in feature extractor
         downconv = nn.Conv2d(512, 512, kernel_size=3, stride=1, padding=1)

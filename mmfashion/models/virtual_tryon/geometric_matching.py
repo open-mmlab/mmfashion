@@ -2,11 +2,12 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from ..import builder
 from ..registry import GEOMETRICMATCHING
+
 
 @GEOMETRICMATCHING.register_module
 class GeometricMatching(nn.Module):
+
     def __init__(self,
                  feature_extractor_a,
                  feature_extractor_b,
@@ -16,16 +17,20 @@ class GeometricMatching(nn.Module):
                  tps_warp,
                  loss=dict(type='L1Loss'),
                  pretrained=None):
-        
+
         super(GeometricMatching, self).__init__()
-        
-        self.feature_extractora_a = builder.build_feature_extractor(feature_extractor_a)
-        self.feature_extractora_b = builder.build_feature_extractor(feature_extractor_b)
-        
+
+        self.feature_extractora_a = builder.build_feature_extractor(
+            feature_extractor_a)
+        self.feature_extractora_b = builder.build_feature_extractor(
+            feature_extractor_b)
+
         self.feature_norm = builder.build_feature_norm(feature_norm)
-        self.feature_correlation = builder.build_feature_correlation(feature_correlation)
-        self.feature_regression = builder.build_feature_regression(feature_regression)
-        
+        self.feature_correlation = builder.build_feature_correlation(
+            feature_correlation)
+        self.feature_regression = builder.build_feature_regression(
+            feature_regression)
+
         self.tps_warp = builder.build_tps_warp(tps_warp)
 
         self.loss = builder.build_loss(loss)
@@ -41,7 +46,7 @@ class GeometricMatching(nn.Module):
         theta = self.feature_regression(correlation)
         grid = self.tps_warp(theta)
         return grid, theta
-    
+
     def forward_train(self, agnostic, cloth, parse_cloth):
         grid, theta = self.forward_feature(agnostic, cloth)
         warped_cloth = F.grid_sample(cloth, grid, padding_mode='border')

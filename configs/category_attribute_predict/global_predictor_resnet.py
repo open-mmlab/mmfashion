@@ -30,11 +30,7 @@ model = dict(
         type='CatePredictor',
         inchannels=2048,
         outchannels=category_num,
-        loss_cate=dict(
-            type='CELoss',
-            ratio=1,
-            weight=None,
-            reduction='mean')),
+        loss_cate=dict(type='CELoss', ratio=1, weight=None, reduction='mean')),
     pretrained='checkpoint/resnet50.pth')
 
 pooling = 'RoI'
@@ -63,8 +59,10 @@ data = dict(
         cate_file=os.path.join(data_root, 'Anno_fine/test_cate.txt'),
         bbox_file=os.path.join(data_root, 'Anno_fine/test_bbox.txt'),
         landmark_file=os.path.join(data_root, 'Anno_fine/test_landmarks.txt'),
-        attr_cloth_file=os.path.join(data_root, 'Anno_fine/list_attr_cloth.txt'),
-        cate_cloth_file=os.path.join(data_root, 'Anno_fine/list_category_cloth.txt'),
+        attr_cloth_file=os.path.join(data_root,
+                                     'Anno_fine/list_attr_cloth.txt'),
+        cate_cloth_file=os.path.join(data_root,
+                                     'Anno_fine/list_category_cloth.txt'),
         img_size=img_size),
     val=dict(
         type=dataset_type,

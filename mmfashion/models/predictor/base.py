@@ -34,7 +34,12 @@ class BasePredictor(nn.Module):
     def forward_train(self, img, landmark, attr, cate):
         pass
 
-    def forward(self, img, attr=None, cate=None, landmark=None, return_loss=True):
+    def forward(self,
+                img,
+                attr=None,
+                cate=None,
+                landmark=None,
+                return_loss=True):
         if return_loss:
             return self.forward_train(img, landmark, attr, cate)
         else:

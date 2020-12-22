@@ -1,6 +1,7 @@
 from __future__ import division
 import argparse
 import os
+
 from mmcv import Config
 
 from mmfashion.apis import (get_root_logger, init_dist, set_random_seed,
@@ -8,6 +9,7 @@ from mmfashion.apis import (get_root_logger, init_dist, set_random_seed,
 from mmfashion.datasets import get_dataset
 from mmfashion.models import build_geometric_matching, build_tryon
 from mmfashion.utils import init_weights_from
+
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -19,8 +21,7 @@ def parse_args():
     parser.add_argument(
         '--stage',
         required=True,
-        help='train GMM(Geometric Matching Module) or TOM(Try-On Module)'
-    )
+        help='train GMM(Geometric Matching Module) or TOM(Try-On Module)')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument(
         '--resume_from', help='the checkpoint file to resume from')
@@ -70,26 +71,28 @@ def main():
         print('Geometric Matching Module built')
         dataset = get_dataset(cfg.data.train.GMM)
         print('GMM dataset loaded')
-        train_geometric_matching(model,
-                                 dataset,
-                                 cfg,
-                                 distributed=distributed,
-                                 validate=args.validate,
-                                 logger=logger)
+        train_geometric_matching(
+            model,
+            dataset,
+            cfg,
+            distributed=distributed,
+            validate=args.validate,
+            logger=logger)
     elif args.stage == 'TOM':
         model = build_tryon(cfg.TOM)
         print('Try-On Module built')
         dataset = get_dataset(cfg.data.train.TOM)
         print('TOM dataset loaded')
-        train_tryon(model,
-                    dataset,
-                    cfg,
-                    distributed=distributed,
-                    validate=args.validate,
-                    logger=logger)
+        train_tryon(
+            model,
+            dataset,
+            cfg,
+            distributed=distributed,
+            validate=args.validate,
+            logger=logger)
     else:
         raise ValueError('stage should be GMM or TOM')
 
-    
+
 if __name__ == '__main__':
     main()

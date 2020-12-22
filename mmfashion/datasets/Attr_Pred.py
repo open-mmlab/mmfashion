@@ -107,7 +107,7 @@ class AttrDataset(Dataset):
             # here no landmark will be used, just use zero for initialization
             # (global predictor)
             landmark = torch.zeros(8)
-        
+
         data = {'img': img, 'attr': label, 'cate': cate, 'landmark': landmark}
         return data
 

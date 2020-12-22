@@ -1,11 +1,11 @@
 from __future__ import division
-
 import os
+
 import numpy as np
 import torch
 
-from ..utils import save_imgs
 from ..datasets import build_dataloader
+from ..utils import save_imgs
 from .env import get_root_logger
 
 
@@ -52,13 +52,11 @@ def _non_dist_test_gmm(model, dataset, cfg, validate=False):
         agnostic = data['agnostic'].cuda()
         parse_cloth = data['parse_cloth'].cuda()
 
-        warped_cloth, warped_mask = model(cloth,
-                                          cloth_mask,
-                                          agnostic,
-                                          parse_cloth,
-                                          return_loss=False)
+        warped_cloth, warped_mask = model(
+            cloth, cloth_mask, agnostic, parse_cloth, return_loss=False)
         save_imgs(warped_cloth, c_name, warp_cloth_dir)
         save_imgs(warped_mask, c_name, warp_mask_dir)
+
 
 def test_tryon(model,
                dataset,
@@ -74,6 +72,7 @@ def test_tryon(model,
         _dist_test(model, dataset, cfg, validate=validate)
     else:
         _non_dist_test_tryon(model, dataset, cfg, validate=validate)
+
 
 def _non_dist_test_tryon(model, dataset, cfg, validate=False):
     data_loader = build_dataloader(
@@ -99,11 +98,7 @@ def _non_dist_test_tryon(model, dataset, cfg, validate=False):
         agnostic = data['agnostic'].cuda()
         im_names = data['im_name']
 
-        p_tryon = model(img,
-                        cloth,
-                        cloth_mask,
-                        agnostic,
-                        return_loss=False)
+        p_tryon = model(img, cloth, cloth_mask, agnostic, return_loss=False)
 
         save_imgs(p_tryon, im_names, try_on_dir)
 

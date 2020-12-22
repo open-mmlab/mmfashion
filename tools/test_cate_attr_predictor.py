@@ -65,12 +65,13 @@ def main():
     print('load checkpoint from: {}'.format(cfg.load_from))
 
     # test
-    test_cate_attr_predictor(model,
-                             dataset,
-                             cfg,
-                             distributed=distributed,
-                             validate=args.validate,
-                             logger=logger)
+    test_cate_attr_predictor(
+        model,
+        dataset,
+        cfg,
+        distributed=distributed,
+        validate=args.validate,
+        logger=logger)
 
 
 if __name__ == '__main__':

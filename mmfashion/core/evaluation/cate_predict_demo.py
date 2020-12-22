@@ -36,5 +36,5 @@ class CatePredictor(object):
             indexes = np.argsort(data[i])[::-1]
             for topk in self.tops_type:
                 idxes = indexes[:topk]
-                print('[ Top%d Category Prediction ]'%topk)
+                print('[ Top%d Category Prediction ]' % topk)
                 self.print_cate_name(idxes)

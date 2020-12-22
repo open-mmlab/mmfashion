@@ -52,6 +52,7 @@ def train_geometric_matching(model,
     else:
         _non_dist_train(model, dataset, cfg, validate=validate)
 
+
 def train_tryon(model,
                 dataset,
                 cfg,
@@ -71,6 +72,7 @@ def train_tryon(model,
 def _dist_train(model, dataset, cfg, validate=False):
     """ not implemented yet """
     raise NotImplementedError
+
 
 def _non_dist_train(model, dataset, cfg, validate=False):
     # prepare data loaders

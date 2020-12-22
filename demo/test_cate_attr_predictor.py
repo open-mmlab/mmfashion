@@ -1,7 +1,7 @@
 from __future__ import division
 import argparse
-import torch
 
+import torch
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
@@ -26,7 +26,8 @@ def parse_args():
     parser.add_argument(
         '--config',
         help='test config file path',
-        default='configs/category_attribute_predict/global_predictor_resnet.py')
+        default='configs/category_attribute_predict/global_predictor_resnet.py'
+    )
     parser.add_argument(
         '--use_cuda', type=bool, default=True, help='use gpu or not')
     args = parser.parse_args()
@@ -52,8 +53,8 @@ def main():
     model.eval()
 
     # predict probabilities for each attribute
-    attr_prob, cate_prob = model(img_tensor, attr=None,
-                                 landmark=landmark_tensor, return_loss=False)
+    attr_prob, cate_prob = model(
+        img_tensor, attr=None, landmark=landmark_tensor, return_loss=False)
     attr_predictor = AttrPredictor(cfg.data.test)
     cate_predictor = CatePredictor(cfg.data.test)
 

@@ -1,4 +1,5 @@
 import os
+
 import torch.nn as nn
 
 # model setting
@@ -6,20 +7,11 @@ import torch.nn as nn
 GMM = dict(
     type='GeometricMatching',
     feature_extractor_a=dict(
-        type='FeatureExtractor',
-        in_channels=22,
-        ngf=64,
-        n_layers=3),
+        type='FeatureExtractor', in_channels=22, ngf=64, n_layers=3),
     feature_extractor_b=dict(
-        type='FeatureExtractor',
-        in_channels=3,
-        ngf=64,
-        n_layers=3),
-    feature_norm=dict(
-        type='FeatureNorm',
-        eps=1e-6),
-    feature_correlation=dict(
-        type='FeatureCorrelation'),
+        type='FeatureExtractor', in_channels=3, ngf=64, n_layers=3),
+    feature_norm=dict(type='FeatureNorm', eps=1e-6),
+    feature_correlation=dict(type='FeatureCorrelation'),
     feature_regression=dict(
         type='FeatureRegression',
         in_channels=192,
@@ -50,8 +42,7 @@ TOM = dict(
     loss_l1=dict(type='L1Loss'),
     loss_vgg=dict(type='VGGLoss'),
     loss_mask=dict(type='L1Loss'),
-    pretrained=None
-)
+    pretrained=None)
 
 # dataset settings
 dataset_type = 'CP_VTON'
@@ -111,8 +102,7 @@ lr_config = dict(
     warmup='linear',
     warmup_iters=100000,
     warmup_ratio=0.1,
-    step=[18, 20]
-)
+    step=[18, 20])
 
 checkpoint_config = dict(interval=2)
 log_config = dict(

@@ -10,8 +10,8 @@ from .Polyvore_outfit import PolyvoreOutfitDataset
 from .utils import get_dataset, to_tensor
 
 __all__ = [
-    'InShopDataset', 'AttrDataset', 'ConsumerToShopDataset',
-    'CPVTONDataset', 'PolyvoreOutfitDataset', 'LandmarkDetectDataset',
-    'to_tensor', 'get_dataset', 'GroupSampler', 'DistributedGroupSampler',
+    'InShopDataset', 'AttrDataset', 'ConsumerToShopDataset', 'CPVTONDataset',
+    'PolyvoreOutfitDataset', 'LandmarkDetectDataset', 'to_tensor',
+    'get_dataset', 'GroupSampler', 'DistributedGroupSampler',
     'build_dataloader', 'build_dataset', 'ConcatDataset'
 ]

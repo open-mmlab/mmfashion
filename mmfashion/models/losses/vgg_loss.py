@@ -1,15 +1,17 @@
 import torch
-import torchvision
 import torch.nn as nn
 import torch.nn.functional as F
+import torchvision
 
 from ..registry import LOSSES
 
 
 class Vgg19(nn.Module):
+
     def __init__(self, requires_grad=False):
         super(Vgg19, self).__init__()
-        vgg_pretrained_features = torchvision.models.vgg19(pretrained=True).features
+        vgg_pretrained_features = torchvision.models.vgg19(
+            pretrained=True).features
         self.slice1 = nn.Sequential()
         self.slice2 = nn.Sequential()
         self.slice3 = nn.Sequential()
@@ -42,8 +44,7 @@ class Vgg19(nn.Module):
 @LOSSES.register_module
 class VGGLoss(nn.Module):
 
-    def __init__(self,
-                 layerids=None):
+    def __init__(self, layerids=None):
         super(VGGLoss, self).__init__()
         self.vgg = Vgg19()
         self.vgg.cuda()
@@ -59,5 +60,6 @@ class VGGLoss(nn.Module):
 
         loss = 0.
         for i in self.layerids:
-            loss += self.weights[i] * self.criterion(input_vgg[i], target_vgg[i].detach())
+            loss += self.weights[i] * self.criterion(input_vgg[i],
+                                                     target_vgg[i].detach())
         return loss

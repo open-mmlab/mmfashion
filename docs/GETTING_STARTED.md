@@ -27,15 +27,15 @@ Assume that you have already downloaded the checkpoints to `checkpoints/`.
     python demo/test_attr_predictor.py \
         --input demo/imgs/attr_pred_demo1.jpg
     ```
-   
+
    Test a category and attribute predictor(**more accurate** prediction).
-   
+
    ```sh
     # Prepare `Anno/list_attr_cloth.txt` which is specified in `configs/category_attribute_predict/global_predictor_vgg_attr.py`
     python demo/test_cate_attr_predictor.py \
         --input demo/imgs/attr_pred_demo1.jpg
    ```
-  
+
 2. Test an in-shop / Consumer-to_shop clothes retriever.
 
     ```sh
@@ -78,15 +78,15 @@ Assume that you have already downloaded the checkpoints to `checkpoints/` and pr
         --config configs/attribute_predict/roi_predictor_vgg_attr.py \
         --checkpoint checkpoint/Predict/vgg/roi/latest.pth
     ```
-   
+
    Test a category and attribute predictor.
-   
+
    ```
    python test tools/test_cate_attr_predictor.py \
         --config configs/category_attribute_predict/roi_predictor_vgg.py \
-        --checkpoint checkpoint/CateAttrPredict/vgg/roi/latest.pth 
+        --checkpoint checkpoint/CateAttrPredict/vgg/roi/latest.pth
    ```
-   
+
 2. Test an in-shop / Consumer-to_shop clothes retriever.
 
     ```sh
@@ -116,26 +116,26 @@ Assume that you have already downloaded the checkpoints to `checkpoints/` and pr
         --config configs/fashion_recommendation/type_aware_recommendation_polyvore_disjoint.py
         --checkpoint checkpoint/FashionRecommend/TypeAware/latest.pth
     ```
-   
+
 
 6. Test a virtual try-on module.
-   
+
    Step 1, use the geometric matching module(GMM) to generate warp-cloth and warp-mask,
    ```sh
     python tools/test_virtual_tryon.py \
         --config configs/virtual_tryon/cp_vton.py \
         --stage GMM
     ```
-   
-    Step 2, use the tryon module(TOM) to generate the results. 
+
+    Step 2, use the tryon module(TOM) to generate the results.
     The default result directory is `data/VTON/result`, you can modify the path in config file(line 103).
    ```sh
     python tools/test_virtual_tryon.py \
         --config configs/virtual_tryon/cp_vton.py \
         --stage TOM
     ```
-   
-   
+
+
 
 ## Train a model
 
@@ -188,39 +188,39 @@ Examples:
     ```
 
 6. Train a virtual try-on module.
-   
+
    Step 1, train a geometric matching module(GMM)
    ```sh
     python tools/train_virtual_tryon.py \
         --config configs/virtual_tryon/cp_vton.py \
         --stage GMM
     ```
-   
+
     After training GMM, you need to generate the training images which are required by Step 2.
-    
+
     **Note** that you need to modify the config file `configs/virtual_tryon/cp_vton.py` as follows,
-    
+
     Line 87 should be `datamode='train'`,
-    
+
     Line 89 should be `data_list='test_pairs.txt'`,
-    
+
     Line 93 should be `save_dir=os.path.join(data_root, 'vton_resize', 'train')`
-    
-    Then,  
+
+    Then,
    ```sh
     python tools/test_virtual_tryon.py \
         --config configs/virtual_tryon/cp_vton.py \
         --stage GMM
     ```
-   
+
    Step 2, train a tryon module(TOM),
    ```sh
     python tools/train_virtual_tryon.py \
         --config configs/virtual_tryon/cp_vton.py \
         --stage TOM
     ```
-   
-   
+
+
 
 ## Use custom datasets
 

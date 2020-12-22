@@ -4,9 +4,11 @@ import argparse
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
-from mmfashion.apis import get_root_logger, init_dist, test_geometric_matching, test_tryon
+from mmfashion.apis import (get_root_logger, init_dist,
+                            test_geometric_matching, test_tryon)
 from mmfashion.datasets.utils import get_dataset
 from mmfashion.models import build_geometric_matching, build_tryon
+
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -18,8 +20,7 @@ def parse_args():
     parser.add_argument(
         '--stage',
         required=True,
-        help='test GMM(Geometric Matching Module) or TOM(Try-On Module)'
-    )
+        help='test GMM(Geometric Matching Module) or TOM(Try-On Module)')
     parser.add_argument('--work_dir', help='the dir to save logs and models')
     parser.add_argument(
         '--checkpoint',

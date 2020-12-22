@@ -3,8 +3,10 @@ import torch.nn as nn
 
 from ..registry import FEATUREREGRESSION
 
+
 @FEATUREREGRESSION.register_module
 class FeatureRegression(nn.Module):
+
     def __init__(self,
                  in_channels=512,
                  out_channels=6,
@@ -12,21 +14,35 @@ class FeatureRegression(nn.Module):
         super(FeatureRegression, self).__init__()
 
         self.conv_layers = nn.Sequential(
-            nn.Conv2d(in_channels, inter_channels[0], kernel_size=4, stride=2, padding=1),
+            nn.Conv2d(
+                in_channels,
+                inter_channels[0],
+                kernel_size=4,
+                stride=2,
+                padding=1),
             nn.BatchNorm2d(inter_channels[0]),
             nn.ReLU(inplace=True),
-            nn.Conv2d(inter_channels[0], inter_channels[1], kernel_size=4, stride=2, padding=1),
+            nn.Conv2d(
+                inter_channels[0],
+                inter_channels[1],
+                kernel_size=4,
+                stride=2,
+                padding=1),
             nn.BatchNorm2d(inter_channels[1]),
             nn.ReLU(inplace=True),
-            nn.Conv2d(inter_channels[1], inter_channels[2], kernel_size=3, padding=1),
+            nn.Conv2d(
+                inter_channels[1], inter_channels[2], kernel_size=3,
+                padding=1),
             nn.BatchNorm2d(inter_channels[2]),
             nn.ReLU(inplace=True),
-            nn.Conv2d(inter_channels[2], inter_channels[3], kernel_size=3, padding=1),
+            nn.Conv2d(
+                inter_channels[2], inter_channels[3], kernel_size=3,
+                padding=1),
             nn.BatchNorm2d(inter_channels[3]),
             nn.ReLU(inplace=True),
         )
 
-        self.linear = nn.Linear(inter_channels[3]*4*3, out_channels)
+        self.linear = nn.Linear(inter_channels[3] * 4 * 3, out_channels)
         self.tanh = nn.Tanh()
 
     def forward(self, x):

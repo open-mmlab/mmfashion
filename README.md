@@ -7,7 +7,7 @@
 
 ## Introduction
 
-[[Technical Report]](https://arxiv.org/abs/2005.08847)  
+[[Technical Report]](https://arxiv.org/abs/2005.08847)
 
 `MMFashion` is an open source visual fashion analysis toolbox based on [PyTorch](https://pytorch.org/). It is a part of the [open-mmlab](https://github.com/open-mmlab) project developed by [Multimedia Lab, CUHK](http://mmlab.ie.cuhk.edu.hk/).
 

@@ -1,14 +1,15 @@
 from __future__ import division
+import json
 import os
+
+import numpy as np
 import torch
 import torchvision.transforms as transforms
+from PIL import Image, ImageDraw
 from torch.utils.data.dataset import Dataset
 
-from PIL import Image, ImageDraw
-import numpy as np
-import json
-
 from .registry import DATASETS
+
 
 @DATASETS.register_module
 class CPVTONDataset(Dataset):
@@ -24,7 +25,7 @@ class CPVTONDataset(Dataset):
                  radius=5):
         super(CPVTONDataset, self).__init__()
         self.dataroot = dataroot
-        self.datamode = datamode # train, test, self-defined
+        self.datamode = datamode  # train, test, self-defined
         self.stage = stage
         self.data_list = data_list
         self.fine_height = fine_height
@@ -32,17 +33,14 @@ class CPVTONDataset(Dataset):
         self.radius = radius
         self.data_path = os.path.join(self.dataroot, datamode)
 
-        normalize = transforms.Normalize(
-            (0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-        self.transform = transforms.Compose([
-            transforms.ToTensor(),
-            normalize
-        ])
+        normalize = transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        self.transform = transforms.Compose([transforms.ToTensor(), normalize])
 
         # load data list
         im_names = []
         c_names = []
-        with open(os.path.join(self.dataroot, self.datamode, data_list), 'r') as rf:
+        with open(os.path.join(self.dataroot, self.datamode, data_list),
+                  'r') as rf:
             for line in rf.readlines():
                 # get person img and in-shop cloth c
                 im_name, c_name = line.strip().split()
@@ -65,7 +63,7 @@ class CPVTONDataset(Dataset):
             cm = Image.open(os.path.join(self.data_path, 'warp-mask', c_name))
         c = self.transform(c)
         cm_array = np.array(cm)
-        cm_array = (cm_array>128).astype(np.float32)
+        cm_array = (cm_array > 128).astype(np.float32)
         cm = torch.from_numpy(cm_array).unsqueeze_(0)
 
         # person image
@@ -74,9 +72,10 @@ class CPVTONDataset(Dataset):
 
         # parsing image
         parse_name = im_name.replace('.jpg', '.png')
-        im_parse = Image.open(os.path.join(self.data_path, 'image-parse', parse_name))
+        im_parse = Image.open(
+            os.path.join(self.data_path, 'image-parse', parse_name))
         parse_array = np.array(im_parse)
-        parse_shape = (parse_array>0).astype(np.float32)
+        parse_shape = (parse_array > 0).astype(np.float32)
         parse_head = (parse_array==1).astype(np.float32) \
                      + (parse_array==2).astype(np.float32) \
                      + (parse_array==4).astype(np.float32) \
@@ -86,16 +85,18 @@ class CPVTONDataset(Dataset):
                      + (parse_array==7).astype(np.float32)
 
         # shape downsample
-        parse_shape = Image.fromarray((parse_shape*255).astype(np.uint8))
-        parse_shape = parse_shape.resize((self.fine_width//16, self.fine_height//16), Image.BILINEAR)
-        parse_shape = parse_shape.resize((self.fine_width, self.fine_height), Image.BILINEAR)
+        parse_shape = Image.fromarray((parse_shape * 255).astype(np.uint8))
+        parse_shape = parse_shape.resize(
+            (self.fine_width // 16, self.fine_height // 16), Image.BILINEAR)
+        parse_shape = parse_shape.resize((self.fine_width, self.fine_height),
+                                         Image.BILINEAR)
         shape = self.transform(parse_shape)
         phead = torch.from_numpy(parse_head)
         pcm = torch.from_numpy(parse_cloth)
 
         # upper cloth
-        im_c = im*pcm + (1-pcm) # [-1,1], fill 1 for other parts
-        im_h = im*phead - (1-phead) # [-1,1], fill 0 for other parts
+        im_c = im * pcm + (1 - pcm)  # [-1,1], fill 1 for other parts
+        im_h = im * phead - (1 - phead)  # [-1,1], fill 0 for other parts
 
         # load pose points
         pose_name = im_name.replace('.jpg', '_keypoints.json')
@@ -116,8 +117,12 @@ class CPVTONDataset(Dataset):
             pointx = pose_data[i, 0]
             pointy = pose_data[i, 1]
             if pointx > 1 and pointy > 1:
-                draw.rectangle((pointx-r, pointy-r, pointx+r, pointy+r), 'white', 'white')
-                pose_draw.rectangle((pointx-r, pointy-r, pointx+r, pointy+r), 'white', 'white')
+                draw.rectangle(
+                    (pointx - r, pointy - r, pointx + r, pointy + r), 'white',
+                    'white')
+                pose_draw.rectangle(
+                    (pointx - r, pointy - r, pointx + r, pointy + r), 'white',
+                    'white')
             one_map = self.transform(one_map)
             pose_map[i] = one_map[0]
 

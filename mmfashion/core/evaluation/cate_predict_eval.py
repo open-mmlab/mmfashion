@@ -5,6 +5,7 @@ import torch
 class CateCalculator(object):
     """Calculate Category prediction top-k recall rate
     """
+
     def __init__(self, cfg, topns=[1, 3]):
         self.collector = dict()
         self.num_cate = cfg.category_num
@@ -16,10 +17,9 @@ class CateCalculator(object):
             fn = np.zeros(self.num_cate)
             self.collector['top%s' % str(topi)]['tp'] = tp
             self.collector['top%s' % str(topi)]['fn'] = fn
-
         """ topn recall rate """
         self.recall = dict()
-        
+
         # collect target per category
         self.target_per_cate = np.zeros(self.num_cate)
 
@@ -31,15 +31,15 @@ class CateCalculator(object):
     def collect(self, indexes, target, topk):
         """calculate and collect recall rate
         Args:
-            indexes(list): predicted top-k indexes  
+            indexes(list): predicted top-k indexes
             target(list): ground-truth
             topk(str): top-k, e.g., top1, top3, top5
         """
-        for i, cnt in enumerate(self.collector[topk]['tp']): # true-positive
+        for i, cnt in enumerate(self.collector[topk]['tp']):  # true-positive
             if i in indexes and i in target:
                 self.collector[topk]['tp'][i] += 1
 
-        for i, cnt in enumerate(self.collector[topk]['fn']): # false negative
+        for i, cnt in enumerate(self.collector[topk]['fn']):  # false negative
             if i not in indexes and i in target:
                 self.collector[topk]['fn'][i] += 1
 
@@ -56,7 +56,7 @@ class CateCalculator(object):
             indexes = np.argsort(data[i])[::-1]
             for k in self.topns:
                 idx = indexes[:k]
-                self.collect(idx, target[i], 'top%d'%k)
+                self.collect(idx, target[i], 'top%d' % k)
 
     def compute_one_recall(self, tp, fn):
         empty = 0
@@ -74,7 +74,6 @@ class CateCalculator(object):
     def compute_recall(self):
         for key, top in self.collector.items():
             self.recall[key] = self.compute_one_recall(top['tp'], top['fn'])
-
 
     def show_result(self, batch_idx=None):
         print('----------- Category Prediction ----------')

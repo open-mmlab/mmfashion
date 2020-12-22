@@ -3,8 +3,10 @@ import torch.nn as nn
 
 from ..registry import FEATURENORM
 
+
 @FEATURENORM.register_module
 class FeatureNorm(nn.Module):
+
     def __init__(self, eps=1e-6):
         super(FeatureNorm, self).__init__()
         self.eps = eps

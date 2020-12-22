@@ -21,7 +21,7 @@ class GlobalAttrCatePredictor(BasePredictor):
         self.cate_predictor = builder.build_cate_predictor(cate_predictor)
 
         self.init_weights(pretrained)
-        
+
     def forward_train(self, x, landmarks, attr, cate):
         # landmarks will not be used in global predictor
         # 1. conv layers extract global features

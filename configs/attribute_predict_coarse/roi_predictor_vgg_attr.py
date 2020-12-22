@@ -53,7 +53,8 @@ data = dict(
         label_file=os.path.join(data_root, 'Anno_coarse/train_attr.txt'),
         cate_file=os.path.join(data_root, 'Anno_coarse/train_cate.txt'),
         bbox_file=os.path.join(data_root, 'Anno_coarse/train_bbox.txt'),
-        landmark_file=os.path.join(data_root, 'Anno_coarse/train_landmarks.txt'),
+        landmark_file=os.path.join(data_root,
+                                   'Anno_coarse/train_landmarks.txt'),
         img_size=img_size),
     test=dict(
         type=dataset_type,
@@ -62,8 +63,10 @@ data = dict(
         label_file=os.path.join(data_root, 'Anno_coarse/test_attr.txt'),
         cate_file=os.path.join(data_root, 'Anno_coarse/test_cate.txt'),
         bbox_file=os.path.join(data_root, 'Anno_coarse/test_bbox.txt'),
-        landmark_file=os.path.join(data_root, 'Anno_coarse/test_landmarks.txt'),
-        attr_cloth_file=os.path.join(data_root, 'Anno_coarse/list_attr_cloth.txt'),
+        landmark_file=os.path.join(data_root,
+                                   'Anno_coarse/test_landmarks.txt'),
+        attr_cloth_file=os.path.join(data_root,
+                                     'Anno_coarse/list_attr_cloth.txt'),
         img_size=img_size),
     val=dict(
         type=dataset_type,

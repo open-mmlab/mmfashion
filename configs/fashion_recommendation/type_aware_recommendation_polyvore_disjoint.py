@@ -27,8 +27,7 @@ model = dict(
         text_feature_dim=6000,
         embed_feature_dim=256,
         loss_vse=dict(type='L1NormLoss', loss_weight=5e-3, average=False),
-        loss_triplet=dict(
-            type='MarginRankingLoss', margin=0.3, loss_weight=1),
+        loss_triplet=dict(type='MarginRankingLoss', margin=0.3, loss_weight=1),
         loss_selective_margin=dict(
             type='SelectiveMarginLoss', margin=0.3, loss_weight=5e-5),
         learned_metric=True),

@@ -2,11 +2,12 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from ..import builder
 from ..registry import TRYON
+
 
 @TRYON.register_module
 class Tryon(nn.Module):
+
     def __init__(self,
                  ngf,
                  num_downs,
@@ -24,43 +25,46 @@ class Tryon(nn.Module):
         super(Tryon, self).__init__()
 
         unet_block = builder.build_unet_skip_connection_block(
-            dict(type='UnetSkipConnectionBlock',
-                 outer_nc=ngf*down_channels[0],
-                 inner_nc=ngf*down_channels[1],
-                 input_nc=None,
-                 submodule=None,
-                 norm_layer=norm_layer,
-                 innermost=True))
+            dict(
+                type='UnetSkipConnectionBlock',
+                outer_nc=ngf * down_channels[0],
+                inner_nc=ngf * down_channels[1],
+                input_nc=None,
+                submodule=None,
+                norm_layer=norm_layer,
+                innermost=True))
 
         for i in range(num_downs - 5):
             unet_block = builder.build_unet_skip_connection_block(
-                dict(type='UnetSkipConnectionBlock',
-                     outer_nc=ngf*inter_channels[0],
-                     inner_nc=ngf*inter_channels[1],
-                     input_nc=None,
-                     submodule=unet_block,
-                     norm_layer=norm_layer,
-                     use_dropout=use_dropout))
+                dict(
+                    type='UnetSkipConnectionBlock',
+                    outer_nc=ngf * inter_channels[0],
+                    inner_nc=ngf * inter_channels[1],
+                    input_nc=None,
+                    submodule=unet_block,
+                    norm_layer=norm_layer,
+                    use_dropout=use_dropout))
 
         # upsample
         for ratio in up_channels:
             unet_block = builder.build_unet_skip_connection_block(
-                dict(type='UnetSkipConnectionBlock',
-                     outer_nc=ngf*ratio[0],
-                     inner_nc=ngf*ratio[1],
-                     input_nc=None,
-                     submodule=unet_block,
-                     norm_layer=norm_layer))
+                dict(
+                    type='UnetSkipConnectionBlock',
+                    outer_nc=ngf * ratio[0],
+                    inner_nc=ngf * ratio[1],
+                    input_nc=None,
+                    submodule=unet_block,
+                    norm_layer=norm_layer))
 
         unet_block = builder.build_unet_skip_connection_block(
-            dict(type='UnetSkipConnectionBlock',
-                 outer_nc=out_channels,
-                 inner_nc=ngf,
-                 input_nc=in_channels,
-                 submodule=unet_block,
-                 outermost=True,
-                 norm_layer=norm_layer)
-        )
+            dict(
+                type='UnetSkipConnectionBlock',
+                outer_nc=out_channels,
+                inner_nc=ngf,
+                input_nc=in_channels,
+                submodule=unet_block,
+                outermost=True,
+                norm_layer=norm_layer))
         self.generator = unet_block
 
         self.loss_l1 = builder.build_loss(loss_l1)
@@ -95,7 +99,6 @@ class Tryon(nn.Module):
         p_tryon = cloth * m_composite + p_rendered * (1 - m_composite)
 
         return p_tryon
-
 
     def forward(self,
                 img,

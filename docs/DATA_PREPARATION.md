@@ -86,7 +86,7 @@ Note that if you use "Anno_fine" that contains 26 better-labeled attributes, not
 
 If you use run "Anno_coarse" that contains 1000 roughly labeled attributes,
  first run the following script to re-organize them.
- `python prepare_attr_pred.py` 
+ `python prepare_attr_pred.py`
 
 Please refer to [dataset/ATTR_DATASET.md](dataset/ATTR_DATASET.md) for more info.
 
@@ -198,11 +198,11 @@ Polyvore
 
 ## Prepare VTON dataset
 
-VTON dataset is used for virtual try-on task. 
-It is first collected by [Han](https://arxiv.org/abs/1711.08447), containing around 19,000 front-view woman and top clothing image pairs. 
-Here, we use a better sorted and grouped version from [Wang](https://arxiv.org/abs/1807.07688). 
+VTON dataset is used for virtual try-on task.
+It is first collected by [Han](https://arxiv.org/abs/1711.08447), containing around 19,000 front-view woman and top clothing image pairs.
+Here, we use a better sorted and grouped version from [Wang](https://arxiv.org/abs/1807.07688).
 
-Download [VTON](https://drive.google.com/file/d/1MxCUvKxejnwWnoZ-KoCyMCXo3TLhRuTo/view) 
+Download [VTON](https://drive.google.com/file/d/1MxCUvKxejnwWnoZ-KoCyMCXo3TLhRuTo/view)
 and put it in the `data/`
 
 The file tree should be like this:

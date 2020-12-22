@@ -89,9 +89,11 @@ def _non_dist_test_cate_attr(model, dataset, cfg, validate=False):
     model = MMDataParallel(model, device_ids=cfg.gpus.test).cuda()
     model.eval()
 
-    attr_calculator = AttrCalculator(cfg, topns=[3, 5],
-                                     show_attr_name=True,
-                                     attr_name_file=cfg.data.test['attr_cloth_file'])
+    attr_calculator = AttrCalculator(
+        cfg,
+        topns=[3, 5],
+        show_attr_name=True,
+        attr_name_file=cfg.data.test['attr_cloth_file'])
     cate_calculator = CateCalculator(cfg, topns=[1, 3, 5])
 
     for batch_idx, testdata in enumerate(data_loader):
@@ -100,7 +102,8 @@ def _non_dist_test_cate_attr(model, dataset, cfg, validate=False):
         attr = testdata['attr']
         cate = testdata['cate']
 
-        attr_pred, cate_pred = model(imgs, attr, landmark=landmark, return_loss=False)
+        attr_pred, cate_pred = model(
+            imgs, attr, landmark=landmark, return_loss=False)
 
         attr_calculator.collect_result(attr_pred, attr)
         cate_calculator.collect_result(cate_pred, cate)
@@ -116,6 +119,7 @@ def _non_dist_test_cate_attr(model, dataset, cfg, validate=False):
 
 def _dist_test_attr(model, dataset, cfg, validate=False):
     raise NotImplementedError
+
 
 def _dist_test_cate_attr(model, dataset, cfg, validate=False):
     raise NotImplementedError

@@ -2,11 +2,12 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from ..import builder
 from ..registry import UNETSKIPCONNECTIONBLOCK
+
 
 @UNETSKIPCONNECTIONBLOCK.register_module
 class UnetSkipConnectionBlock(nn.Module):
+
     def __init__(self,
                  outer_nc,
                  inner_nc,
@@ -24,7 +25,13 @@ class UnetSkipConnectionBlock(nn.Module):
         if input_nc is None:
             input_nc = outer_nc
 
-        downconv = nn.Conv2d(input_nc, inner_nc, kernel_size=4, stride=2, padding=1, bias=use_bias)
+        downconv = nn.Conv2d(
+            input_nc,
+            inner_nc,
+            kernel_size=4,
+            stride=2,
+            padding=1,
+            bias=use_bias)
         downrelu = nn.LeakyReLU(0.2, True)
         downnorm = norm_layer(inner_nc)
         uprelu = nn.ReLU(True)
@@ -32,19 +39,37 @@ class UnetSkipConnectionBlock(nn.Module):
 
         if outermost:
             upsample = nn.Upsample(scale_factor=2, mode='bilinear')
-            upconv = nn.Conv2d(inner_nc * 2, outer_nc, kernel_size=3, stride=1, padding=1, bias=use_bias)
+            upconv = nn.Conv2d(
+                inner_nc * 2,
+                outer_nc,
+                kernel_size=3,
+                stride=1,
+                padding=1,
+                bias=use_bias)
             down = [downconv]
             up = [uprelu, upsample, upconv, upnorm]
             unet = down + [submodule] + up
         elif innermost:
             upsample = nn.Upsample(scale_factor=2, mode='bilinear')
-            upconv = nn.Conv2d(inner_nc, outer_nc, kernel_size=3, stride=1, padding=1, bias=use_bias)
+            upconv = nn.Conv2d(
+                inner_nc,
+                outer_nc,
+                kernel_size=3,
+                stride=1,
+                padding=1,
+                bias=use_bias)
             down = [downrelu, downconv]
             up = [uprelu, upsample, upconv, upnorm]
             unet = down + up
         else:
             upsample = nn.Upsample(scale_factor=2, mode='bilinear')
-            upconv = nn.Conv2d(inner_nc * 2, outer_nc, kernel_size=3, stride=1, padding=1, bias=use_bias)
+            upconv = nn.Conv2d(
+                inner_nc * 2,
+                outer_nc,
+                kernel_size=3,
+                stride=1,
+                padding=1,
+                bias=use_bias)
             down = [downrelu, downconv, downnorm]
             up = [uprelu, upsample, upconv, upnorm]
 

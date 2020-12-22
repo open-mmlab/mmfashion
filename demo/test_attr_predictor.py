@@ -1,7 +1,7 @@
 from __future__ import division
 import argparse
-import torch
 
+import torch
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
@@ -51,8 +51,8 @@ def main():
     model.eval()
 
     # predict probabilities for each attribute
-    attr_prob = model(img_tensor, attr=None,
-                      landmark=landmark_tensor, return_loss=False)
+    attr_prob = model(
+        img_tensor, attr=None, landmark=landmark_tensor, return_loss=False)
     attr_predictor = AttrPredictor(cfg.data.test)
 
     attr_predictor.show_prediction(attr_prob)
