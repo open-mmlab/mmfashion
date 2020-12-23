@@ -29,3 +29,13 @@ mmfashion
 ├── data
 └── ...
 ```
+
+##Demos
+
+This script performs inference on a single image. Please run the following scripts under mmdetection folder.
+```sh
+python tools/demo.py \
+    --config ${CONFIG_FILE}$ \
+    --checkpoint ${CHECKPOINT_FILE}$ \
+    --input ${IMAGE_FILE}$
+```
