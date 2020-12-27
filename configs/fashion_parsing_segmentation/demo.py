@@ -21,12 +21,15 @@ def parse_args():
         help='input image path',
         default='demo/01_4_full.jpg')
 
+    args = parser.parse_args()
+    return args
+
 
 def main():
     args = parse_args()
 
     # build the model from a config file and a checkpoint file
-    model = init_detector(args.config_file, args.checkpoint, device='cuda:0')
+    model = init_detector(args.config, args.checkpoint, device='cuda:0')
 
     # test a single image and show the results
     img = args.input
@@ -36,3 +39,7 @@ def main():
     # or save the visualization results to image files
     show_result(
         img, result, model.CLASSES, out_file=img.split('.')[0] + '_result.jpg')
+
+
+if __name__ == "__main__":
+    main()

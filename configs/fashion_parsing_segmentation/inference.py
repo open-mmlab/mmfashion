@@ -148,16 +148,20 @@ def show_result(img,
         bbox_result, segm_result = result, None
 
     ###########################################
-    # remove duplicate
+    # for one class, only keep one bbox and one segm with highest confidence
     new_bbox_result = []
-    for ti, temp in enumerate(bbox_result):
-        if len(temp) <= 1:
-            new_bbox_result.append(temp)
+    new_segm_result = []
+    for bbox, segm in zip(bbox_result, segm_result):
+        if len(bbox) <= 1:
+            new_bbox_result.append(bbox)
+            new_segm_result.append(segm)
             continue
-        new_temp = sorted(temp, key=lambda x: x[-1])[-1]
-        new_bbox_result.append(np.asarray([new_temp]))
+        max_ind = np.argmax(bbox[:, -1])
+        new_segm_result.append(np.asarray([segm[max_ind]]))
+        new_bbox_result.append(np.asarray([bbox[max_ind]]))
 
     bbox_result = new_bbox_result
+    segm_result = new_segm_result
     #########################################
 
     bboxes = np.vstack(bbox_result)

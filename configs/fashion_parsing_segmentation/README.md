@@ -29,3 +29,21 @@ mmfashion
 ├── data
 └── ...
 ```
+
+## Requirements
+
+- PyTorch 1.3.0
+- mmcv 0.5.1
+- Pillow 6.2.2
+
+Please note that the requirements for the "fashion parsing and segmentation" module is different from the requirements for other module, because the submodule "mmdection" should be installed under this requirements.
+
+## Demos
+
+This script performs inference on a single image. Please run the following scripts under mmdetection folder.
+```sh
+python tools/demo.py \
+    --config ${CONFIG_FILE}$ \
+    --checkpoint ${CHECKPOINT_FILE}$ \
+    --input ${IMAGE_FILE}$
+```
