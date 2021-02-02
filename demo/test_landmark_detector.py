@@ -45,7 +45,7 @@ def main():
 
     args = parse_args()
     cfg = Config.fromfile(args.config)
-
+    cfg.model.pretrained = None
     img_tensor, w, h = get_img_tensor(args.input, args.use_cuda, get_size=True)
 
     # build model and load checkpoint
