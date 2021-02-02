@@ -40,7 +40,8 @@ def main():
     img_tensor = get_img_tensor(args.input, args.use_cuda)
     # global attribute predictor will not use landmarks
     # just set a default value
-    landmark_tensor = torch.zeros(8)
+    # TODO: Add landmark demo support
+    landmark_tensor = torch.zeros(16).view(1, -1)
     cfg.model.pretrained = None
     model = build_predictor(cfg.model)
     load_checkpoint(model, args.checkpoint, map_location='cpu')
