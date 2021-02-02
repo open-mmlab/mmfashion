@@ -14,12 +14,13 @@ def get_img_tensor(img_path, use_cuda, get_size=False):
 
     img_size = (224, 224)  # crop image to (224, 224)
     img.thumbnail(img_size, Image.ANTIALIAS)
+    w, h = img.size
     img = img.convert('RGB')
     normalize = transforms.Normalize(
         mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     transform = transforms.Compose([
-        transforms.RandomResizedCrop(img_size[0]),
-        transforms.RandomHorizontalFlip(),
+        transforms.Pad((max(h - w, 0)//2,
+                        max(w - h, 0)//2), padding_mode='edge'),
         transforms.ToTensor(),
         normalize,
     ])
@@ -62,8 +63,9 @@ def show_img(img_tensor):
 def draw_landmarks(img_file, landmarks, r=2):
     img = Image.open(img_file)
     draw = ImageDraw.Draw(img)
+    w, h = img.size
     for i, lm in enumerate(landmarks):
-        x = lm[0]
-        y = lm[1]
+        x = lm[0] * (w / 224.)
+        y = lm[1] * (h / 224.)
         draw.ellipse([(x - r, y - r), (x + r, y + r)], fill=(255, 0, 0, 0))
     img.show()
