@@ -15,14 +15,18 @@ model = dict(
         inter_channels=[512, 4096],
         outchannels=4096),
     attr_predictor=dict(
-        type='AttrPredictor', inchannels=4096, outchannels=attribute_num),
-    loss_attr=dict(
-        type='BCEWithLogitsLoss',
-        ratio=1,
-        weight=None,
-        size_average=None,
-        reduce=None,
-        reduction='mean'),
+        type='AttrPredictor',
+        inchannels=4096,
+        outchannels=attribute_num,
+        loss_attr=dict(
+            type='BCEWithLogitsLoss',
+            ratio=1,
+            weight=None,
+            size_average=None,
+            reduce=None,
+            reduction='mean',
+        ),
+    ),
     pretrained='checkpoint/vgg16.pth')
 
 pooling = 'Global'
