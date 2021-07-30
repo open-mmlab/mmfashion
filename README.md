@@ -121,10 +121,10 @@ This project is released under the [Apache 2.0 license](LICENSE).
 ## Citation
 
 ```
-@article{mmfashion,
+@inproceedings{mmfashion,
   title={MMFashion: An Open-Source Toolbox for Visual Fashion Analysis},
   author={Liu, Xin and Li, Jiancheng and Wang, Jiaqi and Liu, Ziwei},
-  journal= {arXiv preprint arXiv:2005.08847},
-  year={2020}
+  booktitle={{ACM Multimedia 2021, Open Source Software Competition},
+  year={2021}
 }
 ```
