@@ -11,6 +11,9 @@ ENV CMAKE_PREFIX_PATH="$(dirname $(which conda))/../"
 RUN apt-get update && apt-get install -y git libglib2.0-0 libsm6 libxrender-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+    
+RUN apt-get update ##[edited]
+RUN apt-get install ffmpeg libsm6 libxext6  -y
 
 # Install mmfashion
 RUN conda clean --all
