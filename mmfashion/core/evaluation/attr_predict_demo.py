@@ -56,6 +56,6 @@ class AttrPredictor(object):
                 for num in range(topk):
                     res.append({
                         "label": self.attr_idx2name[idxes[num]],
-                        "confidence": data[i][indexes[num]]
+                        "confidence": float(data[i][indexes[num]])
                     })
         return res
