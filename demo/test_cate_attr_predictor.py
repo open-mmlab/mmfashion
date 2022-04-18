@@ -1,7 +1,10 @@
 from __future__ import division
 import argparse
-
+import json
 import torch
+
+from flask import Flask, render_template, request
+
 from mmcv import Config
 from mmcv.runner import load_checkpoint
 
@@ -9,58 +12,42 @@ from mmfashion.core import AttrPredictor, CatePredictor
 from mmfashion.models import build_predictor
 from mmfashion.utils import get_img_tensor
 
+app = Flask(__name__)
 
-def parse_args():
-    parser = argparse.ArgumentParser(
-        description='MMFashion Attribute Prediction Demo')
-    parser.add_argument(
-        '--input',
-        type=str,
-        help='input image path',
-        default='demo/imgs/attr_pred_demo2.jpg')
-    parser.add_argument(
-        '--checkpoint',
-        type=str,
-        help='checkpoint file',
-        default='checkpoint/CateAttrPredict/resnet/global/epoch_40.pth')
-    parser.add_argument(
-        '--config',
-        help='test config file path',
-        default='configs/category_attribute_predict/global_predictor_resnet.py'
-    )
-    parser.add_argument(
-        '--use_cuda', type=bool, default=True, help='use gpu or not')
-    args = parser.parse_args()
-    return args
+cfg = Config.fromfile('configs/category_attribute_predict/global_predictor_resnet.py')
+# global attribute predictor will not use landmarks
+# just set a default value
+landmark_tensor = torch.zeros(8)
+model = build_predictor(cfg.model)
+load_checkpoint(model, 'checkpoint/resnet50.pth', map_location='cpu')
+model.cuda()
+landmark_tensor = landmark_tensor.cuda()
+model.eval()
 
+@app.route("/api", methods=["POST"])
+def apiv1():
 
-def main():
-    args = parse_args()
-    cfg = Config.fromfile(args.config)
+    input_path = request.json['path']
+    img_idx = request.json['img_idx']
 
-    img_tensor = get_img_tensor(args.input, args.use_cuda)
-    # global attribute predictor will not use landmarks
-    # just set a default value
-    landmark_tensor = torch.zeros(8)
+	# predict probabilities for each attribute
+    img_tensor = get_img_tensor(input_path, True)
 
-    model = build_predictor(cfg.model)
-    load_checkpoint(model, args.checkpoint, map_location='cpu')
-    print('model loaded from {}'.format(args.checkpoint))
-    if args.use_cuda:
-        model.cuda()
-        landmark_tensor = landmark_tensor.cuda()
-
-    model.eval()
-
-    # predict probabilities for each attribute
     attr_prob, cate_prob = model(
         img_tensor, attr=None, landmark=landmark_tensor, return_loss=False)
     attr_predictor = AttrPredictor(cfg.data.test)
     cate_predictor = CatePredictor(cfg.data.test)
 
-    attr_predictor.show_prediction(attr_prob)
-    cate_predictor.show_prediction(cate_prob)
+    res = {
+        "timeUsed": 0.063, "predictions": {
+            "image_"+str(img_idx): {
+                "attributes": attr_predictor.show_json(attr_prob),
+                "category": cate_predictor.show_json(cate_prob)
+            }
+        }, "success": True
+    }
 
+    return res
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+	app.run(host='0.0.0.0', port=80, debug=True)

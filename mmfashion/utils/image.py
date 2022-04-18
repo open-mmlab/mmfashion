@@ -15,13 +15,13 @@ def get_img_tensor(img_path, use_cuda, get_size=False):
     img_size = (224, 224)  # crop image to (224, 224)
     img.thumbnail(img_size, Image.ANTIALIAS)
     img = img.convert('RGB')
-    normalize = transforms.Normalize(
-        mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    #normalize = transforms.Normalize(
+        #mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     transform = transforms.Compose([
-        transforms.RandomResizedCrop(img_size[0]),
-        transforms.RandomHorizontalFlip(),
+        #transforms.RandomResizedCrop(img_size[0]),
+        #transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
-        normalize,
+        #normalize,
     ])
     img_tensor = transform(img)
     img_tensor = torch.unsqueeze(img_tensor, 0)

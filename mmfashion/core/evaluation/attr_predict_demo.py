@@ -4,7 +4,7 @@ import torch
 
 class AttrPredictor(object):
 
-    def __init__(self, cfg, tops_type=[3, 5, 10]):
+    def __init__(self, cfg, tops_type=[3]):
         """Create the empty array to count true positive(tp),
             true negative(tn), false positive(fp) and false negative(fn).
 
@@ -38,3 +38,24 @@ class AttrPredictor(object):
                 idxes = indexes[:topk]
                 print('[ Top%d Attribute Prediction ]' % topk)
                 self.print_attr_name(idxes)
+        
+    def show_json(self, pred):
+        if isinstance(pred, torch.Tensor):
+            data = pred.data.cpu().numpy()
+        elif isinstance(pred, np.ndarray):
+            data = pred
+        else:
+            raise TypeError('type {} cannot be calculated.'.format(type(pred)))
+
+        res = []
+
+        for i in range(pred.size(0)):
+            indexes = np.argsort(data[i])[::-1]
+            for topk in self.tops_type:
+                idxes = indexes[:topk]
+                for num in range(topk):
+                    res.append({
+                        "label": self.attr_idx2name[idxes[num]],
+                        "confidence": data[i][indexes[num]]
+                    })
+        return res
