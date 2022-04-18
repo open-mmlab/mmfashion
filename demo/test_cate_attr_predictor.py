@@ -27,8 +27,8 @@ model.eval()
 @app.route("/api", methods=["POST"])
 def apiv1():
 
-    input_path = request.json['path']
-    img_idx = request.json['img_idx']
+    input_path = request.form['path']
+    img_idx = request.form['img_idx']
 
 	# predict probabilities for each attribute
     img_tensor = get_img_tensor(input_path, True)
