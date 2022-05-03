@@ -18,7 +18,7 @@ python demo/test_*.py --input ${INPUT_IMAGE_FILE}
 
 Examples:
 
-Assume that you have already downloaded the checkpoints to `checkpoints/`.
+Assume that you have already downloaded the checkpoints to `checkpoint/`.
 
 1. Test an attribute predictor(coarse prediction).
 
