@@ -31,7 +31,7 @@ def parse_args():
         default='checkpoint/Retrieve/vgg/global/epoch_100.pth',
         help='the checkpoint file to resume from')
     parser.add_argument(
-        '--use_cuda', type=bool, default=True, help='use gpu or not')
+        '--use_cuda', type=bool, default=False, help='use gpu or not')
     args = parser.parse_args()
     return args
 
@@ -68,7 +68,10 @@ def main():
     cfg = Config.fromfile(args.config)
 
     model = build_retriever(cfg.model)
-    load_checkpoint(model, args.checkpoint)
+
+    #j'ai changé load_checkpoint(model, args.checkpoint) en :
+    load_checkpoint(model, args.checkpoint, map_location=torch.device('cpu'))
+    
     print('load checkpoint from {}'.format(args.checkpoint))
 
     if args.use_cuda:

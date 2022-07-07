@@ -31,7 +31,7 @@ model = dict(
         inchannels=2048,
         outchannels=category_num,
         loss_cate=dict(type='CELoss', ratio=1, weight=None, reduction='mean')),
-    pretrained='checkpoint/resnet50.pth')
+    pretrained='checkpoint/resnet50.pth.tar')
 
 pooling = 'RoI'
 

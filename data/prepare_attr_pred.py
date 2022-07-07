@@ -1,6 +1,6 @@
 import os
 
-PREFIX = 'Attr_Predict/Anno'
+PREFIX = 'Attr_Predict/Anno_coarse'
 
 
 def split_img():

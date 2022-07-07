@@ -10,6 +10,7 @@ class GlobalPredictor(BasePredictor):
                  backbone,
                  global_pool,
                  attr_predictor,
+                 loss_attr,
                  cate_predictor=None,
                  roi_pool=None,
                  pretrained=None):

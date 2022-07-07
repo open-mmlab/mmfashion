@@ -29,7 +29,7 @@ def parse_args():
         default='configs/category_attribute_predict/global_predictor_resnet.py'
     )
     parser.add_argument(
-        '--use_cuda', type=bool, default=True, help='use gpu or not')
+        '--use_cuda', type=bool, default=False, help='use gpu or not')
     args = parser.parse_args()
     return args
 

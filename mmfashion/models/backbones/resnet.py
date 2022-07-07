@@ -1,5 +1,6 @@
 import torch.nn as nn
 from mmcv.runner import load_checkpoint
+import torch
 
 from ..registry import BACKBONES
 
@@ -193,7 +194,10 @@ class ResNet(nn.Module):
     def init_weights(self, pretrained=None):
         print('pretrained model', pretrained)
         if isinstance(pretrained, str):
-            load_checkpoint(self, pretrained)
+            
+            #j'ai changé load_checkpoint(self, pretrained) en:
+            load_checkpoint(self, pretrained,map_location=torch.device('cpu'))
+
         elif pretrained is None:
             for m in self.modules():
                 if isinstance(m, nn.Conv2d):
