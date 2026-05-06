@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y git libglib2.0-0 libsm6 libxrender-dev 
     && rm -rf /var/lib/apt/lists/*
     
 RUN apt-get update ##[edited]
-RUN apt-get install ffmpeg libsm6 libxext6  -y
+RUN apt-get install -y ffmpeg libxext6
 
 # Install mmfashion
 RUN conda clean --all
